@@ -22,3 +22,19 @@ git-hooks: ## Set up hooks in .git/hooks
 			ln -s -f ../../.githooks/$${hook} $${HOOK_DIR}/$${hook}; \
 		done \
 	}
+
+.PHONY: concourse-login
+concourse-login: ## Login to concourse using Fly
+	fly -t concourse login -c https://concourse.service.dw/ -k -n dataworks
+
+.PHONY: update-lambda-cleanup-pipeline
+update-lambda-cleanup-pipeline: ## Update the lambda-cleanup pipeline
+	aviator -f aviator-lambda-cleanup.yml
+
+.PHONY: pause-lambda-cleanup-pipeline
+pause-lambda-cleanup-pipeline: ## Pause the lambda-cleanup pipeline
+	fly --target concourse pause-pipeline --pipeline lambda-cleanup
+
+.PHONY: unpause-uc-list-snapshots-pipeline
+unpause-uc-list-snapshots-pipeline: ## Unpause the lambda-cleanup pipeline
+	fly --target concourse unpause-pipeline --pipeline lambda-cleanup
