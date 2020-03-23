@@ -8,7 +8,7 @@ resources:
 jobs:
 - name: lambda-cleanup-development-job
   plan:
-  - get: lambda-cleanup
+  - get: dataworks-admin-utils
   - task: lambda-cleanup-development
     file: lambda-cleanup/ci/lambda-cleanup.yml
     params:
@@ -18,7 +18,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
 - name: lambda-cleanup-qa-job
   plan:
-  - get: lambda-cleanup
+  - get: dataworks-admin-utils
   - task: lambda-cleanup-qa
     file: lambda-cleanup/ci/lambda-cleanup.yml
     params:
@@ -28,7 +28,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
 - name: lambda-cleanup-integration-job
   plan:
-  - get: lambda-cleanup
+  - get: dataworks-admin-utils
   - task: lambda-cleanup-integration
     file: lambda-cleanup/ci/lambda-cleanup.yml
     params:
@@ -38,7 +38,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
 - name: lambda-cleanup-preprod-job
   plan:
-  - get: lambda-cleanup
+  - get: dataworks-admin-utils
   - task: lambda-cleanup-preprod
     file: lambda-cleanup/ci/lambda-cleanup.yml
     params:
@@ -48,7 +48,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
 - name: lambda-cleanup-production-job
   plan:
-  - get: lambda-cleanup
+  - get: dataworks-admin-utils
   - task: lambda-cleanup-production
     file: lambda-cleanup/ci/lambda-cleanup.yml
     params:
@@ -58,7 +58,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
 - name: lambda-cleanup-management-job
   plan:
-  - get: lambda-cleanup
+  - get: dataworks-admin-utils
   - task: lambda-cleanup-management
     file: lambda-cleanup/ci/lambda-cleanup.yml
     params:
@@ -68,7 +68,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
 - name: lambda-cleanup-managment-dev-job
   plan:
-  - get: lambda-cleanup
+  - get: dataworks-admin-utils
   - task: lambda-cleanup-management-dev
     file: lambda-cleanup/ci/lambda-cleanup.yml
     params:

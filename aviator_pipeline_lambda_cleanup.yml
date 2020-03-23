@@ -1,7 +1,7 @@
 jobs:
 - name: lambda-cleanup-development-job
   plan:
-  - get: lambda-cleanup
+  - get: dataworks-admin-utils
   - file: lambda-cleanup/ci/lambda-cleanup.yml
     params:
       AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
@@ -11,7 +11,7 @@ jobs:
     task: lambda-cleanup-development
 - name: lambda-cleanup-qa-job
   plan:
-  - get: lambda-cleanup
+  - get: dataworks-admin-utils
   - file: lambda-cleanup/ci/lambda-cleanup.yml
     params:
       AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
@@ -21,7 +21,7 @@ jobs:
     task: lambda-cleanup-qa
 - name: lambda-cleanup-integration-job
   plan:
-  - get: lambda-cleanup
+  - get: dataworks-admin-utils
   - file: lambda-cleanup/ci/lambda-cleanup.yml
     params:
       AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
@@ -31,7 +31,7 @@ jobs:
     task: lambda-cleanup-integration
 - name: lambda-cleanup-preprod-job
   plan:
-  - get: lambda-cleanup
+  - get: dataworks-admin-utils
   - file: lambda-cleanup/ci/lambda-cleanup.yml
     params:
       AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
@@ -41,7 +41,7 @@ jobs:
     task: lambda-cleanup-preprod
 - name: lambda-cleanup-production-job
   plan:
-  - get: lambda-cleanup
+  - get: dataworks-admin-utils
   - file: lambda-cleanup/ci/lambda-cleanup.yml
     params:
       AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
@@ -51,7 +51,7 @@ jobs:
     task: lambda-cleanup-production
 - name: lambda-cleanup-management-job
   plan:
-  - get: lambda-cleanup
+  - get: dataworks-admin-utils
   - file: lambda-cleanup/ci/lambda-cleanup.yml
     params:
       AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
@@ -61,7 +61,7 @@ jobs:
     task: lambda-cleanup-management
 - name: lambda-cleanup-managment-dev-job
   plan:
-  - get: lambda-cleanup
+  - get: dataworks-admin-utils
   - file: lambda-cleanup/ci/lambda-cleanup.yml
     params:
       AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
@@ -70,7 +70,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
     task: lambda-cleanup-management-dev
 resources:
-- name: lambda-cleanup
+- name: dataworks-admin-utils
   source:
     branch: DW-3689-add-lambda-cleanup-util
     uri: https://github.com/dwp/dataworks-admin-utils.git
