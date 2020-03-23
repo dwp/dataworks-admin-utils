@@ -72,6 +72,6 @@ jobs:
 resources:
 - name: lambda-cleanup
   source:
-    branch: master
+    branch: DW-3689-add-lambda-cleanup-util
     uri: https://github.com/dwp/dataworks-admin-utils.git
   type: git
