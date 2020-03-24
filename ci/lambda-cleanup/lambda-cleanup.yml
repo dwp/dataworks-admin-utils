@@ -19,6 +19,5 @@ run:
   args:
   - -exc
   - |
-    find . -type f
     ./utils/lambda-cleanup/lambda_prune.py $AWS_ACCOUNT_ID
   dir: dataworks-admin-utils
