@@ -10,7 +10,7 @@ jobs:
   plan:
   - get: dataworks-admin-utils
   - task: lambda-cleanup-development
-    file: lambda-cleanup/ci/lambda-cleanup.yml
+    file: dataworks-admin-utils/ci/lambda-cleanup/lambda-cleanup.yml
     params:
       AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
       AWS_ACCOUNT_ID: ((aws_account.development))
@@ -20,7 +20,7 @@ jobs:
   plan:
   - get: dataworks-admin-utils
   - task: lambda-cleanup-qa
-    file: lambda-cleanup/ci/lambda-cleanup.yml
+    file: dataworks-admin-utils/ci/lambda-cleanup/lambda-cleanup.yml
     params:
       AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
       AWS_ACCOUNT_ID: ((aws_account.qa))
@@ -30,7 +30,7 @@ jobs:
   plan:
   - get: dataworks-admin-utils
   - task: lambda-cleanup-integration
-    file: lambda-cleanup/ci/lambda-cleanup.yml
+    file: dataworks-admin-utils/ci/lambda-cleanup/lambda-cleanup.yml
     params:
       AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
       AWS_ACCOUNT_ID: ((aws_account.integration))
@@ -40,7 +40,7 @@ jobs:
   plan:
   - get: dataworks-admin-utils
   - task: lambda-cleanup-preprod
-    file: lambda-cleanup/ci/lambda-cleanup.yml
+    file: dataworks-admin-utils/ci/lambda-cleanup/lambda-cleanup.yml
     params:
       AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
       AWS_ACCOUNT_ID: ((aws_account.preprod))
@@ -50,17 +50,17 @@ jobs:
   plan:
   - get: dataworks-admin-utils
   - task: lambda-cleanup-production
-    file: lambda-cleanup/ci/lambda-cleanup.yml
+    file: dataworks-admin-utils/ci/lambda-cleanup/lambda-cleanup.yml
     params:
       AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
       AWS_ACCOUNT_ID: ((aws_account.production))
       AWS_DEFAULT_REGION: eu-west-2
-      AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
+      AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key)
 - name: lambda-cleanup-management-job
   plan:
   - get: dataworks-admin-utils
   - task: lambda-cleanup-management
-    file: lambda-cleanup/ci/lambda-cleanup.yml
+    file: dataworks-admin-utils/ci/lambda-cleanup/lambda-cleanup.yml
     params:
       AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
       AWS_ACCOUNT_ID: ((aws_account.management))
@@ -70,7 +70,7 @@ jobs:
   plan:
   - get: dataworks-admin-utils
   - task: lambda-cleanup-management-dev
-    file: lambda-cleanup/ci/lambda-cleanup.yml
+    file: dataworks-admin-utils/ci/lambda-cleanup/lambda-cleanup.yml
     params:
       AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
       AWS_ACCOUNT_ID: ((aws_account.management-dev))
