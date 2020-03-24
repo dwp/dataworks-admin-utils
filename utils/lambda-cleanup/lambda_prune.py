@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
-from utils.common import aws_utility
+from common import aws_utility
 
 
 def main():
@@ -35,7 +35,7 @@ def remove_version(client, arn):
 def command_line_arguments():
     parser = argparse.ArgumentParser(
         description='Delete all but the latest version of a lambda.')
-    parser.add_argument('account', help='The account to target')
+    parser.add_argument('account', help='The AWS Account ID to target')
     return parser.parse_args()
 
 
