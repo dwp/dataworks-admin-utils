@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
-from common import aws_utility
+import aws_utility
 
 
 def main():
