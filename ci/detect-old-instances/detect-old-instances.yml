@@ -1,0 +1,23 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: ((docker-python-boto-behave.repository))
+    version: ((docker-python-boto-behave.version))
+    tag: ((docker-python-boto-behave.version))
+inputs:
+  - name: dataworks-admin-utils
+
+params:
+  AWS_ACCESS_KEY_ID:
+  AWS_ACCOUNT_ID:
+  AWS_DEFAULT_REGION:
+  AWS_SECRET_ACCESS_KEY:
+
+run:
+  path: sh
+  args:
+  - -exc
+  - |
+    ./utils/detect-old-instances/detect-old-instances.py $AWS_ACCOUNT_ID
+  dir: dataworks-admin-utils

@@ -1,0 +1,78 @@
+resources:
+- name: dataworks-admin-utils
+  type: git
+  source:
+    branch: master
+    uri: https://github.com/dwp/dataworks-admin-utils.git
+
+jobs:
+- name: detect-old-instances-development-job
+  plan:
+  - get: dataworks-admin-utils
+  - task: detect-old-instances-development
+    file: dataworks-admin-utils/ci/detect-old-instances/detect-old-instances.yml
+    params:
+      AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
+      AWS_ACCOUNT_ID: ((aws_account.development))
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
+- name: detect-old-instances-qa-job
+  plan:
+  - get: dataworks-admin-utils
+  - task: detect-old-instances-qa
+    file: dataworks-admin-utils/ci/detect-old-instances/detect-old-instances.yml
+    params:
+      AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
+      AWS_ACCOUNT_ID: ((aws_account.qa))
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
+- name: detect-old-instances-integration-job
+  plan:
+  - get: dataworks-admin-utils
+  - task: detect-old-instances-integration
+    file: dataworks-admin-utils/ci/detect-old-instances/detect-old-instances.yml
+    params:
+      AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
+      AWS_ACCOUNT_ID: ((aws_account.integration))
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
+- name: detect-old-instances-preprod-job
+  plan:
+  - get: dataworks-admin-utils
+  - task: detect-old-instances-preprod
+    file: dataworks-admin-utils/ci/detect-old-instances/detect-old-instances.yml
+    params:
+      AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
+      AWS_ACCOUNT_ID: ((aws_account.preprod))
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
+- name: detect-old-instances-production-job
+  plan:
+  - get: dataworks-admin-utils
+  - task: detect-old-instances-production
+    file: dataworks-admin-utils/ci/detect-old-instances/detect-old-instances.yml
+    params:
+      AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
+      AWS_ACCOUNT_ID: ((aws_account.production))
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key)
+- name: detect-old-instances-management-job
+  plan:
+  - get: dataworks-admin-utils
+  - task: detect-old-instances-management
+    file: dataworks-admin-utils/ci/detect-old-instances/detect-old-instances.yml
+    params:
+      AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
+      AWS_ACCOUNT_ID: ((aws_account.management))
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
+- name: detect-old-instances-managment-dev-job
+  plan:
+  - get: dataworks-admin-utils
+  - task: detect-old-instances-management-dev
+    file: dataworks-admin-utils/ci/detect-old-instances/detect-old-instances.yml
+    params:
+      AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
+      AWS_ACCOUNT_ID: ((aws_account.management-dev))
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
