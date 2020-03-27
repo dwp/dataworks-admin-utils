@@ -1,0 +1,8 @@
+spruce:
+- base: ci/detect-old-instances/pipeline.yml
+  to: aviator_pipeline_detect_old_instances.yml
+fly:
+  name: detect-old-instances
+  target: concourse
+  config: aviator_pipeline_detect_old_instances.yml
+  expose: true
