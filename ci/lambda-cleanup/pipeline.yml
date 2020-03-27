@@ -4,6 +4,9 @@ resources:
   source:
     branch: master
     uri: https://github.com/dwp/dataworks-admin-utils.git
+    username: ((github_com.username))
+    password: ((github_com.token))
+  check_every: 1h
 
 jobs:
 - name: lambda-cleanup-development-job
