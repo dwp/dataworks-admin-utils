@@ -2,7 +2,7 @@ resources:
 - name: dataworks-admin-utils
   type: git
   source:
-    branch: master
+    branch: DW-3694-alert-on-old-instances
     uri: https://github.com/dwp/dataworks-admin-utils.git
     username: ((github_com.username))
     password: ((github_com.token))
