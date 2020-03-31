@@ -234,7 +234,6 @@ def main():
         asg_client = get_asg_client(profile, args.aws_region)
         for ami in candidate_list:
             if not check_ami_is_used(ec2_client,asg_client,ami['ImageId']):
-#                logger.debug(f"Add AMI {ami['ImageId']} to deletion list")
                 deletion_list[profile].append(ami['ImageId'])
         logger.debug(f"Deletion list for profile {profile}:")
         logger.debug(deletion_list[profile])
