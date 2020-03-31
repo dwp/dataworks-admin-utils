@@ -1,0 +1,12 @@
+jobs:
+  - name: ami-cleanup-mgmtdev-dryrun-test
+    build_logs_to_retain: 1
+    plan:
+      - get: dataworks-admin-utils
+      - .: (( inject meta.plan.create-all-aws-profiles ))
+      - .: (( inject meta.plan.ami-cleanup-mgmt-dev ))
+        config:
+          params:
+            DRY_RUN: true
+            AMI_PREFIX: dw-hardened-ami*
+            KEEP_MIN: 15

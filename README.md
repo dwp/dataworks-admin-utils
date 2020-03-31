@@ -15,3 +15,11 @@ A utility to clean up old (i.e. redundant) lambda versions.
 
 ### Pipeline maintenance
 * There are also Makefile targets for `pause-lambda-cleanup-pipeline` and `unpause-lambda-cleanup-pipeline`
+
+## ami-cleanup
+
+An utility to clean up old AMIs.
+
+### Usage
+
+1. 

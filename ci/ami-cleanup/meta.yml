@@ -1,0 +1,190 @@
+meta:
+  plan:
+    create-all-aws-profiles:
+      task: create-all-aws-profiles
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((docker-awscli.repository))
+            version: ((docker-awscli.version))
+            tag: ((docker-awscli.version))
+        outputs:
+          - name: .aws
+        params:
+          AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
+          AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
+          AWS_ROLE: ci
+          AWS_ACCOUNT_DEV: ((aws_account.development))
+          AWS_ACCOUNT_QA: ((aws_account.qa))
+          AWS_ACCOUNT_INT: ((aws_account.integration))
+          AWS_ACCOUNT_PRE: ((aws_account.preprod))
+          AWS_ACCOUNT_PROD: ((aws_account.production))
+          AWS_ACCOUNT_M: ((aws_account.management))
+          AWS_ACCOUNT_MD: ((aws_account.management-dev))
+          AWS_REGION: eu-west-2
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              cat <<EOF> .aws/credentials
+              [default]
+              aws_access_key_id = $AWS_ACCESS_KEY_ID
+              aws_secret_access_key = $AWS_SECRET_ACCESS_KEY
+
+              [ci-development]
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_DEV}:role/$AWS_ROLE
+              source_profile = default
+
+              [ci-qa]
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_QA}:role/$AWS_ROLE
+              source_profile = default
+
+              [ci-integration]
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_INT}:role/$AWS_ROLE
+              source_profile = default
+
+              [ci-preprod]
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_PRE}:role/$AWS_ROLE
+              source_profile = default
+
+              [ci-production]
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_PROD}:role/$AWS_ROLE
+              source_profile = default
+
+              [ci-management]
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_M}:role/$AWS_ROLE
+              source_profile = default
+
+              [ci-management-dev]
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_MD}:role/$AWS_ROLE
+              source_profile = default
+              EOF
+
+              cat <<EOF> .aws/config
+              [default]
+              region = $AWS_REGION
+
+              [profile $AWS_ROLE]
+              region = $AWS_REGION
+              s3 =
+                max_concurrent_requests = 5
+                signature_version = s3v4
+                addressing_style = virtual
+
+              [profile ci-development]
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_DEV}:role/$AWS_ROLE
+              source_profile = default
+              region = $AWS_REGION
+              s3 =
+                max_concurrent_requests = 5
+                signature_version = s3v4
+                addressing_style = virtual
+
+              [profile ci-qa]
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_QA}:role/$AWS_ROLE
+              source_profile = default
+              region = $AWS_REGION
+              s3 =
+                max_concurrent_requests = 5
+                signature_version = s3v4
+                addressing_style = virtual
+
+              [profile ci-integration]
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_INT}:role/$AWS_ROLE
+              source_profile = default
+              region = $AWS_REGION
+              s3 =
+                max_concurrent_requests = 5
+                signature_version = s3v4
+                addressing_style = virtual
+
+              [profile ci-preprod]
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_PRE}:role/$AWS_ROLE
+              source_profile = default
+              region = $AWS_REGION
+              s3 =
+                max_concurrent_requests = 5
+                signature_version = s3v4
+                addressing_style = virtual
+
+              [profile ci-production]
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_PROD}:role/$AWS_ROLE
+              source_profile = default
+              region = $AWS_REGION
+              s3 =
+                max_concurrent_requests = 5
+                signature_version = s3v4
+                addressing_style = virtual
+
+              [profile ci-management]
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_M}:role/$AWS_ROLE
+              source_profile = default
+              region = $AWS_REGION
+              s3 =
+                max_concurrent_requests = 5
+                signature_version = s3v4
+                addressing_style = virtual
+
+              [profile ci-management-dev]
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_MD}:role/$AWS_ROLE
+              source_profile = default
+              region = $AWS_REGION
+              s3 =
+                max_concurrent_requests = 5
+                signature_version = s3v4
+                addressing_style = virtual
+              EOF
+
+    ami-cleanup:
+      task: ami-cleanup
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: dwpdigital/jinja-yaml-aws
+        inputs:
+          - name: .aws
+          - name: dataworks-admin-utils
+        params:
+          DRY_RUN: true
+          AWS_PROFILE: unset
+          AMI_PREFIX: unset
+          KEEP_MIN: unset
+          AWS_PROFILE_LIST: unset
+          AWS_REGION: unset
+          AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
+          AWS_CONFIG_FILE: .aws/config
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              #cat .aws/credentials
+              #cat .aws/config
+              cd dataworks-admin-utils/utils/ami-cleanup
+              export LOG_LEVEL=DEBUG
+              aws s3 ls --profile ci-development
+              python3 ami_cleanup.py --aws-profile $AWS_PROFILE --aws-region $AWS_REGION --ami-prefix $AMI_PREFIX --keep-min $KEEP_MIN --aws-profile-list $AWS_PROFILE_LIST --dry-run $DRY_RUN
+
+    ami-cleanup-mgmt:
+      .: (( inject meta.plan.ami-cleanup ))
+      config:
+        params:
+          AWS_PROFILE: ci-management
+          AWS_PROFILE_LIST: ci-development ci-qa ci-integration ci-preprod ci-production ci-management-dev
+          AWS_REGION: eu-west-2
+
+    ami-cleanup-mgmt-dev:
+      .: (( inject meta.plan.ami-cleanup ))
+      config:
+        params:
+          AWS_PROFILE: ci-management-dev
+          AWS_PROFILE_LIST: ci-development ci-qa ci-integration ci-preprod ci-production ci-management
+          AWS_REGION: eu-west-2
+
+
+

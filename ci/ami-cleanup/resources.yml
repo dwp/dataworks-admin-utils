@@ -1,0 +1,9 @@
+resources:
+  - name: dataworks-admin-utils
+    type: git
+    source:
+      branch: ami-cleanup
+      uri: https://github.com/dwp/dataworks-admin-utils.git
+      username: ((github_com.username))
+      password: ((github_com.token))
+    check_every: 1h
