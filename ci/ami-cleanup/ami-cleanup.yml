@@ -1,12 +1,40 @@
 jobs:
-  - name: ami-cleanup-mgmtdev-dryrun-test
-    build_logs_to_retain: 1
+  - name: ami-cleanup-mgmtdev-dryrun
     plan:
-      - get: dataworks-admin-utils
-      - .: (( inject meta.plan.create-all-aws-profiles ))
-      - .: (( inject meta.plan.ami-cleanup-mgmt-dev ))
-        config:
-          params:
-            DRY_RUN: true
-            AMI_PREFIX: dw-hardened-ami*
-            KEEP_MIN: 15
+    - get: dataworks-admin-utils
+    - .: (( inject meta.plan.create-all-aws-profiles ))
+    - .: (( inject meta.plan.ami-cleanup-mgmt-dev ))
+      config:
+        params:
+          DRY_RUN: true
+
+  - name: ami-cleanup-mgmtdev
+    plan:
+    - get: dataworks-admin-utils
+      passed:
+      - ami-cleanup-mgmtdev-dryrun
+    - .: (( inject meta.plan.create-all-aws-profiles ))
+    - .: (( inject meta.plan.ami-cleanup-mgmt-dev ))
+      config:
+        params:
+          DRY_RUN: false
+
+  - name: ami-cleanup-mgmt-dryrun
+    plan:
+    - get: dataworks-admin-utils
+    - .: (( inject meta.plan.create-all-aws-profiles ))
+    - .: (( inject meta.plan.ami-cleanup-mgmt ))
+      config:
+        params:
+          DRY_RUN: true
+
+  - name: ami-cleanup-mgmt
+    plan:
+    - get: dataworks-admin-utils
+      passed:
+        - ami-cleanup-mgmt-dryrun
+    - .: (( inject meta.plan.create-all-aws-profiles ))
+    - .: (( inject meta.plan.ami-cleanup-mgmt ))
+      config:
+        params:
+          DRY_RUN: true

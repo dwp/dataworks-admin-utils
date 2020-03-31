@@ -152,7 +152,7 @@ meta:
         params:
           DRY_RUN: true
           AWS_PROFILE: unset
-          AMI_PREFIX: unset
+          AMI_PREFIXES: unset
           KEEP_MIN: unset
           AWS_PROFILE_LIST: unset
           AWS_REGION: unset
@@ -163,12 +163,10 @@ meta:
           args:
             - -exc
             - |
-              #cat .aws/credentials
-              #cat .aws/config
-              cd dataworks-admin-utils/utils/ami-cleanup
-              export LOG_LEVEL=DEBUG
-              aws s3 ls --profile ci-development
-              python3 ami_cleanup.py --aws-profile $AWS_PROFILE --aws-region $AWS_REGION --ami-prefix $AMI_PREFIX --keep-min $KEEP_MIN --aws-profile-list $AWS_PROFILE_LIST --dry-run $DRY_RUN
+              export LOG_LEVEL=INFO
+              for AMI_PREFIX in $AMI_PREFIXES; do
+                python3 dataworks-admin-utils/utils/ami-cleanup/ami_cleanup.py --aws-profile $AWS_PROFILE --aws-region $AWS_REGION --ami-prefix $AMI_PREFIX --keep-min $KEEP_MIN --aws-profile-list $AWS_PROFILE_LIST --dry-run $DRY_RUN
+              done
 
     ami-cleanup-mgmt:
       .: (( inject meta.plan.ami-cleanup ))
@@ -177,14 +175,12 @@ meta:
           AWS_PROFILE: ci-management
           AWS_PROFILE_LIST: ci-development ci-qa ci-integration ci-preprod ci-production ci-management-dev
           AWS_REGION: eu-west-2
+          AMI_PREFIXES: dw-hardened-ami* dw-general-ami-* dm-untested-hardened-ami-* dw-emr-ami-*
+          KEEP_MIN: 15
 
     ami-cleanup-mgmt-dev:
-      .: (( inject meta.plan.ami-cleanup ))
+      .: (( inject meta.plan.ami-cleanup-mgmt ))
       config:
         params:
           AWS_PROFILE: ci-management-dev
           AWS_PROFILE_LIST: ci-development ci-qa ci-integration ci-preprod ci-production ci-management
-          AWS_REGION: eu-west-2
-
-
-
