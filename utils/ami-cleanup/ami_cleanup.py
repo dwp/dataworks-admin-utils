@@ -61,14 +61,15 @@ def get_asg_client(aws_profile, aws_region):
     return asg_client
 
 
-def create_deletion_list(boto_client, ami_prefix, keep_min):
+def get_deletion_list(boto_client, ami_prefix, keep_min):
     logger.debug(f"AMI prefix: {ami_prefix}, minimum number to keep: {keep_min}")
     try:
         full_list = boto_client.describe_images(
             Filters=[{"Name": "name", "Values": [ami_prefix]}]
         )["Images"]
     except Exception as e:
-        logger.debug(e)
+        logger.error(f"Failed to get list of AMIs for name prefix {ami_prefix} : {e}")
+        raise
     sorted_list = sorted(full_list, key=lambda k: k["CreationDate"])
     for ami in sorted_list:
         logger.debug(f"Date: {ami['CreationDate']}, AMI Name: {ami['Name']}")
@@ -79,54 +80,6 @@ def create_deletion_list(boto_client, ami_prefix, keep_min):
     for ami in sorted_list:
         logger.debug(f"Date: {ami['CreationDate']}, AMI Name: {ami['Name']}")
     return sorted_list
-
-
-def ami_used_in_instances(boto_client, ami_id):
-    # Check against running instances
-    is_used = False
-    try:
-        instance_list = boto_client.describe_instances(
-            Filters=[{"Name": "image-id", "Values": [ami_id]}]
-        )["Reservations"]
-        if len(instance_list) > 0:
-            is_used = True
-            logger.debug(f"AMI ID: {ami_id} is used by instance(s)")
-            return True
-    except Exception as e:
-        logger.debug(e)
-
-
-def ami_used_in_launch_configs(boto_client, ami_id):
-    # Check against launch configurations
-    try:
-        lc_list = boto_client.describe_launch_configurations()["LaunchConfigurations"]
-        for lc in lc_list:
-            if lc["ImageId"] == ami_id:
-                logger.debug(
-                    f"AMI {ami_id} is used by launch configuration {lc['LaunchConfigurationName']}"
-                )
-                return True
-    except Exception as e:
-        logger.debug(e)
-
-
-def ami_used_in_launch_templates(boto_client, ami_id):
-    # Check against launch templates
-    try:
-        lt_list = boto_client.describe_launch_templates()["LaunchTemplates"]
-        for lt in lt_list:
-            lt_desc = boto_client.describe_launch_template_versions(
-                LaunchTemplateId=lt["LaunchTemplateId"],
-                Versions=["$Latest"],
-                Filters=[{"Name": "image-id", "Values": [ami_id]}],
-            )["LaunchTemplateVersions"]
-            if len(lt_desc) > 0:
-                logger.debug(
-                    f"AMI {ami_id} is used by launch template {lt['LaunchTemplateName']}"
-                )
-                return True
-    except Exception as e:
-        logger.debug(e)
 
 
 def check_ami_is_used(ec2_client, asg_client, ami_id):
@@ -141,7 +94,8 @@ def check_ami_is_used(ec2_client, asg_client, ami_id):
             logger.debug(f"AMI ID: {ami_id} is used by instance(s)")
             is_used = True
     except Exception as e:
-        logger.debug(e)
+        logger.error(f"Failed to get list of Instances using AMI ID {ami_id} : {e}")
+        raise
 
     if not is_used:
         # Check against launch configurations
@@ -156,7 +110,8 @@ def check_ami_is_used(ec2_client, asg_client, ami_id):
                     )
                     is_used = True
         except Exception as e:
-            logger.debug(e)
+            logger.error(f"Failed to get list of Launch Configurations using AMI ID {ami_id} : {e}")
+            raise
 
     if not is_used:
         # Check against launch templates
@@ -174,7 +129,8 @@ def check_ami_is_used(ec2_client, asg_client, ami_id):
                     )
                     is_used = True
         except Exception as e:
-            logger.debug(e)
+            logger.error(f"Failed to get list of Launch Configurations using AMI ID {ami_id} : {e}")
+            raise
     return is_used
 
 
@@ -235,7 +191,7 @@ def main():
     if args.aws_profile_list is None:
         args.aws_profile_list = []
     main_client = get_ec2_client(args.aws_profile, args.aws_region)
-    candidate_list = create_deletion_list(main_client, args.ami_prefix, args.keep_min)
+    candidate_list = get_deletion_list(main_client, args.ami_prefix, args.keep_min)
     aws_profile_list_to_check = [args.aws_profile] + args.aws_profile_list
 
     deletion_list = {}
