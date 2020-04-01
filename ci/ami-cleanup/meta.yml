@@ -78,12 +78,11 @@ meta:
           DRY_RUN: true
           AWS_PROFILE: unset
           AMI_PREFIXES: unset
-          KEEP_MIN: unset
+          KEEP_MIN: 15
           AWS_PROFILE_LIST: unset
-          AWS_REGION: unset
+          AWS_REGION: eu-west-2
           AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
           LOG_LEVEL: INFO
-          KEEP_MIN: 15
         run:
           path: sh
           args:
@@ -99,7 +98,6 @@ meta:
         params:
           AWS_PROFILE: ci-management
           AWS_PROFILE_LIST: ci-development ci-qa ci-integration ci-preprod ci-production ci-management-dev
-          AWS_REGION: eu-west-2
           AMI_PREFIXES: dw-hardened-ami* dw-general-ami-* dm-untested-hardened-ami-* dw-emr-ami-*
 
     ami-cleanup-mgmt-dev:
