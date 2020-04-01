@@ -37,4 +37,4 @@ jobs:
     - .: (( inject meta.plan.ami-cleanup-mgmt ))
       config:
         params:
-          DRY_RUN: true
+          DRY_RUN: false

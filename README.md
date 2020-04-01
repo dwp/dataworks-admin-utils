@@ -18,7 +18,7 @@ A utility to clean up old (i.e. redundant) lambda versions.
 
 ## ami-cleanup
 
-An utility to clean up old AMIs.
+A utility to clean up old AMIs.
 
 ### Usage
 

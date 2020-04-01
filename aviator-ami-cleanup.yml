@@ -10,4 +10,4 @@ fly:
   name: ami-cleanup
   target: concourse
   config: aviator_pipeline_ami_cleanup.yml
-  expose: true
+  expose: false

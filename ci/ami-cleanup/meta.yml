@@ -21,8 +21,8 @@ meta:
           AWS_ACCOUNT_INT: ((aws_account.integration))
           AWS_ACCOUNT_PRE: ((aws_account.preprod))
           AWS_ACCOUNT_PROD: ((aws_account.production))
-          AWS_ACCOUNT_M: ((aws_account.management))
-          AWS_ACCOUNT_MD: ((aws_account.management-dev))
+          AWS_ACCOUNT_MGMT: ((aws_account.management))
+          AWS_ACCOUNT_MGMTDEV: ((aws_account.management-dev))
           AWS_REGION: eu-west-2
         run:
           path: sh
@@ -55,11 +55,11 @@ meta:
               source_profile = default
 
               [ci-management]
-              role_arn = arn:aws:iam::${AWS_ACCOUNT_M}:role/$AWS_ROLE
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_MGMT}:role/$AWS_ROLE
               source_profile = default
 
               [ci-management-dev]
-              role_arn = arn:aws:iam::${AWS_ACCOUNT_MD}:role/$AWS_ROLE
+              role_arn = arn:aws:iam::${AWS_ACCOUNT_MGMTDEV}:role/$AWS_ROLE
               source_profile = default
               EOF
 
@@ -82,12 +82,13 @@ meta:
           AWS_PROFILE_LIST: unset
           AWS_REGION: unset
           AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
+          LOG_LEVEL: INFO
+          KEEP_MIN: 15
         run:
           path: sh
           args:
             - -exc
             - |
-              export LOG_LEVEL=INFO
               for AMI_PREFIX in $AMI_PREFIXES; do
                 python3 dataworks-admin-utils/utils/ami-cleanup/ami_cleanup.py --aws-profile $AWS_PROFILE --aws-region $AWS_REGION --ami-prefix $AMI_PREFIX --keep-min $KEEP_MIN --aws-profile-list $AWS_PROFILE_LIST --dry-run $DRY_RUN
               done
@@ -100,7 +101,6 @@ meta:
           AWS_PROFILE_LIST: ci-development ci-qa ci-integration ci-preprod ci-production ci-management-dev
           AWS_REGION: eu-west-2
           AMI_PREFIXES: dw-hardened-ami* dw-general-ami-* dm-untested-hardened-ami-* dw-emr-ami-*
-          KEEP_MIN: 15
 
     ami-cleanup-mgmt-dev:
       .: (( inject meta.plan.ami-cleanup-mgmt ))
