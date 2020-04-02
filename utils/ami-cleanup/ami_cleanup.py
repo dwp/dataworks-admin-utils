@@ -121,11 +121,11 @@ def check_ami_is_used(ec2_client, asg_client, ami_id):
             )["LaunchTemplateVersions"]
             if len(lt_desc) > 0:
                 logger.debug(
-                    f"AMI {ami_id} is used by launch template {lt['LaunchTemplateName']}"
+                    f"AMI {ami_id} is used by Launch Template {lt['LaunchTemplateName']}"
                 )
                 return True
     except Exception as e:
-        logger.error(f"Failed to get list of Launch Configurations using AMI ID {ami_id} : {e}")
+        logger.error(f"Failed to get list of Launch Templates using AMI ID {ami_id} : {e}")
         raise
 
     return False
