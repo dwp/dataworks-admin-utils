@@ -7,8 +7,7 @@ import sys
 import boto3
 
 # Snapshot description filters
-snap_filter_1 = "Created by CreateImage*for AMI_ID*"
-snap_filter_2 = "Copied for DestinationAmi AMI_ID*"
+snap_filter_templates = ["Created by CreateImage*for AMI_ID*", "Copied for DestinationAmi AMI_ID*"]
 
 # Initialise logging
 logger = logging.getLogger(__name__)
@@ -71,14 +70,16 @@ def get_deletion_list(boto_client, ami_prefix, keep_min):
         logger.error(f"Failed to get list of AMIs for name prefix {ami_prefix} : {e}")
         raise
     sorted_list = sorted(full_list, key=lambda k: k["CreationDate"])
-    for ami in sorted_list:
-        logger.debug(f"Date: {ami['CreationDate']}, AMI Name: {ami['Name']}")
+    if logger.isEnabledFor(logging.DEBUG):
+        for ami in sorted_list:
+            logger.debug(f"Date: {ami['CreationDate']}, AMI Name: {ami['Name']}")
     if len(sorted_list) > keep_min:
         del_offset = len(sorted_list) - keep_min
         del sorted_list[del_offset:]
-    logger.debug(f"Trimmed list:")
-    for ami in sorted_list:
-        logger.debug(f"Date: {ami['CreationDate']}, AMI Name: {ami['Name']}")
+    if logger.isEnabledFor(logging.DEBUG):
+        logger.debug("Trimmed list:")
+        for ami in sorted_list:
+            logger.debug(f"Date: {ami['CreationDate']}, AMI Name: {ami['Name']}")
     return sorted_list
 
 
@@ -131,10 +132,6 @@ def check_ami_is_used(ec2_client, asg_client, ami_id):
     return False
 
 
-def common(lst1, lst2):
-    return list(set(lst1) & set(lst2))
-
-
 def delete_ami(ec2_client, ami_id, dry_run):
     # Deregister AMI
 
@@ -149,38 +146,41 @@ def delete_ami(ec2_client, ami_id, dry_run):
         logger.debug(e)
 
     # Get a list of snapshots associated with the ami
-    filter_string_1 = snap_filter_1.replace("AMI_ID", ami_id)
-    filter_string_2 = snap_filter_2.replace("AMI_ID", ami_id)
-    try:
-        snapshot_list = ec2_client.describe_snapshots(
-            Filters=[{"Name": "description", "Values": [filter_string_1]}]
-        )["Snapshots"]
-    except Exception as e:
-        logger.debug(e)
+    snap_filters = [template.replace("AMI_ID", ami_id) for template in snap_filter_templates]
+    snapshot_list = []
 
-    if len(snapshot_list) == 0:
+    for filter in snap_filters:
         try:
-            snapshot_list = ec2_client.describe_snapshots(
-                Filters=[{"Name": "description", "Values": [filter_string_2]}]
+            snapshot_list_for_filter = ec2_client.describe_snapshots(
+                Filters=[{"Name": "description", "Values": [filter]}]
             )["Snapshots"]
         except Exception as e:
-            logger.debug(e)
+            logger.error(f"Failed to get list of Snapshots for AMI ID {ami_id} : {e}")
+            raise
+        if len(snapshot_list_for_filter) > 0:
+            snapshot_list.append(snapshot_list_for_filter)
 
-    if len(snapshot_list) == 0:
+    if len(snapshot_list) > 0:
+        # Flatten list of lists generated above
+        flat_snapshot_list = []
+        for sublist in snapshot_list:
+            for item in sublist:
+                flat_snapshot_list.append(item)
+
+        for snapshot in flat_snapshot_list:
+            snapshot_id = snapshot["SnapshotId"]
+            try:
+                if not dry_run:
+                    ec2_client.delete_snapshot(SnapshotId=snapshot_id)
+                    logger.info(f"Snapshot {snapshot_id} deleted")
+                else:
+                    logger.info(
+                        f"Snapshot {snapshot_id} would be deleted if this wasn't a dry run"
+                    )
+            except Exception as e:
+                logger.debug(e)
+    else:
         logger.error(f"No snapshots found for AMI {ami_id}")
-
-    for snapshot in snapshot_list:
-        snapshot_id = snapshot["SnapshotId"]
-        try:
-            if not dry_run:
-                ec2_client.delete_snapshot(SnapshotId=snapshot_id)
-                logger.info(f"Snapshot {snapshot_id} deleted")
-            else:
-                logger.info(
-                    f"Snapshot {snapshot_id} would be deleted if this wasn't a dry run"
-                )
-        except Exception as e:
-            logger.debug(e)
 
 
 def main():
@@ -204,13 +204,17 @@ def main():
 
     deletion_list_total = deletion_list[aws_profile_list_to_check[0]]
     for profile in deletion_list:
-        deletion_list_total = common(deletion_list_total, deletion_list[profile])
+        deletion_list_total = list(set(deletion_list_total) & set(deletion_list[profile]))
 
     logger.info(f"List of AMIs to delete: {deletion_list_total}")
 
     for ami_id in deletion_list_total:
-        delete_ami(ec2_client, ami_id, args.dry_run)
+        delete_ami(main_client, ami_id, args.dry_run)
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        logger.error(e)
+        raise
