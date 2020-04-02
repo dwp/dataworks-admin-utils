@@ -84,54 +84,51 @@ def get_deletion_list(boto_client, ami_prefix, keep_min):
 
 def check_ami_is_used(ec2_client, asg_client, ami_id):
     # Check against running instances
-    is_used = False
     try:
         instance_list = ec2_client.describe_instances(
             Filters=[{"Name": "image-id", "Values": [ami_id]}]
         )["Reservations"]
         if len(instance_list) > 0:
-            is_used = True
             logger.debug(f"AMI ID: {ami_id} is used by instance(s)")
-            is_used = True
+            return True
     except Exception as e:
         logger.error(f"Failed to get list of Instances using AMI ID {ami_id} : {e}")
         raise
 
-    if not is_used:
-        # Check against launch configurations
-        try:
-            lc_list = asg_client.describe_launch_configurations()[
-                "LaunchConfigurations"
-            ]
-            for lc in lc_list:
-                if lc["ImageId"] == ami_id:
-                    logger.debug(
-                        f"AMI {ami_id} is used by launch configuration {lc['LaunchConfigurationName']}"
-                    )
-                    is_used = True
-        except Exception as e:
-            logger.error(f"Failed to get list of Launch Configurations using AMI ID {ami_id} : {e}")
-            raise
+    # Check against launch configurations
+    try:
+        lc_list = asg_client.describe_launch_configurations()[
+            "LaunchConfigurations"
+        ]
+        for lc in lc_list:
+            if lc["ImageId"] == ami_id:
+                logger.debug(
+                    f"AMI {ami_id} is used by launch configuration {lc['LaunchConfigurationName']}"
+                )
+                return True
+    except Exception as e:
+        logger.error(f"Failed to get list of Launch Configurations using AMI ID {ami_id} : {e}")
+        raise
 
-    if not is_used:
-        # Check against launch templates
-        try:
-            lt_list = ec2_client.describe_launch_templates()["LaunchTemplates"]
-            for lt in lt_list:
-                lt_desc = ec2_client.describe_launch_template_versions(
-                    LaunchTemplateId=lt["LaunchTemplateId"],
-                    Versions=["$Latest"],
-                    Filters=[{"Name": "image-id", "Values": [ami_id]}],
-                )["LaunchTemplateVersions"]
-                if len(lt_desc) > 0:
-                    logger.debug(
-                        f"AMI {ami_id} is used by launch template {lt['LaunchTemplateName']}"
-                    )
-                    is_used = True
-        except Exception as e:
-            logger.error(f"Failed to get list of Launch Configurations using AMI ID {ami_id} : {e}")
-            raise
-    return is_used
+    # Check against launch templates
+    try:
+        lt_list = ec2_client.describe_launch_templates()["LaunchTemplates"]
+        for lt in lt_list:
+            lt_desc = ec2_client.describe_launch_template_versions(
+                LaunchTemplateId=lt["LaunchTemplateId"],
+                Versions=["$Latest"],
+                Filters=[{"Name": "image-id", "Values": [ami_id]}],
+            )["LaunchTemplateVersions"]
+            if len(lt_desc) > 0:
+                logger.debug(
+                    f"AMI {ami_id} is used by launch template {lt['LaunchTemplateName']}"
+                )
+                return True
+    except Exception as e:
+        logger.error(f"Failed to get list of Launch Configurations using AMI ID {ami_id} : {e}")
+        raise
+
+    return False
 
 
 def common(lst1, lst2):
