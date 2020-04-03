@@ -51,6 +51,12 @@ def get_arguments():
     return parser.parse_args()
 
 
+def parse_dry_run_value(argument):
+    if argument.lower() == "false":
+        return False
+    else:
+        return True
+
 def get_ec2_client(aws_profile, aws_region):
     session = boto3.Session(profile_name=aws_profile)
     return session.client("ec2", region_name=aws_region)
@@ -189,7 +195,10 @@ def delete_ami(ec2_client, ami_id, dry_run):
 
 
 def main():
+
     args = get_arguments()
+    args.dry_run = parse_dry_run_value(args.dry_run)
+
     if args.aws_profile_list is None:
         args.aws_profile_list = []
     main_client = get_ec2_client(args.aws_profile, args.aws_region)
