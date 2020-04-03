@@ -50,14 +50,12 @@ def get_arguments():
 
 def get_ec2_client(aws_profile, aws_region):
     session = boto3.Session(profile_name=aws_profile)
-    ec2_client = session.client("ec2", region_name=aws_region)
-    return ec2_client
+    return session.client("ec2", region_name=aws_region)
 
 
 def get_asg_client(aws_profile, aws_region):
     session = boto3.Session(profile_name=aws_profile)
-    asg_client = session.client("autoscaling", region_name=aws_region)
-    return asg_client
+    return session.client("autoscaling", region_name=aws_region)
 
 
 def get_deletion_list(boto_client, ami_prefix, keep_min):
@@ -74,8 +72,7 @@ def get_deletion_list(boto_client, ami_prefix, keep_min):
         for ami in sorted_list:
             logger.debug(f"Date: {ami['CreationDate']}, AMI Name: {ami['Name']}")
     if len(sorted_list) > keep_min:
-        del_offset = len(sorted_list) - keep_min
-        del sorted_list[del_offset:]
+        del sorted_list[len(sorted_list) - keep_min:]
     if logger.isEnabledFor(logging.DEBUG):
         logger.debug("Trimmed list:")
         for ami in sorted_list:
@@ -149,10 +146,10 @@ def delete_ami(ec2_client, ami_id, dry_run):
     snap_filters = [template.replace("AMI_ID", ami_id) for template in snap_filter_templates]
     snapshot_list = []
 
-    for filter in snap_filters:
+    for snap_filter in snap_filters:
         try:
             snapshot_list_for_filter = ec2_client.describe_snapshots(
-                Filters=[{"Name": "description", "Values": [filter]}]
+                Filters=[{"Name": "description", "Values": [snap_filter]}]
             )["Snapshots"]
         except Exception as e:
             logger.error(f"Failed to get list of Snapshots for AMI ID {ami_id} : {e}")
@@ -215,6 +212,6 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except Exception as e:
-        logger.error(e)
+    except Exception as error:
+        logger.error(error)
         raise
