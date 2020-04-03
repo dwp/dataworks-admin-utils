@@ -209,7 +209,7 @@ def main():
 
     deletion_list_total = deletion_list[aws_profile_list_to_check[0]]
     for profile in deletion_list:
-        deletion_list_total.append(deletion_list[profile])
+        deletion_list_total = deletion_list_total + deletion_list[profile]
 
     deletion_list_total = list(set(deletion_list_total))
     logger.info(f"List of AMIs to delete: {deletion_list_total}")
