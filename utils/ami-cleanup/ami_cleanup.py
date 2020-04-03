@@ -139,8 +139,8 @@ def delete_ami(ec2_client, ami_id, dry_run):
         else:
             logger.info(f"AMI {ami_id} would be deregistered if this wasn't a dry run")
     except Exception as e:
-        logger.debug(f"Error while deregistering AMI {ami_id}")
-        logger.debug(e)
+        logger.error(f"Error while deregistering AMI {ami_id}: {e}")
+        raise
 
     # Get a list of snapshots associated with the ami
     snap_filters = [template.replace("AMI_ID", ami_id) for template in snap_filter_templates]
