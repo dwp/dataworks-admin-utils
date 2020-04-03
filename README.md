@@ -15,3 +15,12 @@ A utility to clean up old (i.e. redundant) lambda versions.
 
 ### Pipeline maintenance
 * There are also Makefile targets for `pause-lambda-cleanup-pipeline` and `unpause-lambda-cleanup-pipeline`
+
+## ami-cleanup
+
+A utility to clean up old AMIs.
+
+### Usage
+
+1. Aviator the pipeline in: `aviator -f aviator-ami-cleanup.yml`
+1. Browse to the concourse UI `ami-cleanup` pipeline and run the job for the environment of your choice
