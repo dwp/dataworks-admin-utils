@@ -7,7 +7,10 @@ import sys
 import boto3
 
 # Snapshot description filters
-snap_filter_templates = ["Created by CreateImage*for AMI_ID*", "Copied for DestinationAmi AMI_ID*"]
+snap_filter_templates = [
+    "Created by CreateImage*for AMI_ID*",
+    "Copied for DestinationAmi AMI_ID*",
+]
 
 # Initialise logging
 logger = logging.getLogger(__name__)
@@ -72,7 +75,7 @@ def get_deletion_list(boto_client, ami_prefix, keep_min):
         for ami in sorted_list:
             logger.debug(f"Date: {ami['CreationDate']}, AMI Name: {ami['Name']}")
     if len(sorted_list) > keep_min:
-        del sorted_list[len(sorted_list) - keep_min:]
+        del sorted_list[len(sorted_list) - keep_min :]
     if logger.isEnabledFor(logging.DEBUG):
         logger.debug("Trimmed list:")
         for ami in sorted_list:
@@ -95,9 +98,7 @@ def check_ami_is_used(ec2_client, asg_client, ami_id):
 
     # Check against launch configurations
     try:
-        lc_list = asg_client.describe_launch_configurations()[
-            "LaunchConfigurations"
-        ]
+        lc_list = asg_client.describe_launch_configurations()["LaunchConfigurations"]
         for lc in lc_list:
             if lc["ImageId"] == ami_id:
                 logger.debug(
@@ -105,7 +106,9 @@ def check_ami_is_used(ec2_client, asg_client, ami_id):
                 )
                 return True
     except Exception as e:
-        logger.error(f"Failed to get list of Launch Configurations using AMI ID {ami_id} : {e}")
+        logger.error(
+            f"Failed to get list of Launch Configurations using AMI ID {ami_id} : {e}"
+        )
         raise
 
     # Check against launch templates
@@ -123,7 +126,9 @@ def check_ami_is_used(ec2_client, asg_client, ami_id):
                 )
                 return True
     except Exception as e:
-        logger.error(f"Failed to get list of Launch Templates using AMI ID {ami_id} : {e}")
+        logger.error(
+            f"Failed to get list of Launch Templates using AMI ID {ami_id} : {e}"
+        )
         raise
 
     return False
@@ -143,7 +148,9 @@ def delete_ami(ec2_client, ami_id, dry_run):
         raise
 
     # Get a list of snapshots associated with the ami
-    snap_filters = [template.replace("AMI_ID", ami_id) for template in snap_filter_templates]
+    snap_filters = [
+        template.replace("AMI_ID", ami_id) for template in snap_filter_templates
+    ]
     snapshot_list = []
 
     for snap_filter in snap_filters:
@@ -177,6 +184,7 @@ def delete_ami(ec2_client, ami_id, dry_run):
             except Exception as e:
                 logger.debug(e)
     else:
+        # If no snapshots exist for an AMI due to e.g. manual deletion without deregestering AMI, log an error and continue.
         logger.error(f"No snapshots found for AMI {ami_id}")
 
 
