@@ -99,8 +99,8 @@ pause-uc-list-snapshots-pipeline: ## Pause the uc-list-snapshots pipeline
 pause-uc-data-load-pipeline: ## Pause the uc-data-load pipeline
 	fly --target concourse pause-pipeline --pipeline uc-data-load
 
-.PHONY: unpause-uc-list-snapshots-pipeline
-unpause-uc-list-snapshots-pipeline: ## Unpause the lambda-cleanup pipeline
+.PHONY: unpause-lambda-cleanup-pipeline
+unpause-lambda-cleanup-pipeline: ## Unpause the lambda-cleanup pipeline
 	fly --target concourse unpause-pipeline --pipeline lambda-cleanup
 
 .PHONY: unpause-scale-down-services-pipeline
