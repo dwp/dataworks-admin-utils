@@ -1,9 +1,6 @@
 # dataworks-admin-utils
 Contains DataWorks administrative utilities
 
-### Pipeline maintenance
-* There are also Makefile targets for `pause-lambda-cleanup-pipeline` and `unpause-lambda-cleanup-pipeline`
-
 ## CI Pipelines
 
 There are multiple admin style pipelines which are released to the CI system:
@@ -17,6 +14,7 @@ There are multiple admin style pipelines which are released to the CI system:
 7. `send-snapshots`
 8. `uc-list-snapshots`
 9. `uc-data-load`
+10. `ami-cleanup`
 
 ### Installing as a concourse pipeline
 
@@ -123,3 +121,9 @@ You can also pause or unpause the pipeline:
 
 * `make pause-uc-data-load-pipeline`
 * `make unpause-uc-data-load-pipeline`
+
+### Pipeline: ami-cleanup
+
+A utility to clean up old AMIs.. The files for this pipeline are in the ci/ami-cleanup folder in this repo. To update this pipeline in CI, you can run the following make command:
+
+* `aviator -f aviator-ami-cleanup.yml`
