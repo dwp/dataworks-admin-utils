@@ -1,0 +1,17 @@
+spruce:
+  - base: ci/manage-environments/meta-manage-environments.yml
+    prune:
+      - meta
+    merge:
+      - with_in: ci/manage-environments/
+        regexp: ".*yml"
+      - with_in: ci/manage-environments/jobs/
+        regexp: ".*yml"
+      - with_in: ci/shared/
+        regexp: "meta.yml"
+    to: aviator_pipeline_manage_environments.yml
+fly:
+  name: manage-environments
+  target: concourse
+  config: aviator_pipeline_manage_environments.yml
+  expose: false

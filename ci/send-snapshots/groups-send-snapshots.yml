@@ -1,0 +1,7 @@
+groups:
+- name: send-snapshots
+  jobs:
+  - development-send-snapshots
+  - qa-send-snapshots
+  - preprod-send-snapshots
+  - production-send-snapshots

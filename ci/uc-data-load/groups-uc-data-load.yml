@@ -1,0 +1,13 @@
+groups:
+- name: uc-data-load
+  jobs:
+  - development-uc-data-load
+  - qa-uc-data-load
+  - preprod-uc-data-load
+  - production-uc-data-load
+- name: uc-data-load-import-only
+  jobs:
+  - production-uc-data-load-import-only
+- name: uc-data-load-manifest-only
+  jobs:
+  - production-uc-data-load-manifest-only

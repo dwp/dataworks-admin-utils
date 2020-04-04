@@ -1,0 +1,33 @@
+jobs:
+- name: integration-scale-down-htme
+  max_in_flight: 1
+  plan:
+  - aggregate:
+    - put: meta
+      resource: meta-integration
+    - get: aws-internal-compute
+      trigger: false
+    - get: aws-ingestion
+      trigger: false
+    - get: aws-dataworks-e2e-framework
+      trigger: false
+    - get: aws-sdx
+      trigger: false
+  - .: (( inject meta.plan.create-aws-profiles ))
+    config:
+      params:
+        AWS_ACC: '((aws_account.integration))'
+  - .: (( inject meta.plan.terraform-output-ingest ))
+    params:
+      TF_WORKSPACE: integration
+  - .: (( inject meta.plan.terraform-output-internal-compute ))
+    params:
+      TF_WORKSPACE: integration
+  - .: (( inject meta.plan.terraform-output-sdx ))
+    params:
+      TF_WORKSPACE: integration
+  - .: (( inject meta-scale-down-services.plan.scale-down-services ))
+    config:
+      params:
+        AWS_ACC: '((aws_account.integration))'
+        SERVICE_NAME: 'htme'

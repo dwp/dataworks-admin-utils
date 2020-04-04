@@ -1,0 +1,36 @@
+jobs:
+  - name: development-shutdown
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta.plan.create-aws-profiles ))
+        config:
+          params:
+            AWS_ACC: ((aws_account.development))
+      - .: (( inject meta-manage-environments.plan.manage-environment ))
+        config:
+          params:
+            PAYLOAD: '{ "Records": [ { "Sns": { "Message": "{ \"mode\": \"shutdown\" }" } } ] }'
+
+  - name: qa-shutdown
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta.plan.create-aws-profiles ))
+        config:
+          params:
+            AWS_ACC: ((aws_account.qa))
+      - .: (( inject meta-manage-environments.plan.manage-environment ))
+        config:
+          params:
+            PAYLOAD: '{ "Records": [ { "Sns": { "Message": "{ \"mode\": \"shutdown\" }" } } ] }'
+
+  - name: integration-shutdown
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta.plan.create-aws-profiles ))
+        config:
+          params:
+            AWS_ACC: '((aws_account.integration))'
+      - .: (( inject meta-manage-environments.plan.manage-environment ))
+        config:
+          params:
+            PAYLOAD: '{ "Records": [ { "Sns": { "Message": "{ \"mode\": \"shutdown\" }" } } ] }'
