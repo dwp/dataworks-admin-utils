@@ -1,0 +1,17 @@
+spruce:
+  - base: ci/uc-list-snapshots/meta-uc-list-snapshots.yml
+    prune:
+      - meta
+    merge:
+      - with_in: ci/uc-list-snapshots/
+        regexp: ".*yml"
+      - with_in: ci/uc-list-snapshots/jobs/
+        regexp: ".*yml"
+      - with_in: ci/shared/
+        regexp: ".*yml"
+    to: aviator_pipeline_uc_list_snapshots.yml
+fly:
+  name: uc-list-snapshots
+  target: concourse
+  config: aviator_pipeline_uc_list_snapshots.yml
+  expose: true

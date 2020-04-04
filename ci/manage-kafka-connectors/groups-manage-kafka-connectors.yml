@@ -1,0 +1,12 @@
+groups:
+  - name: restart-k2s3
+    jobs:
+      - development-restart-k2s3
+      - qa-restart-k2s3
+  - name: restart-k2hb
+    jobs:
+      - development-restart-k2hb
+      - qa-restart-k2hb
+      - integration-restart-k2hb
+      - preprod-restart-k2hb
+      - production-restart-k2hb

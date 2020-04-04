@@ -1,0 +1,7 @@
+resources:
+- name: meta-integration
+  type: meta
+- name: meta-preprod
+  type: meta
+- name: meta-prod
+  type: meta

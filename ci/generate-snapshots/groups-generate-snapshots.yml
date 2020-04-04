@@ -1,0 +1,7 @@
+groups:
+- name: generate-snapshots
+  jobs:
+  - development-generate-snapshots
+  - qa-generate-snapshots
+  - preprod-generate-snapshots
+  - production-generate-snapshots
