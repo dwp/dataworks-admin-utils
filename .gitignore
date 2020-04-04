@@ -14,4 +14,4 @@ terraform.tfvars
 **/*.egg-info/
 
 # CI
-aviator_pipeline*.yml
+aviator_*.yml

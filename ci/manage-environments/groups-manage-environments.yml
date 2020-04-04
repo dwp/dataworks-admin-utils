@@ -1,0 +1,11 @@
+groups:
+  - name: shutdown-envs
+    jobs:
+      - development-shutdown
+      - qa-shutdown
+      - integration-shutdown
+  - name: startup-envs
+    jobs:
+      - development-startup
+      - qa-startup
+      - integration-startup

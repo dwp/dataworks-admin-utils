@@ -1,0 +1,33 @@
+jobs:
+- name: preprod-scale-up-hdi
+  max_in_flight: 1
+  plan:
+  - aggregate:
+    - put: meta
+      resource: meta-preprod
+    - get: aws-internal-compute
+      trigger: false
+    - get: aws-ingestion
+      trigger: false
+    - get: aws-dataworks-e2e-framework
+      trigger: false
+    - get: aws-sdx
+      trigger: false
+  - .: (( inject meta.plan.create-aws-profiles ))
+    config:
+      params:
+        AWS_ACC: '445364893246'
+  - .: (( inject meta.plan.terraform-output-ingest ))
+    params:
+      TF_WORKSPACE: preprod
+  - .: (( inject meta.plan.terraform-output-internal-compute ))
+    params:
+      TF_WORKSPACE: preprod
+  - .: (( inject meta.plan.terraform-output-sdx ))
+    params:
+      TF_WORKSPACE: preprod
+  - .: (( inject meta-scale-up-services.plan.scale-up-services ))
+    config:
+      params:
+        AWS_ACC: '445364893246'
+        SERVICE_NAME: 'hdi'

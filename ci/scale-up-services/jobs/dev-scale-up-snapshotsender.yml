@@ -1,0 +1,27 @@
+jobs:
+- name: dev-scale-up-snapshotsender
+  max_in_flight: 1
+  plan:
+  - aggregate:
+    - put: meta
+      resource: meta-development
+    - get: aws-internal-compute
+      trigger: false
+    - get: aws-ingestion
+      trigger: false
+    - get: aws-dataworks-e2e-framework
+      trigger: false
+    - get: aws-sdx
+      trigger: false
+  - .: (( inject meta.plan.create-aws-profiles ))
+    config:
+      params:
+        AWS_ACC: '475593055014'
+  - .: (( inject meta.plan.terraform-output-ingest ))
+  - .: (( inject meta.plan.terraform-output-internal-compute ))
+  - .: (( inject meta.plan.terraform-output-sdx ))
+  - .: (( inject meta-scale-up-services.plan.scale-up-services ))
+    config:
+      params:
+        AWS_ACC: '475593055014'
+        SERVICE_NAME: 'snapshotsender'

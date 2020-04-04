@@ -1,0 +1,7 @@
+groups:
+- name: uc-list-snapshots
+  jobs:
+  - development-uc-list-snapshots
+  - qa-uc-list-snapshots
+  - preprod-uc-list-snapshots
+  - production-uc-list-snapshots

@@ -1,0 +1,28 @@
+jobs:
+  - name: development-restart-k2s3
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta.plan.create-aws-profiles ))
+        config:
+          params:
+            AWS_ACC: '475593055014'
+      - .: (( inject meta-manage-kafka-connector.plan.restart-kafka-connector ))
+        config:
+          params:
+            AWS_ACC: '475593055014'
+            ECS_CLUSTER: main
+            ECS_SERVICE: stub_ucfs_kafka_to_s3
+
+  - name: qa-restart-k2s3
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta.plan.create-aws-profiles ))
+        config:
+          params:
+            AWS_ACC: '003710426629'
+      - .: (( inject meta-manage-kafka-connector.plan.restart-kafka-connector ))
+        config:
+          params:
+            AWS_ACC: '003710426629'
+            ECS_CLUSTER: main
+            ECS_SERVICE: stub_ucfs_kafka_to_s3
