@@ -15,7 +15,7 @@ jobs:
   - .: (( inject meta.plan.create-aws-profiles ))
     config:
       params:
-        AWS_ACC: '517406633788'
+        AWS_ACC: '((aws_account.production))'
   - .: (( inject meta.plan.terraform-output-internal-compute ))
     params:
       TF_WORKSPACE: 'production'
@@ -28,5 +28,5 @@ jobs:
   - .: (( inject meta-uc-data-load.plan.uc-data-load ))
     config:
       params:
-        AWS_ACC: '517406633788'
+        AWS_ACC: '((aws_account.production))'
         ACTION_TAG: '@admin-uc-data-load-manifest-only'

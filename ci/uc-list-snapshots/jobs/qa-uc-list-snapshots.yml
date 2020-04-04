@@ -15,7 +15,7 @@ jobs:
   - .: (( inject meta.plan.create-aws-profiles ))
     config:
       params:
-        AWS_ACC: '003710426629'
+        AWS_ACC: ((aws_account.qa))
   - .: (( inject meta.plan.terraform-output-internal-compute ))
     params:
       TF_WORKSPACE: 'qa'
@@ -28,4 +28,4 @@ jobs:
   - .: (( inject meta-uc-list-snapshots.plan.uc-list-snapshots ))
     config:
       params:
-        AWS_ACC: '003710426629'
+        AWS_ACC: ((aws_account.qa))

@@ -5,7 +5,7 @@ jobs:
       - .: (( inject meta.plan.create-aws-profiles ))
         config:
           params:
-            AWS_ACC: '475593055014'
+            AWS_ACC: ((aws_account.development))
       - .: (( inject meta-manage-environments.plan.manage-environment ))
         config:
           params:
@@ -17,7 +17,7 @@ jobs:
       - .: (( inject meta.plan.create-aws-profiles ))
         config:
           params:
-            AWS_ACC: '003710426629'
+            AWS_ACC: ((aws_account.qa))
       - .: (( inject meta-manage-environments.plan.manage-environment ))
         config:
           params:
@@ -29,7 +29,7 @@ jobs:
       - .: (( inject meta.plan.create-aws-profiles ))
         config:
           params:
-            AWS_ACC: '337387380515'
+            AWS_ACC: '((aws_account.integration))'
       - .: (( inject meta-manage-environments.plan.manage-environment ))
         config:
           params:

@@ -5,11 +5,11 @@ jobs:
       - .: (( inject meta.plan.create-aws-profiles ))
         config:
           params:
-            AWS_ACC: '475593055014'
+            AWS_ACC: ((aws_account.development))
       - .: (( inject meta-manage-kafka-connector.plan.restart-kafka-connector ))
         config:
           params:
-            AWS_ACC: '475593055014'
+            AWS_ACC: ((aws_account.development))
             ECS_CLUSTER: main
             ECS_SERVICE: stub_ucfs_kafka_to_s3
 
@@ -19,10 +19,10 @@ jobs:
       - .: (( inject meta.plan.create-aws-profiles ))
         config:
           params:
-            AWS_ACC: '003710426629'
+            AWS_ACC: ((aws_account.qa))
       - .: (( inject meta-manage-kafka-connector.plan.restart-kafka-connector ))
         config:
           params:
-            AWS_ACC: '003710426629'
+            AWS_ACC: ((aws_account.qa))
             ECS_CLUSTER: main
             ECS_SERVICE: stub_ucfs_kafka_to_s3

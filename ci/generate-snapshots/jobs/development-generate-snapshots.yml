@@ -15,11 +15,11 @@ jobs:
   - .: (( inject meta.plan.create-aws-profiles ))
     config:
       params:
-        AWS_ACC: '475593055014'
+        AWS_ACC: ((aws_account.development))
   - .: (( inject meta.plan.terraform-output-internal-compute ))
   - .: (( inject meta.plan.terraform-output-ingest ))
   - .: (( inject meta.plan.terraform-output-sdx ))
   - .: (( inject meta-generate-snapshots.plan.generate-snapshots ))
     config:
       params:
-        AWS_ACC: '475593055014'
+        AWS_ACC: ((aws_account.development))

@@ -16,7 +16,7 @@ jobs:
   - .: (( inject meta.plan.create-aws-profiles ))
     config:
       params:
-        AWS_ACC: '517406633788'
+        AWS_ACC: '((aws_account.production))'
   - .: (( inject meta.plan.terraform-output-ingest ))
     params:
       TF_WORKSPACE: production
@@ -29,5 +29,5 @@ jobs:
   - .: (( inject meta-scale-down-services.plan.scale-down-services ))
     config:
       params:
-        AWS_ACC: '517406633788'
+        AWS_ACC: '((aws_account.production))'
         SERVICE_NAME: 'snapshotsender'
