@@ -124,6 +124,11 @@ You can also pause or unpause the pipeline:
 
 ### Pipeline: ami-cleanup
 
-A utility to clean up old AMIs.. The files for this pipeline are in the ci/ami-cleanup folder in this repo. To update this pipeline in CI, you can run the following make command:
+A utility to clean up old AMIs. The files for this pipeline are in the ci/ami-cleanup folder in this repo. To update this pipeline in CI, you can run the following make command:
 
-* `aviator -f aviator-ami-cleanup.yml`
+* `make update-ami-cleanup-pipeline`
+
+You can also pause or unpause the pipeline:
+
+* `make pause-ami-cleanup-pipeline`
+* `make unpause-ami-cleanup-pipeline`
