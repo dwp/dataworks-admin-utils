@@ -59,6 +59,10 @@ update-send-snapshots-pipeline: ## Update the send snapshots pipeline
 update-uc-list-snapshots-pipeline: ## Update the uc-list-snapshots pipeline
 	aviator -f aviator-uc-list-snapshots.yml
 
+.PHONY: update-ami-cleanup-pipeline
+update-ami-cleanup-pipeline: ## Update the ami-cleanup pipeline
+	aviator -f aviator-ami-cleanup.yml
+
 .PHONY: update-uc-data-load-pipeline
 update-uc-data-load-pipeline: ## Update the uc-data-load pipeline
 	aviator -f aviator-uc-data-load.yml
@@ -99,6 +103,10 @@ pause-uc-list-snapshots-pipeline: ## Pause the uc-list-snapshots pipeline
 pause-uc-data-load-pipeline: ## Pause the uc-data-load pipeline
 	fly --target concourse pause-pipeline --pipeline uc-data-load
 
+.PHONY: pause-ami-cleanup-pipeline
+pause-ami-cleanup-pipeline: ## Pause the ami-cleanup pipeline
+	fly --target concourse pause-pipeline --pipeline ami-cleanup
+
 .PHONY: unpause-lambda-cleanup-pipeline
 unpause-lambda-cleanup-pipeline: ## Unpause the lambda-cleanup pipeline
 	fly --target concourse unpause-pipeline --pipeline lambda-cleanup
@@ -134,3 +142,7 @@ unpause-uc-list-snapshots-pipeline: ## Unpause the uc-list-snapshots pipeline
 .PHONY: unpause-uc-data-load-pipeline
 unpause-uc-data-load-pipeline: ## Unpause the uc-data-load pipeline
 	fly --target concourse unpause-pipeline --pipeline uc-data-load
+
+.PHONY: unpause-ami-cleanup-pipeline
+unpause-ami-cleanup-pipeline: ## Unpause the ami-cleanup pipeline
+	fly --target concourse unpause-pipeline --pipeline ami-cleanup
