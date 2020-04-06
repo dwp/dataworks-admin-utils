@@ -5,3 +5,4 @@ groups:
   - qa-send-snapshots
   - preprod-send-snapshots
   - production-send-snapshots
+  - production-reprocess-snapshots
