@@ -45,8 +45,7 @@ def get_arguments():
         help="List of additional AWS profile IDs to use to check for AMI usage in other accounts, i.e. accounts with which the AMI is shared",
     )
     parser.add_argument(
-        "--dry-run", help="Set to False to perform deletion",
-        required=True,
+        "--dry-run", help="Set to False to perform deletion", required=True,
     )
 
     args = parser.parse_args()
