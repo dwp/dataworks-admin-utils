@@ -200,8 +200,6 @@ def main():
 
     args = get_arguments()
 
-    quit()
-
     if args.aws_profile_list is None:
         args.aws_profile_list = []
     main_client = get_ec2_client(args.aws_profile, args.aws_region)
