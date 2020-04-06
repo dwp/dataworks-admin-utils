@@ -45,10 +45,17 @@ def get_arguments():
         help="List of additional AWS profile IDs to use to check for AMI usage in other accounts, i.e. accounts with which the AMI is shared",
     )
     parser.add_argument(
-        "--dry-run", default=True, help="Set to False to perform deletion"
+        "--dry-run", help="Set to False to perform deletion", required=True,
     )
 
-    return parser.parse_args()
+    args = parser.parse_args()
+    args.dry_run = parse_dry_run_value(args.dry_run)
+
+    return args
+
+
+def parse_dry_run_value(argument):
+    return argument.lower() != "false"
 
 
 def get_ec2_client(aws_profile, aws_region):
@@ -189,7 +196,9 @@ def delete_ami(ec2_client, ami_id, dry_run):
 
 
 def main():
+
     args = get_arguments()
+
     if args.aws_profile_list is None:
         args.aws_profile_list = []
     main_client = get_ec2_client(args.aws_profile, args.aws_region)
