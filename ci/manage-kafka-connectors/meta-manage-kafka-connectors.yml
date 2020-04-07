@@ -60,12 +60,12 @@ meta-manage-kafka-connector:
                   AWS_DEFAULT_PROFILE: ci
                   AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
                   AWS_CONFIG_FILE: .aws/config
-                  DESIRED_COUNT = $(cat ../terraform-output-ingest/outputs.json | jq -r '.kafka_to_hbase_consumer.value.desired_count')
                 run:
                   path: sh
                   args:
                     - -exc
                     - |
+                      DESIRED_COUNT = $(cat ../terraform-output-ingest/outputs.json | jq -r '.kafka_to_hbase_consumer.value.desired_count')
                       TASK_ARN=$(aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service-name ${ECS_SERVICE} --desired-count ${DESIRED_COUNT} | jq -r .taskArns[0])
                       aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${ECS_SERVICE} --desired-count ${DESIRED_COUNT}
                 inputs:
