@@ -23,9 +23,7 @@ meta-manage-kafka-connector:
               aws --region=eu-west-2 ecs stop-task --cluster ${ECS_CLUSTER} --task ${TASK_ARN}
         inputs:
           - name: .aws
-
-    plan:
-        scale-kafka-connector:
+        scale-down-kafka-connector:
               task: scale-kafka-connector
               config:
                 platform: linux
@@ -39,7 +37,30 @@ meta-manage-kafka-connector:
                   AWS_DEFAULT_PROFILE: ci
                   AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
                   AWS_CONFIG_FILE: .aws/config
-                  DESIRED_COUNT = $(cat ../terraform-output-ingest/outputs.json | jq -r '.k2hb_service.value.max_count')
+                run:
+                  path: sh
+                  args:
+                    - -exc
+                    - |
+                      TASK_ARN=$(aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service-name ${ECS_SERVICE} --desired-count 0 | jq -r .taskArns[0])
+                      aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${ECS_SERVICE} --desired-count ${DESIRED_COUNT}
+                inputs:
+                  - name: .aws
+        scale-up-kafka-connector:
+              task: scale-kafka-connector
+              config:
+                platform: linux
+                image_resource:
+                  type: docker-image
+                  source:
+                    repository: ((docker-awscli.repository))
+                    version: ((docker-awscli.version))
+                    tag: ((docker-awscli.version))
+                params:
+                  AWS_DEFAULT_PROFILE: ci
+                  AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
+                  AWS_CONFIG_FILE: .aws/config
+                  DESIRED_COUNT = $(cat ../terraform-output-ingest/outputs.json | jq -r '.kafka_to_hbase_consumer.value.desired_count')
                 run:
                   path: sh
                   args:

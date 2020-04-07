@@ -12,7 +12,6 @@ jobs:
             AWS_ACC: ((aws_account.development))
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
-            DESIRED_COUNT: 0
 
   - name: qa-scale-down-k2hb
     max_in_flight: 1
@@ -27,7 +26,6 @@ jobs:
             AWS_ACC: ((aws_account.qa))
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
-            DESIRED_COUNT: 0
 
   - name: integration-scale-down-k2hb
     max_in_flight: 1
@@ -42,7 +40,6 @@ jobs:
             AWS_ACC: '((aws_account.integration))'
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
-            DESIRED_COUNT: 0
 
   - name: preprod-scale-down-k2hb
     max_in_flight: 1
@@ -57,7 +54,6 @@ jobs:
             AWS_ACC: ((aws_account.preprod))
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
-            DESIRED_COUNT: 0
 
   - name: production-scale-down-k2hb
     max_in_flight: 1
@@ -72,7 +68,6 @@ jobs:
             AWS_ACC: '((aws_account.production))'
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
-            DESIRED_COUNT: 0
 
   - name: development-scale-up-k2hb
     max_in_flight: 1
