@@ -82,7 +82,7 @@ meta:
           AWS_PROFILE_LIST: unset
           AWS_REGION: eu-west-2
           AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
-          LOG_LEVEL: INFO
+          LOG_LEVEL: DEBUG
         run:
           path: sh
           args:
@@ -106,3 +106,4 @@ meta:
         params:
           AWS_PROFILE: ci-management-dev
           AWS_PROFILE_LIST: ci-development ci-qa ci-integration ci-preprod ci-production ci-management
+          AMI_PREFIXES: dw-hardened-ami* dw-general-ami-* dm-untested-hardened-ami-* dw-emr-ami-* TEST-dw-hardened-ami-* pr-dw-hardened-ami-*
