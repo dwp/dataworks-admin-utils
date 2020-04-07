@@ -39,6 +39,7 @@ meta-manage-kafka-connector:
                   AWS_DEFAULT_PROFILE: ci
                   AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
                   AWS_CONFIG_FILE: .aws/config
+                  DESIRED_COUNT = $(cat ../terraform-output-ingest/outputs.json | jq -r '.k2hb_service.value.max_count')
                 run:
                   path: sh
                   args:
