@@ -24,7 +24,7 @@ meta-manage-kafka-connector:
         inputs:
           - name: .aws
         scale-down-kafka-connector:
-              task: scale-kafka-connector
+              task: scale-down-kafka-connector
               config:
                 platform: linux
                 image_resource:
@@ -47,7 +47,7 @@ meta-manage-kafka-connector:
                 inputs:
                   - name: .aws
         scale-up-kafka-connector:
-              task: scale-kafka-connector
+              task: scale-up-kafka-connector
               config:
                 platform: linux
                 image_resource:

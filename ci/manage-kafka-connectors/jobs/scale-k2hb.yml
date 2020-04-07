@@ -6,7 +6,7 @@ jobs:
         config:
           params:
             AWS_ACC: ((aws_account.development))
-      - .: (( inject meta-manage-kafka-connector.plan.scale-kafka-connector ))
+      - .: (( inject meta-manage-kafka-connector.plan.scale-down-kafka-connector ))
         config:
           params:
             AWS_ACC: ((aws_account.development))
@@ -20,7 +20,7 @@ jobs:
         config:
           params:
             AWS_ACC: ((aws_account.qa))
-      - .: (( inject meta-manage-kafka-connector.plan.scale-kafka-connector ))
+      - .: (( inject meta-manage-kafka-connector.plan.scale-down-kafka-connector ))
         config:
           params:
             AWS_ACC: ((aws_account.qa))
@@ -34,7 +34,7 @@ jobs:
         config:
           params:
             AWS_ACC: '((aws_account.integration))'
-      - .: (( inject meta-manage-kafka-connector.plan.scale-kafka-connector ))
+      - .: (( inject meta-manage-kafka-connector.plan.scale-down-kafka-connector ))
         config:
           params:
             AWS_ACC: '((aws_account.integration))'
@@ -48,7 +48,7 @@ jobs:
         config:
           params:
             AWS_ACC: ((aws_account.preprod))
-      - .: (( inject meta-manage-kafka-connector.plan.scale-kafka-connector ))
+      - .: (( inject meta-manage-kafka-connector.plan.scale-down-kafka-connector ))
         config:
           params:
             AWS_ACC: ((aws_account.preprod))
@@ -62,7 +62,7 @@ jobs:
         config:
           params:
             AWS_ACC: '((aws_account.production))'
-      - .: (( inject meta-manage-kafka-connector.plan.scale-kafka-connector ))
+      - .: (( inject meta-manage-kafka-connector.plan.scale-down-kafka-connector ))
         config:
           params:
             AWS_ACC: '((aws_account.production))'
@@ -76,7 +76,7 @@ jobs:
         config:
           params:
             AWS_ACC: ((aws_account.development))
-      - .: (( inject meta-manage-kafka-connector.plan.scale-kafka-connector ))
+      - .: (( inject meta-manage-kafka-connector.plan.scale-up-kafka-connector ))
       - .: (( inject meta.plan.terraform-output-ingest ))
         config:
           params:
@@ -91,7 +91,7 @@ jobs:
         config:
           params:
             AWS_ACC: ((aws_account.qa))
-      - .: (( inject meta-manage-kafka-connector.plan.scale-kafka-connector ))
+      - .: (( inject meta-manage-kafka-connector.plan.scale-up-kafka-connector ))
       - .: (( inject meta.plan.terraform-output-ingest ))
         config:
           params:
@@ -106,7 +106,7 @@ jobs:
         config:
           params:
             AWS_ACC: '((aws_account.integration))'
-      - .: (( inject meta-manage-kafka-connector.plan.scale-kafka-connector ))
+      - .: (( inject meta-manage-kafka-connector.plan.scale-up-kafka-connector ))
       - .: (( inject meta.plan.terraform-output-ingest ))
         config:
           params:
@@ -121,7 +121,7 @@ jobs:
         config:
           params:
             AWS_ACC: ((aws_account.preprod))
-      - .: (( inject meta-manage-kafka-connector.plan.scale-kafka-connector ))
+      - .: (( inject meta-manage-kafka-connector.plan.scale-up-kafka-connector ))
       - .: (( inject meta.plan.terraform-output-ingest ))
         config:
           params:
@@ -136,7 +136,7 @@ jobs:
         config:
           params:
             AWS_ACC: '((aws_account.production))'
-      - .: (( inject meta-manage-kafka-connector.plan.scale-kafka-connector ))
+      - .: (( inject meta-manage-kafka-connector.plan.scale-up-kafka-connector ))
       - .: (( inject meta.plan.terraform-output-ingest ))
         config:
           params:
