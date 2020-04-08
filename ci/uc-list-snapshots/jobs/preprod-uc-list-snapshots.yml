@@ -16,15 +16,16 @@ jobs:
     config:
       params:
         AWS_ACC: ((aws_account.preprod))
-  - .: (( inject meta.plan.terraform-output-internal-compute ))
-    params:
-      TF_WORKSPACE: 'preprod'
-  - .: (( inject meta.plan.terraform-output-ingest ))
-    params:
-      TF_WORKSPACE: 'preprod'
-  - .: (( inject meta.plan.terraform-output-sdx ))
-    params:
-      TF_WORKSPACE: 'preprod'
+  - aggregate:
+    - .: (( inject meta.plan.terraform-output-internal-compute ))
+      params:
+        TF_WORKSPACE: 'preprod'
+    - .: (( inject meta.plan.terraform-output-ingest ))
+      params:
+        TF_WORKSPACE: 'preprod'
+    - .: (( inject meta.plan.terraform-output-sdx ))
+      params:
+        TF_WORKSPACE: 'preprod'
   - .: (( inject meta-uc-list-snapshots.plan.uc-list-snapshots ))
     config:
       params:
