@@ -65,8 +65,8 @@ meta-manage-kafka-connector:
           args:
             - -exc
             - |
-              DESIRED_COUNT = $(cat ../terraform-output-ingest/outputs.json | jq -r '.kafka_to_hbase_consumer.value.desired_count')
-              TASK_ARN=$(aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service-name ${ECS_SERVICE} --desired-count ${DESIRED_COUNT} | jq -r .taskArns[0])
+              DESIRED_COUNT=$(cat terraform-output-ingest/outputs.json | jq -r '.kafka_to_hbase_consumer.value[0].desired_count')
               aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${ECS_SERVICE} --desired-count ${DESIRED_COUNT}
         inputs:
           - name: .aws
+          - name: terraform-output-ingest
