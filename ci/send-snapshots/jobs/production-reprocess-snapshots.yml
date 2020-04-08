@@ -1,9 +1,9 @@
 jobs:
-- name: qa-send-snapshots
+- name: production-reprocess-snapshots
   max_in_flight: 1
   plan:
   - put: meta
-    resource: meta-qa
+    resource: meta-production
   - get: aws-ingestion
     trigger: false
   - get: aws-internal-compute
@@ -15,18 +15,22 @@ jobs:
   - .: (( inject meta.plan.create-aws-profiles ))
     config:
       params:
-        AWS_ACC: ((aws_account.qa))
+        AWS_ACC: '((aws_account.production))'
   - aggregate:
     - .: (( inject meta.plan.terraform-output-internal-compute ))
       params:
-        TF_WORKSPACE: 'qa'
+        TF_WORKSPACE: 'production'
     - .: (( inject meta.plan.terraform-output-ingest ))
       params:
-        TF_WORKSPACE: 'qa'
+        TF_WORKSPACE: 'production'
     - .: (( inject meta.plan.terraform-output-sdx ))
       params:
-        TF_WORKSPACE: 'qa'
+        TF_WORKSPACE: 'production'
   - .: (( inject meta-send-snapshots.plan.send-snapshots ))
     config:
       params:
-        AWS_ACC: ((aws_account.qa))
+        AWS_ACC: '((aws_account.production))'
+        SEND_SNAPSHOTS_DATE_OVERRIDE: '2020-04-05'
+        SEND_SNAPSHOTS_TOPICS_OVERRIDE: 'db.agent-core.agentToDo'
+        SEND_SNAPSHOTS_CORRELATION_ID_OVERRIDE: '83d6cf3a-c262-58dd-b62d-983970da0ed9'
+        SEND_SNAPSHOTS_REPROCESS_FILES_OVERRIDE: 'true'
