@@ -32,5 +32,3 @@ jobs:
         AWS_ACC: '((aws_account.production))'
         SEND_SNAPSHOTS_DATE_OVERRIDE: '2020-04-05'
         SEND_SNAPSHOTS_TOPICS_OVERRIDE: 'db.agent-core.agentToDo'
-        SEND_SNAPSHOTS_CORRELATION_ID_OVERRIDE: '83d6cf3a-c262-58dd-b62d-983970da0ed9'
-        SEND_SNAPSHOTS_REPROCESS_FILES_OVERRIDE: 'false'
