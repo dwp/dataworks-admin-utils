@@ -30,4 +30,3 @@ jobs:
     config:
       params:
         AWS_ACC: '((aws_account.production))'
-        GENERATE_SNAPSHOTS_TOPICS_OVERRIDE: 'db.agent-core.agentToDo'
