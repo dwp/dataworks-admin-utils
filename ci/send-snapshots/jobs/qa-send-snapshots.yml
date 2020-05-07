@@ -30,4 +30,3 @@ jobs:
     config:
       params:
         AWS_ACC: ((aws_account.qa))
-        SEND_SNAPSHOTS_TOPICS_OVERRIDE: 'ALL'
