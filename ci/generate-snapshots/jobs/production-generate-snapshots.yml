@@ -12,6 +12,8 @@ jobs:
     trigger: false
   - get: aws-sdx
     trigger: false
+  - get: 6am-sunday
+    trigger: true
   - .: (( inject meta.plan.create-aws-profiles ))
     config:
       params:
@@ -30,3 +32,5 @@ jobs:
     config:
       params:
         AWS_ACC: '((aws_account.production))'
+        GENERATE_SNAPSHOTS_TOPICS_OVERRIDE: 'ALL'
+        GENERATE_SNAPSHOTS_TRIGGER_SNAPSHOT_SENDER_OVERRIDE: true
