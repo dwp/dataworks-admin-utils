@@ -1,0 +1,8 @@
+resources:
+- name: 6am-sunday
+  type: time
+  source:
+    start: 06:00 AM
+    stop: 07:00 AM
+    days: [Sunday]
+    location: Europe/London
