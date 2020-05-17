@@ -1,8 +1,8 @@
 resources:
-- name: 6am-sunday
+- name: 4am-monday
   type: time
   source:
-    start: 06:00 AM
-    stop: 07:00 AM
-    days: [Sunday]
+    start: 04:00 AM
+    stop: 05:00 AM
+    days: [Monday]
     location: Europe/London
