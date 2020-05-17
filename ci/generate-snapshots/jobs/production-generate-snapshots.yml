@@ -12,7 +12,7 @@ jobs:
     trigger: false
   - get: aws-sdx
     trigger: false
-  - get: 6am-sunday
+  - get: 4am-monday
     trigger: true
   - .: (( inject meta.plan.create-aws-profiles ))
     config:
