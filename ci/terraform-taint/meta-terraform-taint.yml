@@ -21,10 +21,10 @@ meta-terraform-taint:
           RESOURCE_NAMES: "unset unset"
         run:
           path: sh
+          dir: tfrepo
           args:
             - -exc
             - |
-              cd tfrepo
               terraform workspace show
               terraform init
               for NAME in ${RESOURCE_NAMES}; do
