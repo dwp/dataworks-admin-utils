@@ -1,0 +1,37 @@
+meta-terraform-taint:
+  plan:
+    terraform-taint:
+      task: terraform-taint
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((terraform.repository))
+            version: ((terraform12.version))
+            tag: ((terraform12.version))
+        inputs:
+          - name: tfrepo
+        params:
+          TF_CLI_ARGS_plan: -lock-timeout=300s
+          TF_INPUT: "false"
+          TF_VAR_slack_webhook_url: ((slack.webhook_url))
+          AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
+          AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
+          RESOURCE_NAMES: "unset unset"
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              cd tfrepo
+              terraform workspace show
+              terraform init
+              for NAME in ${RESOURCE_NAMES}; do
+                #
+                #  This is dangerous. Taint command should always be commented out in the repo.
+                #  To use, uncomment and aviator in. Remember to aviator in the commented out version back after.
+                #
+                terraform state show ${NAME}
+                # terraform taint ${NAME}
+              done
