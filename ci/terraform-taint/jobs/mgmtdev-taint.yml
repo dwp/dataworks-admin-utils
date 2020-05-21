@@ -1,0 +1,19 @@
+jobs:
+  - name: management-dev-terraform-taint
+    max_in_flight: 1
+    plan:
+      - aggregate:
+        - get: aws-internet-egress
+          trigger: false
+      - .: (( inject meta.plan.create-aws-profiles ))
+        config:
+          params:
+            AWS_ACC: ((aws_account.management-dev))
+      - aggregate:
+        - .: (( inject meta-terraform-taint.plan.terraform-taint ))
+          input_mapping:
+            tfrepo: aws-internet-egress
+          config:
+            params:
+              TF_WORKSPACE: 'default'
+              RESOURCE_ADDRESS_LIST: "aws_ecs_service.container_internet_proxy"

@@ -132,3 +132,20 @@ You can also pause or unpause the pipeline:
 
 * `make pause-ami-cleanup-pipeline`
 * `make unpause-ami-cleanup-pipeline`
+
+### Pipeline: terraform-taint
+
+A utility to taint Terraform resources. Considering the danger the jobs are disabled in the code by commenting out the `taint` command. The `state show` command that precedes it allows you to test the resource address.
+
+To use:
+1. Add the Terraform repo that contains TF resource to be tainted as a Concourse resource in `ci/terraform-taint/resources-terraform-taint`.
+1. Modify the job for the given environment, TF repo and TF resource(s):
+    1. In the appropriate file under `ci/terraform-taint/jobs`,
+    1. modify resource reference in `get` step;
+    1. modify `input_mapping` to match the resource reference above;
+    1. modify `TF_WORKSPACE` value;
+    1. put a space-separated list of TF resource addresses into `RESOURCE_ADDRESS_LIST` variable.
+1. Aviator and run, verify that `state show` output lists the expected resources.
+1. Uncomment the line with `taint` command.
+1. Aviator and run.
+1. When done, reset to HEAD of master branch and aviator in so that `taint` command is commented out in Concourse.
