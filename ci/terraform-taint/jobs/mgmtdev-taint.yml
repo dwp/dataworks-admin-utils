@@ -13,4 +13,5 @@ jobs:
           tfrepo: aws-internet-egress
         config:
           params:
+            TF_WORKSPACE: 'default'
             RESOURCE_NAMES: "aws_ecs_service.container_internet_proxy"

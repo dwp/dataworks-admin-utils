@@ -142,6 +142,7 @@ To use:
 1. Modify the job for the given environment, TF repo and TF resource(s):
     1. In the appropriate file under `ci/terraform-taint/jobs`,
     1. modify resource reference in `get` step;
+    1. modify `TF_WORKSPACE` value;
     1. put space-separated list of TF resources into `RESOURCE_NAMES` variable
 1. Aviator and run, verify that `state show` output lists the expected resources.
 1. Uncomment the line with `taint` command.
