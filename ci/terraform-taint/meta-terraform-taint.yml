@@ -2,6 +2,7 @@ meta-terraform-taint:
   plan:
     terraform-taint:
       task: terraform-taint
+      attempts: 3
       config:
         platform: linux
         image_resource:

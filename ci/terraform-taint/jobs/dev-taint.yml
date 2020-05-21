@@ -2,25 +2,28 @@ jobs:
   - name: development-terraform-taint
     max_in_flight: 1
     plan:
-      - get: aws-ingestion
-        trigger: false
-      - get: aws-sdx
-        trigger: false
+      - aggregate:
+        - get: aws-ingestion
+          trigger: false
+        - get: aws-sdx
+          trigger: false
       - .: (( inject meta.plan.create-aws-profiles ))
         config:
           params:
             AWS_ACC: ((aws_account.development))
-      - .: (( inject meta-terraform-taint.plan.terraform-taint ))
-        input_mapping:
-          tfrepo: aws-ingestion
-        config:
-          params:
-            TF_WORKSPACE: 'default'
-            RESOURCE_ADDRESS_LIST: "aws_ecs_service.kafka_to_hbase_consumer[0] aws_ecs_service.stub_ucfs_kafka_to_s3[0]"
-      - .: (( inject meta-terraform-taint.plan.terraform-taint ))
-        input_mapping:
-          tfrepo: aws-sdx
-        config:
-          params:
-            TF_WORKSPACE: 'default'
-            RESOURCE_ADDRESS_LIST: "aws_ecs_service.stub_nifi[0]"
+      - aggregate:
+        - .: (( inject meta-terraform-taint.plan.terraform-taint ))
+          input_mapping:
+            tfrepo: aws-ingestion
+          config:
+            params:
+              TF_WORKSPACE: 'default'
+              RESOURCE_ADDRESS_LIST: "aws_ecs_service.kafka_to_hbase_consumer[0] aws_ecs_service.stub_ucfs_kafka_to_s3[0]"
+        - .: (( inject meta-terraform-taint.plan.terraform-taint ))
+          input_mapping:
+            tfrepo: aws-sdx
+          config:
+            params:
+              TF_WORKSPACE: 'default'
+              RESOURCE_ADDRESS_LIST: "aws_ecs_service.stub_nifi[0]"
+
