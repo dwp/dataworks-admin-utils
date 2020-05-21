@@ -18,7 +18,7 @@ meta-terraform-taint:
           TF_VAR_slack_webhook_url: ((slack.webhook_url))
           AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
           AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
-          RESOURCE_NAMES: "unset unset"
+          RESOURCE_ADDRESS_LIST: "unset unset"
         run:
           path: sh
           dir: tfrepo
@@ -27,11 +27,11 @@ meta-terraform-taint:
             - |
               terraform workspace show
               terraform init
-              for NAME in ${RESOURCE_NAMES}; do
+              for RESOURCE_ADDRESS in ${RESOURCE_ADDRESS_LIST}; do
                 #
                 #  This is dangerous. Taint command should always be commented out in the repo.
                 #  To use, uncomment and aviator in. Remember to aviator in the commented out version back after.
                 #
-                terraform state show ${NAME}
-                # terraform taint ${NAME}
+                terraform state show ${RESOURCE_ADDRESS}
+                # terraform taint ${RESOURCE_ADDRESS}
               done

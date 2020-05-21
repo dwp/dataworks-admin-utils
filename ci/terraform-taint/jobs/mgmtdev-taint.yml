@@ -14,4 +14,4 @@ jobs:
         config:
           params:
             TF_WORKSPACE: 'default'
-            RESOURCE_NAMES: "aws_ecs_service.container_internet_proxy"
+            RESOURCE_ADDRESS_LIST: "aws_ecs_service.container_internet_proxy"
