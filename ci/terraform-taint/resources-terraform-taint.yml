@@ -5,7 +5,7 @@ resources:
       branch: master
       private_key: ((svc-dip.private_key))
       uri: git@github.ucds.io:dip/aws-ingestion.git
-    check_every: 720h
+    check_every: 15m
     webhook_token: ((ucfs-github.webhook-token))
 
   - name: aws-sdx
@@ -14,7 +14,7 @@ resources:
       branch: master
       private_key: ((svc-dip.private_key))
       uri: git@github.ucds.io:dip/aws-sdx.git
-    check_every: 720h
+    check_every: 15m
     webhook_token: ((ucfs-github.webhook-token))
 
   - name: aws-internet-egress
@@ -23,5 +23,5 @@ resources:
       branch: master
       private_key: ((svc-dip.private_key))
       uri: git@github.ucds.io:dip/aws-internet-egress.git
-    check_every: 720h
+    check_every: 15m
     webhook_token: ((ucfs-github.webhook-token))

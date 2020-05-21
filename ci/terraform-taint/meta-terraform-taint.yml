@@ -15,13 +15,12 @@ meta-terraform-taint:
         params:
           TF_CLI_ARGS_plan: -lock-timeout=300s
           TF_INPUT: "false"
-          TF_VAR_slack_webhook_url: ((slack.webhook_url))
           AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
           AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
           RESOURCE_ADDRESS_LIST: "unset unset"
         run:
-          path: sh
           dir: tfrepo
+          path: sh
           args:
             - -exc
             - |
