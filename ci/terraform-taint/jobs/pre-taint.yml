@@ -18,12 +18,4 @@ jobs:
           config:
             params:
               TF_WORKSPACE: 'preprod'
-              RESOURCE_ADDRESS_LIST: "aws_ecs_service.kafka_to_hbase_consumer[0] aws_ecs_service.stub_ucfs_kafka_to_s3[0]"
-        - .: (( inject meta-terraform-taint.plan.terraform-taint ))
-          input_mapping:
-            tfrepo: aws-sdx
-          config:
-            params:
-              TF_WORKSPACE: 'preprod'
-              RESOURCE_ADDRESS_LIST: "aws_ecs_service.stub_nifi[0]"
-
+              RESOURCE_ADDRESS_LIST: "aws_ecs_service.kafka_to_hbase_consumer[0]"
