@@ -79,6 +79,5 @@ meta-uc-data-load:
             done
         inputs:
         - name: .aws
-        - name: meta
         - name: terraform-output-ingest
         - name: terraform-output-internal-compute
