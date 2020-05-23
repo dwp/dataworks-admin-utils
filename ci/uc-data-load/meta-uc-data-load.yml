@@ -36,3 +36,48 @@ meta-uc-data-load:
           - name: terraform-output-ingest
           - name: terraform-output-internal-compute
           - name: terraform-output-sdx
+
+    clear-manifest:
+      task: clear-manifest
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((docker-awscli.repository))
+            version: ((docker-awscli.version))
+            tag: ((docker-awscli.version))
+        params:
+          AWS_DEFAULT_PROFILE: ci
+          AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
+          AWS_CONFIG_FILE: .aws/config
+        run:
+          path: sh
+          args:
+          - -exc
+          - |
+            S3_MANIFEST_BUCKET=$(cat terraform-output-ingest/outputs.json | jq -r '.s3_buckets.value.input_bucket')
+            S3_MANIFEST_PREFIX=$(cat terraform-output-internal-compute/outputs.json | jq -r '.manifest_s3_prefixes.value.import')
+
+            S3_LOCATION="s3://${S3_MANIFEST_BUCKET}/${S3_MANIFEST_PREFIX}/" 
+            TIMEOUT=120
+            
+            aws s3 rm "${S3_LOCATION}" --recursive
+
+            TIME_TAKEN=10
+            while true; do
+                if [[ ${TIME_TAKEN} > ${TIMEOUT} ]]; then
+                    break
+                fi
+
+                if [[ -z $(aws s3 ls "${S3_LOCATION}") ]]; then
+                    break
+                fi
+
+                TIME_TAKEN=$((TIME_TAKEN + 1))
+                sleep 1
+            done
+        inputs:
+        - name: .aws
+        - name: terraform-output-ingest
+        - name: terraform-output-internal-compute
