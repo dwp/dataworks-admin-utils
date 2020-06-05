@@ -30,5 +30,5 @@ jobs:
     config:
       params:
         AWS_ACC: '((aws_account.production))'
-        SEND_SNAPSHOTS_DATE_OVERRIDE: '2020-05-08'
+        SEND_SNAPSHOTS_DATE_OVERRIDE: '2020-06-02'
         SEND_SNAPSHOTS_TOPICS_OVERRIDE: 'ALL'
