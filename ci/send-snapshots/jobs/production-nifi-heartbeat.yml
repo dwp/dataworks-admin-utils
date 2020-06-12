@@ -4,7 +4,7 @@ resources:
     source: {interval: 60m}
 
 jobs:
-- name: production-nifi-heart-beat
+- name: production-nifi-heartbeat
   max_in_flight: 1
   plan:
   - put: meta
@@ -37,6 +37,6 @@ jobs:
     config:
       params:
         AWS_ACC: '((aws_account.production))'
-        SEND_SNAPSHOTS_DATE_OVERRIDE: 'NIFI_HEART_BEAT'
-        SEND_SNAPSHOTS_TOPICS_OVERRIDE: 'ALL'
+        SEND_SNAPSHOTS_DATE_OVERRIDE: 'NIFI_HEARTBEAT'
+        SEND_SNAPSHOTS_TOPICS_OVERRIDE: 'db.nifi-heartbeat.production'
         SEND_SNAPSHOTS_REPROCESS_FILES_OVERRIDE: 'true'
