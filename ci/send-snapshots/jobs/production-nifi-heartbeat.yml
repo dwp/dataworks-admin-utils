@@ -18,7 +18,7 @@ jobs:
   - get: aws-sdx
     trigger: false
   - get: every-60-minutes
-    trigger: true
+    trigger: false
   - .: (( inject meta.plan.create-aws-profiles ))
     config:
       params:
