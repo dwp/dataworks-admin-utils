@@ -1,5 +1,5 @@
 resources:
-  - name: time-interval
+  - name: every-60-minutes
     type: time
     source: {interval: 60m}
 
@@ -17,7 +17,7 @@ jobs:
     trigger: false
   - get: aws-sdx
     trigger: false
-  - get: time-interval
+  - get: every-60-minutes
     trigger: true
   - .: (( inject meta.plan.create-aws-profiles ))
     config:
