@@ -1,7 +1,7 @@
 resources:
   - name: time-interval
     type: time
-    source: {interval: 1h}
+    source: {interval: 60m}
 
 jobs:
 - name: production-send-snapshots
