@@ -1,0 +1,42 @@
+resources:
+  - name: every-60-minutes
+    type: time
+    source: {interval: 60m}
+
+jobs:
+- name: production-nifi-heartbeat
+  max_in_flight: 1
+  plan:
+  - put: meta
+    resource: meta-production
+  - get: aws-ingestion
+    trigger: false
+  - get: aws-internal-compute
+    trigger: false
+  - get: aws-dataworks-e2e-framework
+    trigger: false
+  - get: aws-sdx
+    trigger: false
+  - get: every-60-minutes
+    trigger: false
+  - .: (( inject meta.plan.create-aws-profiles ))
+    config:
+      params:
+        AWS_ACC: '((aws_account.production))'
+  - aggregate:
+    - .: (( inject meta.plan.terraform-output-internal-compute ))
+      params:
+        TF_WORKSPACE: 'production'
+    - .: (( inject meta.plan.terraform-output-ingest ))
+      params:
+        TF_WORKSPACE: 'production'
+    - .: (( inject meta.plan.terraform-output-sdx ))
+      params:
+        TF_WORKSPACE: 'production'
+  - .: (( inject meta-send-snapshots.plan.send-snapshots ))
+    config:
+      params:
+        AWS_ACC: '((aws_account.production))'
+        SEND_SNAPSHOTS_DATE_OVERRIDE: 'NIFI_HEARTBEAT'
+        SEND_SNAPSHOTS_TOPICS_OVERRIDE: 'db.nifi-heartbeat.production'
+        SEND_SNAPSHOTS_REPROCESS_FILES_OVERRIDE: 'true'

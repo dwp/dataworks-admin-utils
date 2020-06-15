@@ -6,3 +6,6 @@ groups:
   - preprod-send-snapshots
   - production-send-snapshots
   - production-reprocess-snapshots
+- name: nifi-heartbeat
+  jobs:
+    - production-nifi-heartbeat
