@@ -93,7 +93,7 @@ You can also pause or unpause the pipeline:
 
 The following overrides can be passed through as config params from the environment jobs to the generate snapshots task in the pipelines:
 
-* `GENERATE_SNAPSHOTS_TOPICS_OVERRIDE` -> a string to denote the specific topics/collections to be exported from HBase in to the generated snapshots, can be either "ALL" for the full default topic list, a comma seperated list of full Kafka topic names representing the desired collections (i.e. `db.core.toDo,db.agentCore.agentToDo`) or if not passed in it defaults to generated topic names each run.
+* `GENERATE_SNAPSHOTS_TOPICS_OVERRIDE` -> a string to denote the specific topics/collections to be exported from HBase in to the generated snapshots. Can be either "ALL" for the full default topic list, a comma separated list of full Kafka topic names representing the desired collections (i.e. `db.core.aaa,db.agentCore.bbbb`) or if not passed in it defaults to the job name.
 * `SNAPSHOT_TYPE` -> either `full` or `incremental` to denote which type of snapshots to create - there are specific jobs for each scenario per environment so it is recommended not to edit this.
 * `GENERATE_SNAPSHOTS_START_TIME_OVERRIDE` -> if snapshot type passed in as "incremental" this can be used to provide the start time cut off for records to include in the incremental snapshot - must be a valid date in the format `%Y-%m-%dT%H:%M:%S.%f` and will default to midnight yesterday if not passed in.
 * `GENERATE_SNAPSHOTS_END_TIME_OVERRIDE` -> if snapshot type passed in as "incremental" this can be used to provide the end time cut off for records to include in the incremental snapshot - must be a valid date in the format `%Y-%m-%dT%H:%M:%S.%f` and will default to midnight today if not passed in.
@@ -116,7 +116,7 @@ You can also pause or unpause the pipeline:
 The following overrides can be passed through as config params from the environment jobs to the send snapshots task in the pipelines:
 
 * `SEND_SNAPSHOTS_DATE_OVERRIDE` -> a string for sending snapshots from a specific date folder in S3, must be in the format "YYYY-MM-DD" and will default to today's date if not overridden.
-* `SEND_SNAPSHOTS_TOPICS_OVERRIDE` -> a string to denote the specific topics/collections to be sent to Crown, can be either "ALL" for the full default topic list, a comma seperated list of full Kafka topic names representing the desired collections (i.e. `db.core.toDo,db.agentCore.agentToDo`) or if not passed in it defaults to generated topic names each run.
+* `SEND_SNAPSHOTS_TOPICS_OVERRIDE` -> a string to denote the specific topics/collections to be sent to Crown. Can be either "ALL" for the full default topic list, a comma separated list of full Kafka topic names representing the desired collections (i.e. `db.core.aaa,db.agentCore.bbbb`) or if not passed in it defaults to the job name.
 * `SEND_SNAPSHOTS_REPROCESS_FILES_OVERRIDE` -> this flag sets whether when Snapshot Sender sends a file, it will error if it already exists. There are specific jobs to set this so should not be changed on standard ones.
 
 ### Pipeline: uc-list-snapshots
