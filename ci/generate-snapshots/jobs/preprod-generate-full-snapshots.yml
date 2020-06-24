@@ -1,9 +1,9 @@
 jobs:
-- name: development-generate-snapshots
+- name: preprod-generate-full-snapshots
   max_in_flight: 1
   plan:
   - put: meta
-    resource: meta-development
+    resource: meta-preprod
   - get: aws-ingestion
     trigger: false
   - get: aws-dataworks-e2e-framework
@@ -15,12 +15,19 @@ jobs:
   - .: (( inject meta.plan.create-aws-profiles ))
     config:
       params:
-        AWS_ACC: ((aws_account.development))
+        AWS_ACC: ((aws_account.preprod))
   - aggregate:
-    - .: (( inject meta.plan.terraform-output-ingest ))
     - .: (( inject meta.plan.terraform-output-internal-compute ))
-    - .: (( inject meta.plan.terraform-output-sdx))
+      params:
+        TF_WORKSPACE: 'preprod'
+    - .: (( inject meta.plan.terraform-output-ingest ))
+      params:
+        TF_WORKSPACE: 'preprod'
+    - .: (( inject meta.plan.terraform-output-sdx ))
+      params:
+        TF_WORKSPACE: 'preprod'
   - .: (( inject meta-generate-snapshots.plan.generate-snapshots ))
     config:
       params:
-        AWS_ACC: ((aws_account.development))
+        AWS_ACC: ((aws_account.preprod))
+        SNAPSHOT_TYPE: full

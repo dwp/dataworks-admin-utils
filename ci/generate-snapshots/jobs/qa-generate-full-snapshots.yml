@@ -1,5 +1,5 @@
 jobs:
-- name: qa-generate-snapshots
+- name: qa-generate-full-snapshots
   max_in_flight: 1
   plan:
   - put: meta
@@ -30,3 +30,4 @@ jobs:
     config:
       params:
         AWS_ACC: ((aws_account.qa))
+        SNAPSHOT_TYPE: full

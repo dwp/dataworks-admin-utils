@@ -15,13 +15,13 @@ meta-generate-snapshots:
           AWS_SHARED_CREDENTIALS_FILE: ../../.aws/credentials
           AWS_CONFIG_FILE: ../../.aws/config
           E2E_TEST_TIMEOUT: 300
-          E2E_FEATURE_TAG_FILTER: '@admin-generate-snapshots'
         run:
           dir: aws-dataworks-e2e-framework
           path: sh
           args:
             - -exc
             - |
+              export E2E_FEATURE_TAG_FILTER="@admin-generate-${SNAPSHOT_TYPE}-snapshots"
               cd src/runners
               ./run-ci.sh \
               "../../../meta" \

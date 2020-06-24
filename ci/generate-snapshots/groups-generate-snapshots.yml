@@ -1,7 +1,13 @@
 groups:
-- name: generate-snapshots
+- name: generate-full-snapshots
   jobs:
-  - development-generate-snapshots
-  - qa-generate-snapshots
-  - preprod-generate-snapshots
-  - production-generate-snapshots
+  - development-generate-full-snapshots
+  - qa-generate-full-snapshots
+  - preprod-generate-full-snapshots
+  - production-generate-full-snapshots
+- name: generate-incremental-snapshots
+  jobs:
+  - development-generate-incremental-snapshots
+  - qa-generate-incremental-snapshots
+  - preprod-generate-incremental-snapshots
+  - production-generate-incremental-snapshots
