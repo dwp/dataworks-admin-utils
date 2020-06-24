@@ -98,7 +98,7 @@ The following overrides can be passed through as config params from the environm
 * `GENERATE_SNAPSHOTS_START_TIME_OVERRIDE` -> if snapshot type passed in as "incremental" this can be used to provide the start time cut off for records to include in the incremental snapshot - must be a valid date in the format `%Y-%m-%dT%H:%M:%S.%f` and will default to midnight yesterday if not passed in.
 * `GENERATE_SNAPSHOTS_END_TIME_OVERRIDE` -> if snapshot type passed in as "incremental" this can be used to provide the end time cut off for records to include in the incremental snapshot - must be a valid date in the format `%Y-%m-%dT%H:%M:%S.%f` and will default to midnight today if not passed in.
 * `GENERATE_SNAPSHOTS_TRIGGER_SNAPSHOT_SENDER_OVERRIDE` -> if passed in as `true` then this will cause the generated snapshots to *also be sent down to Crown by Snapshot Sender* - default is `false`
-* `GENERATE_SNAPSHOTS_REPROCESS_FILES_OVERRIDE` -> this flag sets whether when Snapshot Sender sends file, it will error if they already exists, recommended to be left alone as there are specific jobs with each scenario.
+* `GENERATE_SNAPSHOTS_REPROCESS_FILES_OVERRIDE` -> this flag sets whether when Snapshot Sender sends a file, it will error if it already exists. There are specific jobs to set this so should not be changed on standard ones.
 
 ### Pipeline: send-snapshots
 
@@ -117,7 +117,7 @@ The following overrides can be passed through as config params from the environm
 
 * `SEND_SNAPSHOTS_DATE_OVERRIDE` -> a string for sending snapshots from a specific date folder in S3, must be in the format "YYYY-MM-DD" and will default to today's date if not overridden.
 * `SEND_SNAPSHOTS_TOPICS_OVERRIDE` -> a string to denote the specific topics/collections to be sent to Crown, can be either "ALL" for the full default topic list, a comma seperated list of full Kafka topic names representing the desired collections (i.e. `db.core.toDo,db.agentCore.agentToDo`) or if not passed in it defaults to generated topic names each run.
-* `SEND_SNAPSHOTS_REPROCESS_FILES_OVERRIDE` -> this flag sets whether when Snapshot Sender sends file, it will error if they already exists, recommended to be left alone as there are specific jobs with each scenario.
+* `SEND_SNAPSHOTS_REPROCESS_FILES_OVERRIDE` -> this flag sets whether when Snapshot Sender sends a file, it will error if it already exists. There are specific jobs to set this so should not be changed on standard ones.
 
 ### Pipeline: uc-list-snapshots
 
