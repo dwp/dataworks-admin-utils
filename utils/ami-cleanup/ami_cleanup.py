@@ -70,13 +70,14 @@ def get_deletion_list(aws_profile, aws_region, ami_prefix, keep_min):
     sts_client = get_boto_client("sts", aws_profile, aws_region)
 
     # Filter AMIs returned to only those owned by aws-profile account
-    account_number =  sts_client.get_caller_identity()['Account']
+    account_number = sts_client.get_caller_identity()["Account"]
     try:
         full_list = ec2_client.describe_images(
             Filters=[
                 {"Name": "name", "Values": [ami_prefix]},
-                {"Name": "owner-id", "Values": [account_number]}
-                ])["Images"]
+                {"Name": "owner-id", "Values": [account_number]},
+            ]
+        )["Images"]
     except Exception as e:
         logger.error(f"Failed to get list of AMIs for name prefix {ami_prefix} : {e}")
         raise
@@ -85,13 +86,15 @@ def get_deletion_list(aws_profile, aws_region, ami_prefix, keep_min):
         for ami in sorted_list:
             logger.debug(f"Date: {ami['CreationDate']}, AMI Name: {ami['Name']}")
     if len(sorted_list) > keep_min:
-        del sorted_list[ len(sorted_list) - keep_min : ]
+        del sorted_list[len(sorted_list) - keep_min :]
     else:
         sorted_list = []
     if logger.isEnabledFor(logging.DEBUG):
         logger.debug("Trimmed list:")
         for ami in sorted_list:
-            logger.debug(f"Date: {ami['CreationDate']}, AMI Name: {ami['Name']}, AMI ID: {ami['ImageId']}")
+            logger.debug(
+                f"Date: {ami['CreationDate']}, AMI Name: {ami['Name']}, AMI ID: {ami['ImageId']}"
+            )
     return sorted_list
 
 
@@ -211,7 +214,9 @@ def main():
 
     if args.aws_profile_list is None:
         args.aws_profile_list = []
-    candidate_list = get_deletion_list(args.aws_profile, args.aws_region, args.ami_prefix, args.keep_min)
+    candidate_list = get_deletion_list(
+        args.aws_profile, args.aws_region, args.ami_prefix, args.keep_min
+    )
     aws_profile_list_to_check = [args.aws_profile] + args.aws_profile_list
 
     deletion_list = {}
