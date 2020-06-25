@@ -11,7 +11,7 @@ def main():
 
 
 def prune_function(lambda_client, function):
-    print(f"Pruning '{function['FunctionName']}'.")
+    print(f"Pruning '{function['FunctionName']}'." )
     [remove_version(lambda_client, arn) for arn in old_versions(lambda_client, function)]
 
 
