@@ -31,4 +31,4 @@ jobs:
       params:
         AWS_ACC: '((aws_account.production))'
         ACTION_TAG: '@admin-uc-data-load-with-skip-import-only'
-        UC_DATA_LOAD_USE_ONE_MESSAGE_PER_PATH: 'true'
+        HISTORIC_IMPORTER_USE_ONE_MESSAGE_PER_PATH: 'true'
