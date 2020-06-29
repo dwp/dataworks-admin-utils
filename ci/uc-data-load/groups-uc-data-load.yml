@@ -1,13 +1,16 @@
 groups:
-- name: uc-data-load
+- name: full-run
   jobs:
-  - development-uc-data-load
-  - qa-uc-data-load
-  - preprod-uc-data-load
-  - production-uc-data-load
-- name: uc-data-load-import-only
+  - development
+  - qa
+  - preprod
+  - production
+  - production-skip-records
+- name: import-only
   jobs:
-  - production-uc-data-load-import-only
-- name: uc-data-load-manifest-only
+  - production-import-only
+  - production-import-only-skip-records
+- name: manifest-only
   jobs:
-  - production-uc-data-load-manifest-only
+  - production-manifest-only
+  - production-manifest-only-skip-records

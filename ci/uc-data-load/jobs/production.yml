@@ -1,5 +1,5 @@
 jobs:
-- name: production-uc-data-load
+- name: production
   max_in_flight: 1
   plan:
   - put: meta
