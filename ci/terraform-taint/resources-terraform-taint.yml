@@ -8,12 +8,12 @@ resources:
     check_every: 15m
     webhook_token: ((ucfs-github.webhook-token))
 
-  - name: aws-sdx
+  - name: aws-snapshot-sender
     type: git
     source:
       branch: master
       private_key: ((svc-dip.private_key))
-      uri: git@github.ucds.io:dip/aws-sdx.git
+      uri: git@github.ucds.io:dip/aws-snapshot-sender.git
     check_every: 15m
     webhook_token: ((ucfs-github.webhook-token))
 

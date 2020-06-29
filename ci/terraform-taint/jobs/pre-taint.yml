@@ -5,7 +5,7 @@ jobs:
       - aggregate:
         - get: aws-ingestion
           trigger: false
-        - get: aws-sdx
+        - get: aws-snapshot-sender
           trigger: false
       - .: (( inject meta.plan.create-aws-profiles ))
         config:
