@@ -27,11 +27,11 @@ meta-uc-list-snapshots:
               "../../../meta" \
               "../../../terraform-output-ingest/outputs.json" \
               "../../../terraform-output-internal-compute/outputs.json" \
-              "../../../terraform-output-sdx/outputs.json"
+              "../../../terraform-output-snapshot-sender/outputs.json"
         inputs:
           - name: aws-dataworks-e2e-framework
           - name: .aws
           - name: meta
           - name: terraform-output-ingest
           - name: terraform-output-internal-compute
-          - name: terraform-output-sdx
+          - name: terraform-output-snapshot-sender

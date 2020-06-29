@@ -5,7 +5,7 @@ jobs:
       - aggregate:
         - get: aws-ingestion
           trigger: false
-        - get: aws-sdx
+        - get: aws-snapshot-sender
           trigger: false
       - .: (( inject meta.plan.create-aws-profiles ))
         config:
@@ -21,7 +21,7 @@ jobs:
               RESOURCE_ADDRESS_LIST: "aws_ecs_service.kafka_to_hbase_consumer[0] aws_ecs_service.stub_ucfs_kafka_to_s3[0]"
         - .: (( inject meta-terraform-taint.plan.terraform-taint ))
           input_mapping:
-            tfrepo: aws-sdx
+            tfrepo: aws-snapshot-sender
           config:
             params:
               TF_WORKSPACE: 'qa'

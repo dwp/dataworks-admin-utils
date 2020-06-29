@@ -11,7 +11,7 @@ jobs:
       trigger: false
     - get: aws-dataworks-e2e-framework
       trigger: false
-    - get: aws-sdx
+    - get: aws-snapshot-sender
       trigger: false
   - .: (( inject meta.plan.create-aws-profiles ))
     config:
@@ -20,7 +20,7 @@ jobs:
   - aggregate:
     - .: (( inject meta.plan.terraform-output-ingest ))
     - .: (( inject meta.plan.terraform-output-internal-compute ))
-    - .: (( inject meta.plan.terraform-output-sdx))
+    - .: (( inject meta.plan.terraform-output-snapshot-sender))
   - .: (( inject meta-scale-up-services.plan.scale-up-services ))
     config:
       params:
