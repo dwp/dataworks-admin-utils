@@ -141,6 +141,14 @@ You can also pause or unpause the pipeline:
 * `make pause-uc-data-load-pipeline`
 * `make unpause-uc-data-load-pipeline`
 
+#### Overrides
+
+The following overrides can be passed through as config params from the environment jobs to the uc data load tasks in the pipelines:
+
+* `HISTORIC_IMPORTER_USE_ONE_MESSAGE_PER_PATH` -> a string of "true" will ensure that the prefixes passed from terraform will be split in to one message per comma delimited part of the string when sent to SQS and HDI uses one message per run, else one single message is sent to SQS with the comma delimited fill string in and HDI uses all the paths on one single run.
+* `HISTORIC_IMPORTER_SKIP_EARLIER_THAN_OVERRIDE` -> if passed in, records with a timestamp earlier than this are skipped in the historic import - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
+* `HISTORIC_IMPORTER_SKIP_LATER_THAN_OVERRIDE` -> if passed in, records with a timestamp later than this are skipped in the historic import - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
+
 ### Pipeline: ami-cleanup
 
 A utility to clean up old AMIs. The files for this pipeline are in the ci/ami-cleanup folder in this repo. To update this pipeline in CI, you can run the following make command:

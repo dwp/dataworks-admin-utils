@@ -1,5 +1,5 @@
 jobs:
-- name: development-uc-data-load
+- name: development
   max_in_flight: 1
   plan:
   - put: meta

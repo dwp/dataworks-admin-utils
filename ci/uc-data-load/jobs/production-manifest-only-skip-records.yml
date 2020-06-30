@@ -1,5 +1,5 @@
 jobs:
-- name: production-uc-data-load-manifest-only
+- name: production-manifest-only-skip-records
   max_in_flight: 1
   plan:
   - put: meta
@@ -34,5 +34,5 @@ jobs:
     config:
       params:
         AWS_ACC: '((aws_account.production))'
-        ACTION_TAG: '@admin-uc-data-load-manifest-only'
-        UC_DATA_LOAD_USE_ONE_MESSAGE_PER_PATH: 'true'
+        ACTION_TAG: '@admin-uc-data-load-with-skip-manifest-only'
+        HISTORIC_IMPORTER_USE_ONE_MESSAGE_PER_PATH: 'true'
