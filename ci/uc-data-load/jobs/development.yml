@@ -24,3 +24,4 @@ jobs:
     config:
       params:
         AWS_ACC: ((aws_account.development))
+        ACTION_TAG: '@admin-uc-data-load'
