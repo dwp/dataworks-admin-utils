@@ -55,10 +55,6 @@ update-generate-snapshots-pipeline: ## Update the generate snapshots pipeline
 update-send-snapshots-pipeline: ## Update the send snapshots pipeline
 	aviator -f aviator-send-snapshots.yml
 
-.PHONY: update-uc-list-snapshots-pipeline
-update-uc-list-snapshots-pipeline: ## Update the uc-list-snapshots pipeline
-	aviator -f aviator-uc-list-snapshots.yml
-
 .PHONY: update-ami-cleanup-pipeline
 update-ami-cleanup-pipeline: ## Update the ami-cleanup pipeline
 	aviator -f aviator-ami-cleanup.yml
@@ -95,10 +91,6 @@ pause-generate-snapshots-pipeline: ## Pause the generate snapshots pipeline
 pause-send-snapshots-pipeline: ## Pause the send snapshots pipeline
 	fly --target concourse pause-pipeline --pipeline send-snapshots
 
-.PHONY: pause-uc-list-snapshots-pipeline
-pause-uc-list-snapshots-pipeline: ## Pause the uc-list-snapshots pipeline
-	fly --target concourse pause-pipeline --pipeline uc-list-snapshots
-
 .PHONY: pause-uc-data-load-pipeline
 pause-uc-data-load-pipeline: ## Pause the uc-data-load pipeline
 	fly --target concourse pause-pipeline --pipeline uc-data-load
@@ -134,10 +126,6 @@ unpause-generate-snapshots-pipeline: ## Unpause the generate snapshots pipeline
 .PHONY: unpause-send-snapshots-pipeline
 unpause-send-snapshots-pipeline: ## Unpause the send snapshots pipeline
 	fly --target concourse unpause-pipeline --pipeline send-snapshots
-
-.PHONY: unpause-uc-list-snapshots-pipeline
-unpause-uc-list-snapshots-pipeline: ## Unpause the uc-list-snapshots pipeline
-	fly --target concourse unpause-pipeline --pipeline uc-list-snapshots
 
 .PHONY: unpause-uc-data-load-pipeline
 unpause-uc-data-load-pipeline: ## Unpause the uc-data-load pipeline

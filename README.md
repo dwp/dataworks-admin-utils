@@ -5,16 +5,15 @@ Contains DataWorks administrative utilities
 
 There are multiple admin style pipelines which are released to the CI system:
 
-1. `lambda-cleanup`
-2. `scale-down-services`
-3. `scale-up-services`
-4. `manage-kafka-connectors`
-5. `manage-environments`
-6. `generate-snapshots`
-7. `send-snapshots`
-8. `uc-list-snapshots`
-9. `uc-data-load`
-10. `ami-cleanup`
+0. `lambda-cleanup`
+0. `scale-down-services`
+0. `scale-up-services`
+0. `manage-kafka-connectors`
+0. `manage-environments`
+0. `generate-snapshots`
+0. `send-snapshots`
+0. `uc-data-load`
+0. `ami-cleanup`
 
 ### Installing as a concourse pipeline
 
@@ -119,17 +118,6 @@ The following overrides can be passed through as config params from the environm
 * `SEND_SNAPSHOTS_TOPICS_OVERRIDE` -> a string to denote the specific topics/collections to be sent to Crown. Can be either "ALL" for the full default topic list, a comma separated list of full Kafka topic names representing the desired collections (i.e. `db.core.aaa,db.agentCore.bbbb`) or if not passed in it defaults to the job name.
 * `SEND_SNAPSHOTS_REPROCESS_FILES_OVERRIDE` -> this flag sets whether when Snapshot Sender sends a file, it will error if it already exists. There are specific jobs to set this so should not be changed on standard ones.
 * `SNAPSHOT_SENDER_SCALE_UP_OVERRIDE` -> if the amount of snappy instances needs to be fixed can use this to scale to a specific number, else will be the snappy asg max number
-
-### Pipeline: uc-list-snapshots
-
-This is used to list the files in the current folder set to be ingested by the import process. The files for this pipeline are in the ci/uc-list-snapshots folder in this repo. To update this pipeline in CI, you can run the following make command:
-
-* `make update-uc-list-snapshots-pipeline`
-
-You can also pause or unpause the pipeline:
-
-* `make pause-uc-list-snapshots-pipeline`
-* `make unpause-uc-list-snapshots-pipeline`
 
 ### Pipeline: uc-data-load
 
