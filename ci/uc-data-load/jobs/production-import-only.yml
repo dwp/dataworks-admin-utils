@@ -32,3 +32,4 @@ jobs:
         AWS_ACC: '((aws_account.production))'
         ACTION_TAG: '@admin-uc-data-load-import-only'
         HISTORIC_IMPORTER_USE_ONE_MESSAGE_PER_PATH: 'true'
+        GENERATE_SNAPSHOTS_START_TIME_OVERRIDE: '2020-07-10T07:00:00.000'
