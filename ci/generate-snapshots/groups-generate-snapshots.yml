@@ -13,3 +13,6 @@ groups:
   - integration-generate-incremental-snapshots
   - preprod-generate-incremental-snapshots
   - production-generate-incremental-snapshots
+- name: nightly-generate-and-send
+  jobs:
+  - production-nightly-generate-and-send
