@@ -4,26 +4,31 @@ groups:
   - dev-scale-down-hdi
   - dev-scale-down-htme
   - dev-scale-down-snapshotsender
+  - dev-scale-down-k2hb
   - dev-scale-down-kafka-stub
 - name: scale-down-qa-services
   jobs:
   - qa-scale-down-hdi
   - qa-scale-down-htme
   - qa-scale-down-snapshotsender
+  - qa-scale-down-k2hb
   - qa-scale-down-kafka-stub
 - name: scale-down-integration-services
   jobs:
   - integration-scale-down-hdi
   - integration-scale-down-htme
   - integration-scale-down-snapshotsender
+  - integration-scale-down-k2hb
   - integration-scale-down-kafka-stub
 - name: scale-down-preprod-services
   jobs:
   - preprod-scale-down-hdi
   - preprod-scale-down-htme
   - preprod-scale-down-snapshotsender
+  - preprod-scale-down-k2hb
 - name: scale-down-prod-services
   jobs:
   - prod-scale-down-hdi
   - prod-scale-down-htme
   - prod-scale-down-snapshotsender
+  - prod-scale-down-k2hb
