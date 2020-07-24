@@ -4,7 +4,7 @@ resources:
 - name: daily-at-midnight
   type: time
   source:
-    start: 12:01 AM
-    stop: 12:30 AM
+    start: 09:50 AM
+    stop: 09:59 AM
     location: Europe/London
     

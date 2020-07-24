@@ -5,7 +5,7 @@ jobs:
   - put: meta
     resource: meta-production
   - get: daily-at-midnight
-    triger: true
+    trigger: true
   - get: aws-ingestion
     trigger: false
   - get: aws-dataworks-e2e-framework
@@ -38,7 +38,7 @@ jobs:
       params:
         AWS_ACC: '((aws_account.production))'
         TYPE: 'htme_manifest'
-  - .: (( inject meta-generate-snapshots.plan.clear-manifest))
+  - .: (( inject meta-generate-snapshots.plan.clear-s3-prefix))
     config:
       params:
         AWS_ACC: '((aws_account.production))'
