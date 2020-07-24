@@ -38,10 +38,6 @@ jobs:
       params:
         AWS_ACC: '((aws_account.production))'
         TYPE: 'htme_manifest'
-  - .: (( inject meta-generate-snapshots.plan.clear-s3-prefix))
-    config:
-      params:
-        AWS_ACC: '((aws_account.production))'
   - .: (( inject meta-generate-snapshots.plan.generate-snapshots ))
     config:
       params:

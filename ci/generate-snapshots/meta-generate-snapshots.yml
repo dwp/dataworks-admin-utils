@@ -58,15 +58,17 @@ meta-generate-snapshots:
             if [[ "${TYPE}" == "htme_output" ]]; then
                 S3_BUCKET=$(cat terraform-output-internal-compute/outputs.json | jq -r '.htme_s3_bucket.value.id')
                 S3_PREFIX=$(cat terraform-output-internal-compute/outputs.json | jq -r '.htme_s3_folder.value.id')
+                TODAYS_DATE=$(date '+%Y-%m-%d')
+                S3_PREFIX_FULL="${S3_PREFIX}/${TODAYS_DATE}"
             elif [[ "${TYPE}" == "htme_manifest" ]]; then
                 S3_BUCKET=$(cat terraform-output-ingest/outputs.json | jq -r '.s3_buckets.value.input_bucket')
-                S3_PREFIX=$(cat terraform-output-internal-compute/outputs.json | jq -r '.manifest_s3_prefixes.value.export')
+                S3_PREFIX_FULL=$(cat terraform-output-internal-compute/outputs.json | jq -r '.manifest_s3_prefixes.value.export')
             else
               echo "Invalid type of '${TYPE}'"
               exit 1
             fi
 
-            S3_LOCATION="s3://${S3_BUCKET}/${S3_PREFIX}/" 
+            S3_LOCATION="s3://${S3_BUCKET}/${S3_PREFIX_FULL}/" 
             TIMEOUT=3600
             
             aws s3 rm "${S3_LOCATION}" --recursive
