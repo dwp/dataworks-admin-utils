@@ -1,0 +1,34 @@
+jobs:
+- name: preprod-scale-up-k2hb
+  max_in_flight: 1
+  plan:
+  - aggregate:
+    - put: meta
+      resource: meta-preprod
+    - get: aws-internal-compute
+      trigger: false
+    - get: aws-ingestion
+      trigger: false
+    - get: aws-dataworks-e2e-framework
+      trigger: false
+    - get: aws-snapshot-sender
+      trigger: false
+  - .: (( inject meta.plan.create-aws-profiles ))
+    config:
+      params:
+        AWS_ACC: ((aws_account.preprod))
+  - aggregate:
+    - .: (( inject meta.plan.terraform-output-internal-compute ))
+      params:
+        TF_WORKSPACE: 'preprod'
+    - .: (( inject meta.plan.terraform-output-ingest ))
+      params:
+        TF_WORKSPACE: 'preprod'
+    - .: (( inject meta.plan.terraform-output-snapshot-sender ))
+      params:
+        TF_WORKSPACE: 'preprod'
+  - .: (( inject meta-scale-up-services.plan.scale-up-services ))
+    config:
+      params:
+        AWS_ACC: ((aws_account.preprod))
+        SERVICE_NAME: 'k2hb'
