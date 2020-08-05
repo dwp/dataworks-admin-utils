@@ -3,7 +3,7 @@ image_resource:
   type: docker-image
   source:
     repository: ((dataworks.docker_python_boto_behave_repository))
-    tag: ((dataworks.docker_python_boto_behave_version))
+    tag: 0.0.23
 inputs:
   - name: dataworks-admin-utils
 
