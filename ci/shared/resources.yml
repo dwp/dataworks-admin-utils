@@ -6,7 +6,7 @@ resources:
       api_endpoint: https://((dataworks.enterprise_github_url))/api/v3/
       username: ((dataworks.enterprise_github_username))
       password: ((dataworks-secrets.enterprise_github_pat))
-      uri: https://((dataworks.enterprise_github_url))/aws-ingestion.git
+      uri: https://((dataworks.enterprise_github_url))/dip/aws-ingestion.git
     check_every: 5m
     webhook_token: ((dataworks.concourse_github_webhook_token))
   - name: aws-internal-compute
@@ -16,7 +16,7 @@ resources:
       api_endpoint: https://((dataworks.enterprise_github_url))/api/v3/
       username: ((dataworks.enterprise_github_username))
       password: ((dataworks-secrets.enterprise_github_pat))
-      uri: https://((dataworks.enterprise_github_url))/aws-internal-compute.git
+      uri: https://((dataworks.enterprise_github_url))/dip/aws-internal-compute.git
     check_every: 5m
     webhook_token: ((dataworks.concourse_github_webhook_token))
   - name: aws-snapshot-sender
@@ -26,7 +26,7 @@ resources:
       api_endpoint: https://((dataworks.enterprise_github_url))/api/v3/
       username: ((dataworks.enterprise_github_username))
       password: ((dataworks-secrets.enterprise_github_pat))
-      uri: https://((dataworks.enterprise_github_url))/aws-snapshot-sender.git
+      uri: https://((dataworks.enterprise_github_url))/dip/aws-snapshot-sender.git
     check_every: 5m
     webhook_token: ((dataworks.concourse_github_webhook_token))
   - name: aws-dataworks-e2e-framework
@@ -36,7 +36,7 @@ resources:
       api_endpoint: https://((dataworks.enterprise_github_url))/api/v3/
       username: ((dataworks.enterprise_github_username))
       password: ((dataworks-secrets.enterprise_github_pat))
-      uri: https://((dataworks.enterprise_github_url))/aws-dataworks-e2e-framework.git
+      uri: https://((dataworks.enterprise_github_url))/dip/aws-dataworks-e2e-framework.git
     check_every: 5m
     webhook_token: ((dataworks.concourse_github_webhook_token))
   - name: meta-development
