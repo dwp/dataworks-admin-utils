@@ -2,14 +2,10 @@ jobs:
   - name: development-scale-down-k2hb
     max_in_flight: 1
     plan:
-      - .: (( inject meta.plan.create-aws-profiles ))
-        config:
-          params:
-            AWS_ACC: ((aws_account.development))
       - .: (( inject meta-manage-kafka-connector.plan.scale-down-kafka-connector ))
         config:
           params:
-            AWS_ACC: ((aws_account.development))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
             DESIRED_COUNT: 0
@@ -17,14 +13,10 @@ jobs:
   - name: qa-scale-down-k2hb
     max_in_flight: 1
     plan:
-      - .: (( inject meta.plan.create-aws-profiles ))
-        config:
-          params:
-            AWS_ACC: ((aws_account.qa))
       - .: (( inject meta-manage-kafka-connector.plan.scale-down-kafka-connector ))
         config:
           params:
-            AWS_ACC: ((aws_account.qa))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
             DESIRED_COUNT: 0
@@ -32,14 +24,10 @@ jobs:
   - name: integration-scale-down-k2hb
     max_in_flight: 1
     plan:
-      - .: (( inject meta.plan.create-aws-profiles ))
-        config:
-          params:
-            AWS_ACC: '((aws_account.integration))'
       - .: (( inject meta-manage-kafka-connector.plan.scale-down-kafka-connector ))
         config:
           params:
-            AWS_ACC: '((aws_account.integration))'
+            AWS_ROLE_ARN: "arn:aws:iam::((aws_account.integration)):role/ci"
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
             DESIRED_COUNT: 0
@@ -47,14 +35,10 @@ jobs:
   - name: preprod-scale-down-k2hb
     max_in_flight: 1
     plan:
-      - .: (( inject meta.plan.create-aws-profiles ))
-        config:
-          params:
-            AWS_ACC: ((aws_account.preprod))
       - .: (( inject meta-manage-kafka-connector.plan.scale-down-kafka-connector ))
         config:
           params:
-            AWS_ACC: ((aws_account.preprod))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
             DESIRED_COUNT: 0
@@ -62,14 +46,10 @@ jobs:
   - name: production-scale-down-k2hb
     max_in_flight: 1
     plan:
-      - .: (( inject meta.plan.create-aws-profiles ))
-        config:
-          params:
-            AWS_ACC: '((aws_account.production))'
       - .: (( inject meta-manage-kafka-connector.plan.scale-down-kafka-connector ))
         config:
           params:
-            AWS_ACC: '((aws_account.production))'
+            AWS_ROLE_ARN: "arn:aws:iam::((aws_account.production)):role/ci"
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
             DESIRED_COUNT: 0
@@ -77,31 +57,23 @@ jobs:
   - name: development-scale-up-k2hb
     max_in_flight: 1
     plan:
-      - aggregate:
-        - get: aws-ingestion
-          trigger: false
-      - .: (( inject meta.plan.create-aws-profiles ))
-        config:
-          params:
-            AWS_ACC: ((aws_account.development))
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
       - .: (( inject meta.plan.terraform-output-ingest ))
       - .: (( inject meta-manage-kafka-connector.plan.scale-up-kafka-connector ))
         config:
           params:
-            AWS_ACC: ((aws_account.development))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
 
   - name: qa-scale-up-k2hb
     max_in_flight: 1
     plan:
-      - aggregate:
-        - get: aws-ingestion
-          trigger: false
-      - .: (( inject meta.plan.create-aws-profiles ))
-        config:
-          params:
-            AWS_ACC: ((aws_account.qa))
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
       - .: (( inject meta.plan.terraform-output-ingest ))
         config:
           params:
@@ -109,20 +81,16 @@ jobs:
       - .: (( inject meta-manage-kafka-connector.plan.scale-up-kafka-connector ))
         config:
           params:
-            AWS_ACC: ((aws_account.qa))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
 
   - name: integration-scale-up-k2hb
     max_in_flight: 1
     plan:
-      - aggregate:
-        - get: aws-ingestion
-          trigger: false
-      - .: (( inject meta.plan.create-aws-profiles ))
-        config:
-          params:
-            AWS_ACC: ((aws_account.integration))
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
       - .: (( inject meta.plan.terraform-output-ingest ))
         config:
           params:
@@ -130,20 +98,16 @@ jobs:
       - .: (( inject meta-manage-kafka-connector.plan.scale-up-kafka-connector ))
         config:
           params:
-            AWS_ACC: ((aws_account.integration))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
 
   - name: preprod-scale-up-k2hb
     max_in_flight: 1
     plan:
-      - aggregate:
-        - get: aws-ingestion
-          trigger: false
-      - .: (( inject meta.plan.create-aws-profiles ))
-        config:
-          params:
-            AWS_ACC: ((aws_account.preprod))
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
       - .: (( inject meta.plan.terraform-output-ingest ))
         config:
           params:
@@ -151,20 +115,16 @@ jobs:
       - .: (( inject meta-manage-kafka-connector.plan.scale-up-kafka-connector ))
         config:
           params:
-            AWS_ACC: ((aws_account.preprod))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
 
   - name: production-scale-up-k2hb
     max_in_flight: 1
     plan:
-      - aggregate:
-        - get: aws-ingestion
-          trigger: false
-      - .: (( inject meta.plan.create-aws-profiles ))
-        config:
-          params:
-            AWS_ACC: ((aws_account.production))
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
       - .: (( inject meta.plan.terraform-output-ingest ))
         config:
           params:
@@ -172,6 +132,6 @@ jobs:
       - .: (( inject meta-manage-kafka-connector.plan.scale-up-kafka-connector ))
         config:
           params:
-            AWS_ACC: ((aws_account.production))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer

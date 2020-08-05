@@ -2,22 +2,17 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: ((docker-python-boto-behave.repository))
-    version: ((docker-python-boto-behave.version))
-    tag: ((docker-python-boto-behave.version))
+    repository: ((dataworks.docker_python_boto_behave_repository))
+    tag: ((dataworks.docker_python_boto_behave_version))
 inputs:
   - name: dataworks-admin-utils
-
-params:
-  AWS_ACCESS_KEY_ID:
-  AWS_ACCOUNT_ID:
-  AWS_DEFAULT_REGION:
-  AWS_SECRET_ACCESS_KEY:
 
 run:
   path: sh
   args:
-  - -exc
-  - |
-    ./utils/lambda-cleanup/lambda_prune.py $AWS_ACCOUNT_ID
+    - -exc
+    - |
+      source /assume-role
+      set +x
+      ./utils/lambda-cleanup/lambda_prune.py
   dir: dataworks-admin-utils

@@ -1,17 +1,17 @@
 spruce:
-- base: ci/scale-down-services/meta-scale-down-services.yml
-  prune:
-  - meta
-  merge:
-  - with_in: ci/scale-down-services/
-    regexp: ".*yml"
-  - with_in: ci/scale-down-services/jobs/
-    regexp: ".*yml"
-  - with_in: ci/shared/
-    regexp: ".*yml"
-  to: aviator_pipeline_scale_down_services_pipeline.yml
+  - base: ci/scale-down-services/meta-scale-down-services.yml
+    prune:
+      - meta
+    merge:
+      - with_in: ci/scale-down-services/
+        regexp: ".*yml"
+      - with_in: ci/scale-down-services/jobs/
+        regexp: ".*yml"
+      - with_in: ci/shared/
+        regexp: ".*yml"
+    to: aviator_pipeline_scale_down_services_pipeline.yml
 fly:
   name: scale-down-services
-  target: concourse
+  target: aws-concourse
   config: aviator_pipeline_scale_down_services_pipeline.yml
   expose: true

@@ -1,33 +1,29 @@
 jobs:
-- name: qa-generate-full-snapshots
-  max_in_flight: 1
-  plan:
-  - put: meta
-    resource: meta-qa
-  - get: aws-ingestion
-    trigger: false
-  - get: aws-internal-compute
-    trigger: false
-  - get: aws-dataworks-e2e-framework
-    trigger: false
-  - get: aws-snapshot-sender
-    trigger: false
-  - .: (( inject meta.plan.create-aws-profiles ))
-    config:
-      params:
-        AWS_ACC: ((aws_account.qa))
-  - aggregate:
-    - .: (( inject meta.plan.terraform-output-internal-compute ))
-      params:
-        TF_WORKSPACE: 'qa'
-    - .: (( inject meta.plan.terraform-output-ingest ))
-      params:
-        TF_WORKSPACE: 'qa'
-    - .: (( inject meta.plan.terraform-output-snapshot-sender ))
-      params:
-        TF_WORKSPACE: 'qa'
-  - .: (( inject meta-generate-snapshots.plan.generate-snapshots ))
-    config:
-      params:
-        AWS_ACC: ((aws_account.qa))
-        SNAPSHOT_TYPE: full
+  - name: qa-generate-full-snapshots
+    max_in_flight: 1
+    plan:
+      - put: meta
+        resource: meta-qa
+      - get: aws-ingestion
+        trigger: false
+      - get: aws-internal-compute
+        trigger: false
+      - get: aws-dataworks-e2e-framework
+        trigger: false
+      - get: aws-snapshot-sender
+        trigger: false
+      - in_parallel:
+          - .: (( inject meta.plan.terraform-output-internal-compute ))
+            params:
+              TF_WORKSPACE: "qa"
+          - .: (( inject meta.plan.terraform-output-ingest ))
+            params:
+              TF_WORKSPACE: "qa"
+          - .: (( inject meta.plan.terraform-output-snapshot-sender ))
+            params:
+              TF_WORKSPACE: "qa"
+      - .: (( inject meta-generate-snapshots.plan.generate-snapshots ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+            SNAPSHOT_TYPE: full

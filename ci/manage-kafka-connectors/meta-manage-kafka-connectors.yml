@@ -7,18 +7,17 @@ meta-manage-kafka-connector:
         image_resource:
           type: docker-image
           source:
-            repository: ((docker-awscli.repository))
-            version: ((docker-awscli.version))
-            tag: ((docker-awscli.version))
+            repository: ((dataworks.docker_awscli_repository))
+            tag: ((dataworks.docker_awscli_version))
         params:
-          AWS_DEFAULT_PROFILE: ci
-          AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
-          AWS_CONFIG_FILE: .aws/config
+          AWS_REGION: ((dataworks.aws_region))
         run:
           path: sh
           args:
             - -exc
             - |
+              source /assume-role
+              set +x
               TASK_ARNS=$(aws --region=eu-west-2 ecs list-tasks --cluster ${ECS_CLUSTER} --service-name ${ECS_SERVICE} --query 'taskArns' --output text)
               set -- junk $TASK_ARNS
               shift
@@ -34,18 +33,17 @@ meta-manage-kafka-connector:
         image_resource:
           type: docker-image
           source:
-            repository: ((docker-awscli.repository))
-            version: ((docker-awscli.version))
-            tag: ((docker-awscli.version))
+            repository: ((dataworks.docker_awscli_repository))
+            tag: ((dataworks.docker_awscli_version))
         params:
-          AWS_DEFAULT_PROFILE: ci
-          AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
-          AWS_CONFIG_FILE: .aws/config
+          AWS_REGION: ((dataworks.aws_region))
         run:
           path: sh
           args:
             - -exc
             - |
+              source /assume-role
+              set +x
               aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${ECS_SERVICE} --desired-count ${DESIRED_COUNT}
         inputs:
           - name: .aws
@@ -56,18 +54,17 @@ meta-manage-kafka-connector:
         image_resource:
           type: docker-image
           source:
-            repository: ((docker-awscli.repository))
-            version: ((docker-awscli.version))
-            tag: ((docker-awscli.version))
+            repository: ((dataworks.docker_awscli_repository))
+            tag: ((dataworks.docker_awscli_version))
         params:
-          AWS_DEFAULT_PROFILE: ci
-          AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
-          AWS_CONFIG_FILE: .aws/config
+          AWS_REGION: ((dataworks.aws_region))
         run:
           path: sh
           args:
             - -exc
             - |
+              source /assume-role
+              set +x
               DESIRED_COUNT=$(cat terraform-output-ingest/outputs.json | jq -r '.kafka_to_hbase_consumer.value[0].desired_count')
               aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${ECS_SERVICE} --desired-count ${DESIRED_COUNT}
         inputs:

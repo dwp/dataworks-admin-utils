@@ -7,18 +7,17 @@ meta-manage-environments:
         image_resource:
           type: docker-image
           source:
-            repository: ((docker-awscli.repository))
-            version: ((docker-awscli.version))
-            tag: ((docker-awscli.version))
+            repository: ((dataworks.docker_awscli_repository))
+            tag: ((dataworks.docker_awscli_version))
         params:
-          AWS_DEFAULT_PROFILE: ci
-          AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
-          AWS_CONFIG_FILE: .aws/config
+          AWS_REGION: ((dataworks.aws_region))
         run:
           path: sh
           args:
             - -exc
             - |
+              source /assume-role
+              set +x
               set -euo pipefail
               aws lambda invoke --function-name autoshutdown --invocation-type RequestResponse --payload "${PAYLOAD}" --cli-read-timeout 600 output.json
               cat output.json | jq -eC "if .errorMessage? then error(.errorMessage) else true end"

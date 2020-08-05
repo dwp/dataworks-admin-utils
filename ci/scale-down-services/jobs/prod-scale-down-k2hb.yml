@@ -1,34 +1,33 @@
 jobs:
-- name: prod-scale-down-k2hb
-  max_in_flight: 1
-  plan:
-  - aggregate:
-    - put: meta
-      resource: meta-production
-    - get: aws-internal-compute
-      trigger: false
-    - get: aws-ingestion
-      trigger: false
-    - get: aws-dataworks-e2e-framework
-      trigger: false
-    - get: aws-snapshot-sender
-      trigger: false
-  - .: (( inject meta.plan.create-aws-profiles ))
-    config:
-      params:
-        AWS_ACC: '((aws_account.production))'
-  - aggregate:
-    - .: (( inject meta.plan.terraform-output-internal-compute ))
-      params:
-        TF_WORKSPACE: 'production'
-    - .: (( inject meta.plan.terraform-output-ingest ))
-      params:
-        TF_WORKSPACE: 'production'
-    - .: (( inject meta.plan.terraform-output-snapshot-sender ))
-      params:
-        TF_WORKSPACE: 'production'
-  - .: (( inject meta-scale-down-services.plan.scale-down-services ))
-    config:
-      params:
-        AWS_ACC: '((aws_account.production))'
-        SERVICE_NAME: 'k2hb'
+  - name: prod-scale-down-k2hb
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - put: meta
+            resource: meta-production
+          - get: aws-internal-compute
+            trigger: false
+          - get: aws-ingestion
+            trigger: false
+          - get: aws-dataworks-e2e-framework
+            trigger: false
+          - get: aws-snapshot-sender
+            trigger: false
+        config:
+          params:
+            AWS_ROLE_ARN: "arn:aws:iam::((aws_account.production)):role/ci"
+      - in_parallel:
+          - .: (( inject meta.plan.terraform-output-internal-compute ))
+            params:
+              TF_WORKSPACE: "production"
+          - .: (( inject meta.plan.terraform-output-ingest ))
+            params:
+              TF_WORKSPACE: "production"
+          - .: (( inject meta.plan.terraform-output-snapshot-sender ))
+            params:
+              TF_WORKSPACE: "production"
+      - .: (( inject meta-scale-down-services.plan.scale-down-services ))
+        config:
+          params:
+            AWS_ROLE_ARN: "arn:aws:iam::((aws_account.production)):role/ci"
+            SERVICE_NAME: "k2hb"

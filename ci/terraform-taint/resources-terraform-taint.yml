@@ -6,7 +6,7 @@ resources:
       private_key: ((svc-dip.private_key))
       uri: git@github.ucds.io:dip/aws-ingestion.git
     check_every: 15m
-    webhook_token: ((ucfs-github.webhook-token))
+    webhook_token: ((dataworks.concourse_github_webhook_token))
 
   - name: aws-snapshot-sender
     type: git
@@ -15,7 +15,7 @@ resources:
       private_key: ((svc-dip.private_key))
       uri: git@github.ucds.io:dip/aws-snapshot-sender.git
     check_every: 15m
-    webhook_token: ((ucfs-github.webhook-token))
+    webhook_token: ((dataworks.concourse_github_webhook_token))
 
   - name: aws-internet-egress
     type: git
@@ -24,4 +24,4 @@ resources:
       private_key: ((svc-dip.private_key))
       uri: git@github.ucds.io:dip/aws-internet-egress.git
     check_every: 15m
-    webhook_token: ((ucfs-github.webhook-token))
+    webhook_token: ((dataworks.concourse_github_webhook_token))
