@@ -11,12 +11,12 @@ meta:
             version: ((dataworks.docker_awscli_version))
             tag: ((dataworks.docker_awscli_version))
         inputs:
-          - name: .aws
           - name: dataworks-admin-utils
         params:
           DRY_RUN: true
           AMI_PREFIXES: unset
           AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
           KEEP_MIN: 15
         run:
           path: sh

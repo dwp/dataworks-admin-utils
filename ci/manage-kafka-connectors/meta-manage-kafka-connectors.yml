@@ -11,6 +11,7 @@ meta-manage-kafka-connector:
             tag: ((dataworks.docker_awscli_version))
         params:
           AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
         run:
           path: sh
           args:
@@ -24,8 +25,7 @@ meta-manage-kafka-connector:
               for TASK_ARN; do
                 aws --region=eu-west-2 ecs stop-task --cluster ${ECS_CLUSTER} --task ${TASK_ARN};
               done
-        inputs:
-          - name: .aws
+
     scale-down-kafka-connector:
       task: scale-down-kafka-connector
       config:
@@ -37,6 +37,7 @@ meta-manage-kafka-connector:
             tag: ((dataworks.docker_awscli_version))
         params:
           AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
         run:
           path: sh
           args:
@@ -45,8 +46,7 @@ meta-manage-kafka-connector:
               source /assume-role
               set +x
               aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${ECS_SERVICE} --desired-count ${DESIRED_COUNT}
-        inputs:
-          - name: .aws
+
     scale-up-kafka-connector:
       task: scale-up-kafka-connector
       config:
@@ -58,6 +58,7 @@ meta-manage-kafka-connector:
             tag: ((dataworks.docker_awscli_version))
         params:
           AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
         run:
           path: sh
           args:
@@ -68,5 +69,4 @@ meta-manage-kafka-connector:
               DESIRED_COUNT=$(cat terraform-output-ingest/outputs.json | jq -r '.kafka_to_hbase_consumer.value[0].desired_count')
               aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${ECS_SERVICE} --desired-count ${DESIRED_COUNT}
         inputs:
-          - name: .aws
           - name: terraform-output-ingest

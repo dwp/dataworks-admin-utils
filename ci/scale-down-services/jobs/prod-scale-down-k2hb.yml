@@ -13,9 +13,6 @@ jobs:
             trigger: false
           - get: aws-snapshot-sender
             trigger: false
-        config:
-          params:
-            AWS_ROLE_ARN: "arn:aws:iam::((aws_account.production)):role/ci"
       - in_parallel:
           - .: (( inject meta.plan.terraform-output-internal-compute ))
             params:
@@ -29,5 +26,6 @@ jobs:
       - .: (( inject meta-scale-down-services.plan.scale-down-services ))
         config:
           params:
-            AWS_ROLE_ARN: "arn:aws:iam::((aws_account.production)):role/ci"
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
+            AWS_ACC: ((aws_account.production))
             SERVICE_NAME: "k2hb"

@@ -13,9 +13,6 @@ jobs:
             trigger: false
           - get: aws-snapshot-sender
             trigger: false
-        config:
-          params:
-            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
       - in_parallel:
           - .: (( inject meta.plan.terraform-output-ingest ))
           - .: (( inject meta.plan.terraform-output-internal-compute ))
@@ -24,4 +21,5 @@ jobs:
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+            AWS_ACC: ((aws_account.development))
             SERVICE_NAME: "k2hb"

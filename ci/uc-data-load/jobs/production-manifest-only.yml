@@ -14,7 +14,7 @@ jobs:
         trigger: false
         config:
           params:
-            AWS_ROLE_ARN: "arn:aws:iam::((aws_account.production)):role/ci"
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
       - in_parallel:
           - .: (( inject meta.plan.terraform-output-internal-compute ))
             params:
@@ -28,10 +28,10 @@ jobs:
       - .: (( inject meta-uc-data-load.plan.clear-manifest ))
         config:
           params:
-            AWS_ROLE_ARN: "arn:aws:iam::((aws_account.production)):role/ci"
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
       - .: (( inject meta-uc-data-load.plan.uc-data-load ))
         config:
           params:
-            AWS_ROLE_ARN: "arn:aws:iam::((aws_account.production)):role/ci"
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
             ACTION_TAG: "@admin-uc-data-load-manifest-only"
             HISTORIC_IMPORTER_USE_ONE_MESSAGE_PER_PATH: "false"

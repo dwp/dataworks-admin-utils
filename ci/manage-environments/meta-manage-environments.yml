@@ -11,6 +11,7 @@ meta-manage-environments:
             tag: ((dataworks.docker_awscli_version))
         params:
           AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
         run:
           path: sh
           args:
@@ -21,5 +22,3 @@ meta-manage-environments:
               set -euo pipefail
               aws lambda invoke --function-name autoshutdown --invocation-type RequestResponse --payload "${PAYLOAD}" --cli-read-timeout 600 output.json
               cat output.json | jq -eC "if .errorMessage? then error(.errorMessage) else true end"
-        inputs:
-          - name: .aws

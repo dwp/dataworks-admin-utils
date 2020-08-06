@@ -25,7 +25,7 @@ jobs:
       - .: (( inject meta-generate-snapshots.plan.generate-snapshots ))
         config:
           params:
-            AWS_ROLE_ARN: "arn:aws:iam::((aws_account.production)):role/ci"
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
             SNAPSHOT_TYPE: incremental
             GENERATE_SNAPSHOTS_TOPICS_OVERRIDE: "ALL"
             GENERATE_SNAPSHOTS_TRIGGER_SNAPSHOT_SENDER_OVERRIDE: true

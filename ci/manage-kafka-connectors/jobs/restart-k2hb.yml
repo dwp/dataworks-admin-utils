@@ -25,7 +25,7 @@ jobs:
       - .: (( inject meta-manage-kafka-connector.plan.restart-kafka-connector ))
         config:
           params:
-            AWS_ROLE_ARN: "arn:aws:iam::((aws_account.integration)):role/ci"
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
 
@@ -36,6 +36,7 @@ jobs:
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
+
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
 
@@ -45,6 +46,6 @@ jobs:
       - .: (( inject meta-manage-kafka-connector.plan.restart-kafka-connector ))
         config:
           params:
-            AWS_ROLE_ARN: "arn:aws:iam::((aws_account.production)):role/ci"
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
             ECS_CLUSTER: main
             ECS_SERVICE: kafka-to-hbase-consumer
