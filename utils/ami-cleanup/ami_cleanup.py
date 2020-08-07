@@ -29,20 +29,10 @@ def get_arguments():
         description="Delete older AMIs except for N latest."
     )
 
-    parser.add_argument(
-        "--aws-profile",
-        help="AWS profile ID for the account that owns the AMIs",
-        required=True,
-    )
     parser.add_argument("--aws-region", help="AWS region", required=True)
     parser.add_argument("--ami-prefix", help="AMI name prefix", required=True)
     parser.add_argument(
         "--keep-min", type=int, help="Minimum number of AMIs to keep", required=True
-    )
-    parser.add_argument(
-        "--aws-profile-list",
-        nargs="*",
-        help="List of additional AWS profile IDs to use to check for AMI usage in other accounts, i.e. accounts with which the AMI is shared",
     )
     parser.add_argument(
         "--dry-run", help="Set to False to perform deletion", required=True,
@@ -69,7 +59,7 @@ def get_deletion_list(aws_region, ami_prefix, keep_min):
     ec2_client = get_boto_client("ec2", aws_region)
     sts_client = get_boto_client("sts", aws_region)
 
-    # Filter AMIs returned to only those owned by aws-profile account
+    # Filter AMIs returned to only those owned by caller account
     account_number = sts_client.get_caller_identity()["Account"]
     try:
         full_list = ec2_client.describe_images(
@@ -212,29 +202,18 @@ def main():
 
     args = get_arguments()
 
-    if args.aws_profile_list is None:
-        args.aws_profile_list = []
     candidate_list = get_deletion_list(
         args.aws_region, args.ami_prefix, args.keep_min
     )
 
-    deletion_list = {}
-    for profile in aws_profile_list:
-        deletion_list[profile] = []
+    deletion_list = []
         for ami in candidate_list:
             if not check_ami_is_used(args.aws_region, ami["ImageId"]):
-                deletion_list[profile].append(ami["ImageId"])
-        logger.debug(f"Deletion list for profile {profile}:")
-        logger.debug(deletion_list[profile])
+                deletion_list.append(ami["ImageId"])
 
-    deletion_list_total = deletion_list[aws_profile_list[0]]
-    for profile in deletion_list:
-        deletion_list_total = deletion_list_total + deletion_list[profile]
+    logger.info(f"List of AMIs to delete: {deletion_list}")
 
-    deletion_list_total = list(set(deletion_list_total))
-    logger.info(f"List of AMIs to delete: {deletion_list_total}")
-
-    for ami_id in deletion_list_total:
+    for ami_id in deletion_list:
         delete_ami(args.aws_region, ami_id, args.dry_run)
 
 
