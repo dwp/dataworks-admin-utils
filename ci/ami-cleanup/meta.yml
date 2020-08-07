@@ -33,12 +33,10 @@ meta:
       .: (( inject meta.plan.ami-cleanup ))
       config:
         params:
-          AWS_PROFILE_LIST: ci-development ci-qa ci-integration ci-preprod ci-production ci-management-dev
           AMI_PREFIXES: dw-hardened-ami* dw-general-ami-* dm-untested-hardened-ami-* dw-emr-ami-*
 
     ami-cleanup-mgmt-dev:
       .: (( inject meta.plan.ami-cleanup-mgmt ))
       config:
         params:
-          AWS_PROFILE_LIST: ci-development ci-qa ci-integration ci-preprod ci-production ci-management
           AMI_PREFIXES: dw-hardened-ami* dw-general-ami-* dm-untested-hardened-ami-* dw-emr-ami-* TEST-dw-hardened-ami-* pr-dw-hardened-ami-*
