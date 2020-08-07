@@ -207,9 +207,9 @@ def main():
     )
 
     deletion_list = []
-        for ami in candidate_list:
-            if not check_ami_is_used(args.aws_region, ami["ImageId"]):
-                deletion_list.append(ami["ImageId"])
+    for ami in candidate_list:
+        if not check_ami_is_used(args.aws_region, ami["ImageId"]):
+            deletion_list.append(ami["ImageId"])
 
     logger.info(f"List of AMIs to delete: {deletion_list}")
 
