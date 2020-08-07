@@ -2,22 +2,18 @@ meta-terraform-taint:
   plan:
     terraform-taint:
       task: terraform-taint
+      .: (( inject meta.plan.terraform-common-config ))
       attempts: 3
       config:
         platform: linux
         image_resource:
           type: docker-image
           source:
-            repository: ((terraform.repository))
-            version: ((terraform12.version))
-            tag: ((terraform12.version))
+            repository: ((dataworks.terraform_repository))
+            tag: ((dataworks.terraform_version))
         inputs:
           - name: tfrepo
         params:
-          TF_CLI_ARGS_plan: -lock-timeout=300s
-          TF_INPUT: "false"
-          AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
-          AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
           RESOURCE_ADDRESS_LIST: "unset unset"
         run:
           dir: tfrepo

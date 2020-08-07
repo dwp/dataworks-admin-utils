@@ -7,13 +7,11 @@ meta-uc-data-load:
         image_resource:
           type: docker-image
           source:
-            repository: ((docker-python-boto-behave.repository))
-            version: ((docker-python-boto-behave.version))
-            tag: ((docker-python-boto-behave.version))
+            repository: ((dataworks.docker_python_boto_behave_repository))
+            tag: 0.0.24
         params:
-          AWS_DEFAULT_PROFILE: ci
-          AWS_SHARED_CREDENTIALS_FILE: ../../.aws/credentials
-          AWS_CONFIG_FILE: ../../.aws/config
+          AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
           E2E_TEST_TIMEOUT: 300
         run:
           dir: aws-dataworks-e2e-framework
@@ -21,6 +19,8 @@ meta-uc-data-load:
           args:
             - -exc
             - |
+              source /assume-role
+              set +x
               export E2E_FEATURE_TAG_FILTER="${ACTION_TAG}"
 
               cd src/runners
@@ -31,7 +31,6 @@ meta-uc-data-load:
               "../../../terraform-output-snapshot-sender/outputs.json"
         inputs:
           - name: aws-dataworks-e2e-framework
-          - name: .aws
           - name: meta
           - name: terraform-output-ingest
           - name: terraform-output-internal-compute
@@ -44,40 +43,39 @@ meta-uc-data-load:
         image_resource:
           type: docker-image
           source:
-            repository: ((docker-awscli.repository))
-            version: ((docker-awscli.version))
-            tag: ((docker-awscli.version))
+            repository: ((dataworks.docker_awscli_repository))
+            tag: ((dataworks.docker_awscli_version))
         params:
-          AWS_DEFAULT_PROFILE: ci
-          AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
-          AWS_CONFIG_FILE: .aws/config
+          AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
         run:
           path: sh
           args:
-          - -exc
-          - |
-            S3_MANIFEST_BUCKET=$(cat terraform-output-ingest/outputs.json | jq -r '.s3_buckets.value.input_bucket')
-            S3_MANIFEST_PREFIX=$(cat terraform-output-internal-compute/outputs.json | jq -r '.manifest_s3_prefixes.value.import')
+            - -exc
+            - |
+              source /assume-role
+              set +x
+              S3_MANIFEST_BUCKET=$(cat terraform-output-ingest/outputs.json | jq -r '.s3_buckets.value.input_bucket')
+              S3_MANIFEST_PREFIX=$(cat terraform-output-internal-compute/outputs.json | jq -r '.manifest_s3_prefixes.value.import')
 
-            S3_LOCATION="s3://${S3_MANIFEST_BUCKET}/${S3_MANIFEST_PREFIX}/" 
-            TIMEOUT=120
-            
-            aws s3 rm "${S3_LOCATION}" --recursive
+              S3_LOCATION="s3://${S3_MANIFEST_BUCKET}/${S3_MANIFEST_PREFIX}/" 
+              TIMEOUT=120
 
-            TIME_TAKEN=10
-            while true; do
-                if [[ ${TIME_TAKEN} > ${TIMEOUT} ]]; then
-                    break
-                fi
+              aws s3 rm "${S3_LOCATION}" --recursive
 
-                if [[ -z $(aws s3 ls "${S3_LOCATION}") ]]; then
-                    break
-                fi
+              TIME_TAKEN=10
+              while true; do
+                  if [[ ${TIME_TAKEN} > ${TIMEOUT} ]]; then
+                      break
+                  fi
 
-                TIME_TAKEN=$((TIME_TAKEN + 1))
-                sleep 1
-            done
+                  if [[ -z $(aws s3 ls "${S3_LOCATION}") ]]; then
+                      break
+                  fi
+
+                  TIME_TAKEN=$((TIME_TAKEN + 1))
+                  sleep 1
+              done
         inputs:
-        - name: .aws
-        - name: terraform-output-ingest
-        - name: terraform-output-internal-compute
+          - name: terraform-output-ingest
+          - name: terraform-output-internal-compute

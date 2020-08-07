@@ -1,8 +1,13 @@
 spruce:
-- base: ci/lambda-cleanup/pipeline.yml
-  to: aviator_pipeline_lambda_cleanup.yml
+  - base: ci/lambda-cleanup/meta.yml
+    prune:
+      - meta
+    merge:
+      - with_in: ci/lambda-cleanup/
+        regexp: ".*yml"
+    to: aviator_pipeline_lambda_cleanup.yml
 fly:
   name: lambda-cleanup
-  target: concourse
+  target: aws-concourse
   config: aviator_pipeline_lambda_cleanup.yml
   expose: true

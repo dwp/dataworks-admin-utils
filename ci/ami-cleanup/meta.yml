@@ -1,68 +1,5 @@
 meta:
   plan:
-    create-all-aws-profiles:
-      task: create-all-aws-profiles
-      config:
-        platform: linux
-        image_resource:
-          type: docker-image
-          source:
-            repository: ((docker-awscli.repository))
-            version: ((docker-awscli.version))
-            tag: ((docker-awscli.version))
-        outputs:
-          - name: .aws
-        params:
-          AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
-          AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
-          AWS_ROLE: ci
-          AWS_ACCOUNT_DEV: ((aws_account.development))
-          AWS_ACCOUNT_QA: ((aws_account.qa))
-          AWS_ACCOUNT_INT: ((aws_account.integration))
-          AWS_ACCOUNT_PRE: ((aws_account.preprod))
-          AWS_ACCOUNT_PROD: ((aws_account.production))
-          AWS_ACCOUNT_MGMT: ((aws_account.management))
-          AWS_ACCOUNT_MGMTDEV: ((aws_account.management-dev))
-          AWS_REGION: eu-west-2
-        run:
-          path: sh
-          args:
-            - -exc
-            - |
-              cat <<EOF> .aws/credentials
-              [default]
-              aws_access_key_id = $AWS_ACCESS_KEY_ID
-              aws_secret_access_key = $AWS_SECRET_ACCESS_KEY
-
-              [ci-development]
-              role_arn = arn:aws:iam::${AWS_ACCOUNT_DEV}:role/$AWS_ROLE
-              source_profile = default
-
-              [ci-qa]
-              role_arn = arn:aws:iam::${AWS_ACCOUNT_QA}:role/$AWS_ROLE
-              source_profile = default
-
-              [ci-integration]
-              role_arn = arn:aws:iam::${AWS_ACCOUNT_INT}:role/$AWS_ROLE
-              source_profile = default
-
-              [ci-preprod]
-              role_arn = arn:aws:iam::${AWS_ACCOUNT_PRE}:role/$AWS_ROLE
-              source_profile = default
-
-              [ci-production]
-              role_arn = arn:aws:iam::${AWS_ACCOUNT_PROD}:role/$AWS_ROLE
-              source_profile = default
-
-              [ci-management]
-              role_arn = arn:aws:iam::${AWS_ACCOUNT_MGMT}:role/$AWS_ROLE
-              source_profile = default
-
-              [ci-management-dev]
-              role_arn = arn:aws:iam::${AWS_ACCOUNT_MGMTDEV}:role/$AWS_ROLE
-              source_profile = default
-              EOF
-
     ami-cleanup:
       task: ami-cleanup
       config:
@@ -70,22 +7,24 @@ meta:
         image_resource:
           type: docker-image
           source:
-            repository: dwpdigital/jinja-yaml-aws
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
         inputs:
-          - name: .aws
           - name: dataworks-admin-utils
         params:
           DRY_RUN: true
           AMI_PREFIXES: unset
+          AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
           KEEP_MIN: 15
-          AWS_REGION: eu-west-2
-          AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
-          LOG_LEVEL: DEBUG
         run:
           path: sh
           args:
             - -exc
             - |
+              source /assume-role
+              set +x
               for AMI_PREFIX in $AMI_PREFIXES; do
                 python3 dataworks-admin-utils/utils/ami-cleanup/ami_cleanup.py --aws-region $AWS_REGION --ami-prefix $AMI_PREFIX --keep-min $KEEP_MIN --dry-run $DRY_RUN
               done
