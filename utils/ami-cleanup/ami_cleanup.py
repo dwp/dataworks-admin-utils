@@ -202,9 +202,7 @@ def main():
 
     args = get_arguments()
 
-    candidate_list = get_deletion_list(
-        args.aws_region, args.ami_prefix, args.keep_min
-    )
+    candidate_list = get_deletion_list(args.aws_region, args.ami_prefix, args.keep_min)
 
     deletion_list = []
     for ami in candidate_list:
