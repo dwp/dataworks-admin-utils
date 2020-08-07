@@ -1,11 +1,9 @@
 spruce:
-  - base: ci/lambda-cleanup/meta-lambda-cleanup.yml
+  - base: ci/lambda-cleanup/meta.yml
     prune:
       - meta
     merge:
-      - with_in: ci/lambda_cleanup/
-        regexp: ".*yml"
-      - with_in: ci/lambda_cleanup/jobs/
+      - with_in: ci/lambda-cleanup/
         regexp: ".*yml"
     to: aviator_pipeline_lambda_cleanup.yml
 fly:

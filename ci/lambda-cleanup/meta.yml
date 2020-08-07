@@ -9,9 +9,13 @@ meta:
           source:
             repository: ((dataworks.docker_python_boto_behave_repository))
             tag: 0.0.24
-        inputs:
-          - name: dataworks-admin-utils
+        params:
+          AWS_ACCOUNT_ID: ((aws_account.development))
+          AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+          AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
         run:
+          dir: dataworks-admin-utils
           path: sh
           args:
             - -exc
@@ -19,4 +23,5 @@ meta:
               source /assume-role
               set +x
               ./utils/lambda-cleanup/lambda_prune.py $AWS_ACCOUNT_ID
-          dir: dataworks-admin-utils
+        inputs:
+          - name: dataworks-admin-utils
