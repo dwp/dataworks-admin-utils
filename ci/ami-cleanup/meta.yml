@@ -76,7 +76,6 @@ meta:
           - name: dataworks-admin-utils
         params:
           DRY_RUN: true
-          AWS_PROFILE: unset
           AMI_PREFIXES: unset
           KEEP_MIN: 15
           AWS_PROFILE_LIST: unset
@@ -89,14 +88,13 @@ meta:
             - -exc
             - |
               for AMI_PREFIX in $AMI_PREFIXES; do
-                python3 dataworks-admin-utils/utils/ami-cleanup/ami_cleanup.py --aws-profile $AWS_PROFILE --aws-region $AWS_REGION --ami-prefix $AMI_PREFIX --keep-min $KEEP_MIN --aws-profile-list $AWS_PROFILE_LIST --dry-run $DRY_RUN
+                python3 dataworks-admin-utils/utils/ami-cleanup/ami_cleanup.py --aws-region $AWS_REGION --ami-prefix $AMI_PREFIX --keep-min $KEEP_MIN --aws-profile-list $AWS_PROFILE_LIST --dry-run $DRY_RUN
               done
 
     ami-cleanup-mgmt:
       .: (( inject meta.plan.ami-cleanup ))
       config:
         params:
-          AWS_PROFILE: ci-management
           AWS_PROFILE_LIST: ci-development ci-qa ci-integration ci-preprod ci-production ci-management-dev
           AMI_PREFIXES: dw-hardened-ami* dw-general-ami-* dm-untested-hardened-ami-* dw-emr-ami-*
 
@@ -104,6 +102,5 @@ meta:
       .: (( inject meta.plan.ami-cleanup-mgmt ))
       config:
         params:
-          AWS_PROFILE: ci-management-dev
           AWS_PROFILE_LIST: ci-development ci-qa ci-integration ci-preprod ci-production ci-management
           AMI_PREFIXES: dw-hardened-ami* dw-general-ami-* dm-untested-hardened-ami-* dw-emr-ami-* TEST-dw-hardened-ami-* pr-dw-hardened-ami-*

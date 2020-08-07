@@ -58,16 +58,16 @@ def parse_dry_run_value(argument):
     return argument.lower() != "false"
 
 
-def get_boto_client(aws_service_name, aws_profile, aws_region):
-    session = boto3.Session(profile_name=aws_profile)
+def get_boto_client(aws_service_name, aws_region):
+    session = boto3.Session()
     return session.client(aws_service_name, region_name=aws_region)
 
 
-def get_deletion_list(aws_profile, aws_region, ami_prefix, keep_min):
+def get_deletion_list(aws_region, ami_prefix, keep_min):
     logger.debug(f"AMI prefix: {ami_prefix}, minimum number to keep: {keep_min}")
 
-    ec2_client = get_boto_client("ec2", aws_profile, aws_region)
-    sts_client = get_boto_client("sts", aws_profile, aws_region)
+    ec2_client = get_boto_client("ec2", aws_region)
+    sts_client = get_boto_client("sts", aws_region)
 
     # Filter AMIs returned to only those owned by aws-profile account
     account_number = sts_client.get_caller_identity()["Account"]
@@ -98,9 +98,9 @@ def get_deletion_list(aws_profile, aws_region, ami_prefix, keep_min):
     return sorted_list
 
 
-def check_ami_is_used(aws_profile, aws_region, ami_id):
-    ec2_client = get_boto_client("ec2", aws_profile, aws_region)
-    asg_client = get_boto_client("autoscaling", aws_profile, aws_region)
+def check_ami_is_used(aws_region, ami_id):
+    ec2_client = get_boto_client("ec2", aws_region)
+    asg_client = get_boto_client("autoscaling", aws_region)
 
     # Check against running instances
     try:
@@ -152,10 +152,10 @@ def check_ami_is_used(aws_profile, aws_region, ami_id):
     return False
 
 
-def delete_ami(aws_profile, aws_region, ami_id, dry_run):
+def delete_ami(aws_region, ami_id, dry_run):
     # Deregister AMI
 
-    ec2_client = get_boto_client("ec2", aws_profile, aws_region)
+    ec2_client = get_boto_client("ec2", aws_region)
 
     try:
         if not dry_run:
@@ -215,20 +215,19 @@ def main():
     if args.aws_profile_list is None:
         args.aws_profile_list = []
     candidate_list = get_deletion_list(
-        args.aws_profile, args.aws_region, args.ami_prefix, args.keep_min
+        args.aws_region, args.ami_prefix, args.keep_min
     )
-    aws_profile_list_to_check = [args.aws_profile] + args.aws_profile_list
 
     deletion_list = {}
-    for profile in aws_profile_list_to_check:
+    for profile in aws_profile_list:
         deletion_list[profile] = []
         for ami in candidate_list:
-            if not check_ami_is_used(profile, args.aws_region, ami["ImageId"]):
+            if not check_ami_is_used(args.aws_region, ami["ImageId"]):
                 deletion_list[profile].append(ami["ImageId"])
         logger.debug(f"Deletion list for profile {profile}:")
         logger.debug(deletion_list[profile])
 
-    deletion_list_total = deletion_list[aws_profile_list_to_check[0]]
+    deletion_list_total = deletion_list[aws_profile_list[0]]
     for profile in deletion_list:
         deletion_list_total = deletion_list_total + deletion_list[profile]
 
@@ -236,7 +235,7 @@ def main():
     logger.info(f"List of AMIs to delete: {deletion_list_total}")
 
     for ami_id in deletion_list_total:
-        delete_ami(args.aws_profile, args.aws_region, ami_id, args.dry_run)
+        delete_ami(args.aws_region, ami_id, args.dry_run)
 
 
 if __name__ == "__main__":
