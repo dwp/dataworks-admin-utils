@@ -1,80 +1,64 @@
-resources:
-  - name: dataworks-admin-utils
-    type: git
-    source:
-      branch: master
-      uri: https://github.com/dwp/dataworks-admin-utils.git
-      webhook_token: ((dataworks.concourse_github_webhook_token))
-    check_every: 1h
-
 jobs:
   - name: lambda-cleanup-development-job
     plan:
       - get: dataworks-admin-utils
-      - task: lambda-cleanup-development
-        file: dataworks-admin-utils/ci/lambda-cleanup/lambda-cleanup.yml
+      - .: (( inject meta-lambda-cleanup.plan.lambda-cleanup ))
         params:
-          AWS_ACC: ((aws_account.development))
+          AWS_ACCOUNT_ID: ((aws_account.development))
           AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
           AWS_REGION: ((dataworks.aws_region))
           AWS_DEFAULT_REGION: ((dataworks.aws_region))
   - name: lambda-cleanup-qa-job
     plan:
       - get: dataworks-admin-utils
-      - task: lambda-cleanup-qa
-        file: dataworks-admin-utils/ci/lambda-cleanup/lambda-cleanup.yml
+      - .: (( inject meta-lambda-cleanup.plan.lambda-cleanup ))
         params:
-          AWS_ACC: ((aws_account.qa))
+          AWS_ACCOUNT_ID: ((aws_account.qa))
           AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
           AWS_REGION: ((dataworks.aws_region))
           AWS_DEFAULT_REGION: ((dataworks.aws_region))
   - name: lambda-cleanup-integration-job
     plan:
       - get: dataworks-admin-utils
-      - task: lambda-cleanup-integration
-        file: dataworks-admin-utils/ci/lambda-cleanup/lambda-cleanup.yml
+      - .: (( inject meta-lambda-cleanup.plan.lambda-cleanup ))
         params:
-          AWS_ACC: ((aws_account.integration))
+          AWS_ACCOUNT_ID: ((aws_account.integration))
           AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
           AWS_REGION: ((dataworks.aws_region))
           AWS_DEFAULT_REGION: ((dataworks.aws_region))
   - name: lambda-cleanup-preprod-job
     plan:
       - get: dataworks-admin-utils
-      - task: lambda-cleanup-preprod
-        file: dataworks-admin-utils/ci/lambda-cleanup/lambda-cleanup.yml
+      - .: (( inject meta-lambda-cleanup.plan.lambda-cleanup ))
         params:
-          AWS_ACC: ((aws_account.preprod))
+          AWS_ACCOUNT_ID: ((aws_account.preprod))
           AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
           AWS_REGION: ((dataworks.aws_region))
           AWS_DEFAULT_REGION: ((dataworks.aws_region))
   - name: lambda-cleanup-production-job
     plan:
       - get: dataworks-admin-utils
-      - task: lambda-cleanup-production
-        file: dataworks-admin-utils/ci/lambda-cleanup/lambda-cleanup.yml
+      - .: (( inject meta-lambda-cleanup.plan.lambda-cleanup ))
         params:
-          AWS_ACC: ((aws_account.production))
+          AWS_ACCOUNT_ID: ((aws_account.production))
           AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
           AWS_REGION: ((dataworks.aws_region))
           AWS_DEFAULT_REGION: ((dataworks.aws_region))
   - name: lambda-cleanup-management-job
     plan:
       - get: dataworks-admin-utils
-      - task: lambda-cleanup-management
-        file: dataworks-admin-utils/ci/lambda-cleanup/lambda-cleanup.yml
+      - .: (( inject meta-lambda-cleanup.plan.lambda-cleanup ))
         params:
-          AWS_ACC: ((aws_account.management))
+          AWS_ACCOUNT_ID: ((aws_account.management))
           AWS_ROLE_ARN: arn:aws:iam::((aws_account.management)):role/ci
           AWS_REGION: ((dataworks.aws_region))
           AWS_DEFAULT_REGION: ((dataworks.aws_region))
   - name: lambda-cleanup-managment-dev-job
     plan:
       - get: dataworks-admin-utils
-      - task: lambda-cleanup-management-dev
-        file: dataworks-admin-utils/ci/lambda-cleanup/lambda-cleanup.yml
+      - .: (( inject meta-lambda-cleanup.plan.lambda-cleanup ))
         params:
-          AWS_ACC: ((aws_account.management-dev))
+          AWS_ACCOUNT_ID: ((aws_account.management-dev))
           AWS_ROLE_ARN: arn:aws:iam::((aws_account.management-dev)):role/ci
           AWS_REGION: ((dataworks.aws_region))
           AWS_DEFAULT_REGION: ((dataworks.aws_region))

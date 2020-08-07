@@ -1,0 +1,8 @@
+resources:
+  - name: dataworks-admin-utils
+    type: git
+    source:
+      branch: master
+      uri: https://github.com/dwp/dataworks-admin-utils.git
+    webhook_token: ((dataworks.concourse_github_webhook_token))
+    check_every: 1h

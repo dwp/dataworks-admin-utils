@@ -1,0 +1,22 @@
+meta:
+  plan:
+    lambda-cleanup:
+      task: lambda-cleanup
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_python_boto_behave_repository))
+            tag: 0.0.24
+        inputs:
+          - name: dataworks-admin-utils
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              source /assume-role
+              set +x
+              ./utils/lambda-cleanup/lambda_prune.py $AWS_ACCOUNT_ID
+          dir: dataworks-admin-utils
