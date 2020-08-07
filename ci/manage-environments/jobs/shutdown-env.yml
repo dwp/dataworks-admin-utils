@@ -5,6 +5,7 @@ jobs:
       - .: (( inject meta-manage-environments.plan.manage-environment ))
         config:
           params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
             PAYLOAD: '{ "Records": [ { "Sns": { "Message": "{ \"mode\": \"shutdown\" }" } } ] }'
 
   - name: qa-shutdown
@@ -13,6 +14,7 @@ jobs:
       - .: (( inject meta-manage-environments.plan.manage-environment ))
         config:
           params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
             PAYLOAD: '{ "Records": [ { "Sns": { "Message": "{ \"mode\": \"shutdown\" }" } } ] }'
 
   - name: integration-shutdown
@@ -21,4 +23,5 @@ jobs:
       - .: (( inject meta-manage-environments.plan.manage-environment ))
         config:
           params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
             PAYLOAD: '{ "Records": [ { "Sns": { "Message": "{ \"mode\": \"shutdown\" }" } } ] }'
