@@ -12,10 +12,6 @@ jobs:
         trigger: false
       - get: aws-snapshot-sender
         trigger: false
-        config:
-          params:
-            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
-
       - in_parallel:
           - .: (( inject meta.plan.terraform-output-internal-compute ))
             params:
@@ -33,6 +29,6 @@ jobs:
       - .: (( inject meta-uc-data-load.plan.uc-data-load ))
         config:
           params:
+            AWS_ACC: ((aws_account.preprod))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
-
             ACTION_TAG: "@admin-uc-data-load"

@@ -19,5 +19,6 @@ jobs:
       - .: (( inject meta-uc-data-load.plan.uc-data-load ))
         config:
           params:
+            AWS_ACC: ((aws_account.development))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
             ACTION_TAG: "@admin-uc-data-load"
