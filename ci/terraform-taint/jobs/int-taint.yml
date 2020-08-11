@@ -2,28 +2,23 @@ jobs:
   - name: integration-terraform-taint
     max_in_flight: 1
     plan:
-      - aggregate:
-        - get: aws-ingestion
-          trigger: false
-        - get: aws-snapshot-sender
-          trigger: false
-      - .: (( inject meta.plan.create-aws-profiles ))
-        config:
-          params:
-            AWS_ACC: ((aws_account.integration))
-      - aggregate:
-        - .: (( inject meta-terraform-taint.plan.terraform-taint ))
-          input_mapping:
-            tfrepo: aws-ingestion
-          config:
-            params:
-              TF_WORKSPACE: 'integration'
-              RESOURCE_ADDRESS_LIST: "aws_ecs_service.kafka_to_hbase_consumer[0] aws_ecs_service.stub_ucfs_kafka_to_s3[0]"
-        - .: (( inject meta-terraform-taint.plan.terraform-taint ))
-          input_mapping:
-            tfrepo: aws-snapshot-sender
-          config:
-            params:
-              TF_WORKSPACE: 'integration'
-              RESOURCE_ADDRESS_LIST: "aws_ecs_service.stub_nifi[0]"
-
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
+          - get: aws-snapshot-sender
+            trigger: false
+      - in_parallel:
+          - .: (( inject meta-terraform-taint.plan.terraform-taint ))
+            input_mapping:
+              tfrepo: aws-ingestion
+            config:
+              params:
+                TF_WORKSPACE: "integration"
+                RESOURCE_ADDRESS_LIST: "aws_ecs_service.kafka_to_hbase_consumer[0] aws_ecs_service.stub_ucfs_kafka_to_s3[0]"
+          - .: (( inject meta-terraform-taint.plan.terraform-taint ))
+            input_mapping:
+              tfrepo: aws-snapshot-sender
+            config:
+              params:
+                TF_WORKSPACE: "integration"
+                RESOURCE_ADDRESS_LIST: "aws_ecs_service.stub_nifi[0]"

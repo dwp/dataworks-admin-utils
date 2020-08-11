@@ -1,17 +1,17 @@
 spruce:
-- base: ci/manage-kafka-connectors/meta-manage-kafka-connectors.yml
-  prune:
-  - meta
-  merge:
-  - with_in: ci/manage-kafka-connectors/
-    regexp: ".*yml"
-  - with_in: ci/manage-kafka-connectors/jobs/
-    regexp: ".*yml"
-  - with_in: ci/shared/
-    regexp: "meta.yml"
-  to: aviator_pipeline_manage_kafka_connectors.yml
+  - base: ci/manage-kafka-connectors/meta-manage-kafka-connectors.yml
+    prune:
+      - meta
+    merge:
+      - with_in: ci/manage-kafka-connectors/
+        regexp: ".*yml"
+      - with_in: ci/manage-kafka-connectors/jobs/
+        regexp: ".*yml"
+      - with_in: ci/shared/
+        regexp: "meta.yml"
+    to: aviator_pipeline_manage_kafka_connectors.yml
 fly:
   name: manage-kafka-connectors
-  target: concourse
+  target: aws-concourse
   config: aviator_pipeline_manage_kafka_connectors.yml
   expose: true

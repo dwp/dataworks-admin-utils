@@ -1,13 +1,13 @@
 spruce:
-- base: ci/ami-cleanup/meta.yml
-  prune:
-    - meta
-  merge:
-    - with_in: ci/ami-cleanup/
-      regexp: ".*yml"
-  to: aviator_pipeline_ami_cleanup.yml
+  - base: ci/ami-cleanup/meta.yml
+    prune:
+      - meta
+    merge:
+      - with_in: ci/ami-cleanup/
+        regexp: ".*yml"
+    to: aviator_pipeline_ami_cleanup.yml
 fly:
   name: ami-cleanup
-  target: concourse
+  target: aws-concourse
   config: aviator_pipeline_ami_cleanup.yml
   expose: false

@@ -12,6 +12,6 @@ spruce:
     to: aviator_pipeline_manage_environments.yml
 fly:
   name: manage-environments
-  target: concourse
+  target: aws-concourse
   config: aviator_pipeline_manage_environments.yml
   expose: false
