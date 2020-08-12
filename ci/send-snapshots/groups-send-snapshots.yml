@@ -1,11 +1,14 @@
 groups:
-- name: send-snapshots
+- name: send-full-snapshots
   jobs:
   - development-send-snapshots
   - qa-send-snapshots
   - preprod-send-snapshots
   - production-send-snapshots
-  - production-reprocess-snapshots
+  - production-reprocess-full-snapshots
+- name: send-incremental-snapshots
+  jobs:
+  - production-reprocess-incremental-snapshots
 - name: nifi-heartbeat
   jobs:
     - production-nifi-heartbeat
