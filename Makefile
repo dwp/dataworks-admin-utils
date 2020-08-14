@@ -43,9 +43,9 @@ update-scale-down-services-pipeline: ## Update the scale-down-services pipeline
 update-scale-up-services-pipeline: ## Update the scale-up-services pipeline
 	aviator -f aviator-scale-up-services.yml
 
-.PHONY: update-manage-kafka-connectors-pipeline
-update-manage-kafka-connectors-pipeline: ## Update the manage-kafka-connectors pipeline
-	aviator -f aviator-manage-kafka-connectors.yml
+.PHONY: update-manage-ecs-services-pipeline
+update-manage-ecs-services-pipeline: ## Update the manage-ecs-services pipeline
+	aviator -f aviator-manage-ecs-services.yml
 
 .PHONY: update-manage-environments-pipeline
 update-manage-environments-pipeline: ## Update the manage-environments pipeline
@@ -79,9 +79,9 @@ pause-scale-down-services-pipeline: ## Pause the scale down services pipeline
 pause-scale-up-services-pipeline: ## Pause the scale up services pipeline
 	fly --target concourse pause-pipeline --pipeline scale-up-services
 
-.PHONY: pause-manage-kafka-connectors-pipeline
-pause-manage-kafka-connectors-pipeline: ## Pause the manage-kafka-connectors pipeline
-	fly --target concourse pause-pipeline --pipeline manage-kafka-connectors
+.PHONY: pause-manage-ecs-services-pipeline
+pause-manage-ecs-services-pipeline: ## Pause the manage-ecs-services pipeline
+	fly --target concourse pause-pipeline --pipeline manage-ecs-services
 
 .PHONY: pause-manage-environments-pipeline
 pause-manage-environments-pipeline: ## Pause the manage-environmentss pipeline
@@ -115,9 +115,9 @@ unpause-scale-down-services-pipeline: ## Unpause the scale down services pipelin
 unpause-scale-up-services-pipeline: ## Unpause the scale up services pipeline
 	fly --target concourse unpause-pipeline --pipeline scale-up-services
 
-.PHONY: unpause-manage-kafka-connectors-pipeline
-unpause-manage-kafka-connectors-pipeline: ## Unpause the manage-kafka-connectors pipeline
-	fly --target concourse unpause-pipeline --pipeline manage-kafka-connectors
+.PHONY: unpause-manage-ecs-services-pipeline
+unpause-manage-ecs-services-pipeline: ## Unpause the manage-ecs-services pipeline
+	fly --target concourse unpause-pipeline --pipeline manage-ecs-services
 
 .PHONY: unpause-manage-environments-pipeline
 unpause-manage-environments-pipeline: ## Unpause the manage-environments pipeline

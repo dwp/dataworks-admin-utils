@@ -8,7 +8,7 @@ There are multiple admin style pipelines which are released to the CI system:
 0. `lambda-cleanup`
 0. `scale-down-services`
 0. `scale-up-services`
-0. `manage-kafka-connectors`
+0. `manage-ecs-services`
 0. `manage-environments`
 0. `generate-snapshots`
 0. `send-snapshots`
@@ -55,16 +55,16 @@ You can also pause or unpause the pipeline:
 * `make pause-scale-up-services-pipeline`
 * `make unpause-scale-up-services-pipeline`
 
-### Pipeline: manage-kafka-connectors
+### Pipeline: manage-ecs-services
 
-This is used recycle the Kafka connector ECS containers (kafka-to-hbase and kafka-to-s3) in a given environment. The files for this pipeline are in the ci/manage-kafka-connectors folder in this repo. To update this pipeline in CI, you can run the following make command:
+This is used recycle the Kafka connector ECS containers (kafka-to-hbase and kafka-to-s3) in a given environment. The files for this pipeline are in the ci/manage-ecs-services folder in this repo. To update this pipeline in CI, you can run the following make command:
 
-* `make update-manage-kafka-connectors-pipeline`
+* `make update-manage-ecs-services-pipeline`
 
 You can also pause or unpause the pipeline:
 
-* `make pause-manage-kafka-connectors-pipeline`
-* `make unpause-manage-kafka-connectors-pipeline`
+* `make pause-manage-ecs-services-pipeline`
+* `make unpause-manage-ecs-services-pipeline`
 
 ### Pipeline: manage-environments
 
