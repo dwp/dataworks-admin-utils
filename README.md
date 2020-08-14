@@ -118,6 +118,7 @@ The following overrides can be passed through as config params from the environm
 * `SEND_SNAPSHOTS_TOPICS_OVERRIDE` -> a string to denote the specific topics/collections to be sent to Crown. Can be either "ALL" for the full default topic list, a comma separated list of full Kafka topic names representing the desired collections (i.e. `db.core.aaa,db.agentCore.bbbb`) or if not passed in it defaults to the job name.
 * `SEND_SNAPSHOTS_REPROCESS_FILES_OVERRIDE` -> this flag sets whether when Snapshot Sender sends a file, it will error if it already exists. There are specific jobs to set this so should not be changed on standard ones.
 * `SNAPSHOT_SENDER_SCALE_UP_OVERRIDE` -> if the amount of snappy instances needs to be fixed can use this to scale to a specific number, else will be the snappy asg max number
+* `SEND_SNAPSHOTS_CORRELATION_ID_OVERRIDE` -> use this to override the correlation id that is used for this run against the given topics (will overwrite existing dynamo db statuses for the topics you pass in, so use only when necessary to fix a prod run)
 
 ### Pipeline: uc-data-load
 
