@@ -57,7 +57,11 @@ You can also pause or unpause the pipeline:
 
 ### Pipeline: manage-ecs-services
 
-This is used recycle the Kafka connector ECS containers (kafka-to-hbase and kafka-to-s3) in a given environment. The files for this pipeline are in the ci/manage-ecs-services folder in this repo. To update this pipeline in CI, you can run the following make command:
+This is used to manage the following ECS containers:
+* Kafka connectors like kafka-to-s3 and kafka-to-hbase 
+* k2hb metadata reconciliation services for ucfs and equality feeds
+
+The files for this pipeline are in the ci/manage-ecs-services folder in this repo. To update this pipeline in CI, you can run the following make command:
 
 * `make update-manage-ecs-services-pipeline`
 
