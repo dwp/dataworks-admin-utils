@@ -1,7 +1,6 @@
-meta-manage-kafka-connector:
+meta-manage-ecs-services:
   plan:
-    restart-kafka-connector:
-      task: restart-kafka-connector
+    manage-ecs-common:
       config:
         platform: linux
         image_resource:
@@ -12,6 +11,13 @@ meta-manage-kafka-connector:
         params:
           AWS_REGION: ((dataworks.aws_region))
           AWS_DEFAULT_REGION: ((dataworks.aws_region))
+          ECS_CLUSTER: unset
+          ECS_SERVICE: unset
+
+    restart-ecs-service:
+      task: restart-ecs-service
+      .: (( inject meta-manage-ecs-services.plan.manage-ecs-common ))
+      config:
         run:
           path: sh
           args:
@@ -26,18 +32,12 @@ meta-manage-kafka-connector:
                 aws --region=eu-west-2 ecs stop-task --cluster ${ECS_CLUSTER} --task ${TASK_ARN};
               done
 
-    scale-down-kafka-connector:
-      task: scale-down-kafka-connector
+    scale-down-ecs-service:
+      task: scale-down-ecs-service
+      .: (( inject meta-manage-ecs-services.plan.manage-ecs-common ))
       config:
-        platform: linux
-        image_resource:
-          type: docker-image
-          source:
-            repository: ((dataworks.docker_awscli_repository))
-            tag: ((dataworks.docker_awscli_version))
         params:
-          AWS_REGION: ((dataworks.aws_region))
-          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+          DESIRED_COUNT: 0
         run:
           path: sh
           args:
@@ -47,18 +47,12 @@ meta-manage-kafka-connector:
               set +x
               aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${ECS_SERVICE} --desired-count ${DESIRED_COUNT}
 
-    scale-up-kafka-connector:
-      task: scale-up-kafka-connector
+    scale-up-ecs-service:
+      task: scale-up-ecs-service
+      .: (( inject meta-manage-ecs-services.plan.manage-ecs-common ))
       config:
-        platform: linux
-        image_resource:
-          type: docker-image
-          source:
-            repository: ((dataworks.docker_awscli_repository))
-            tag: ((dataworks.docker_awscli_version))
         params:
-          AWS_REGION: ((dataworks.aws_region))
-          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+          DESIRED_COUNT_OUTPUT_NAME: ".kafka_to_hbase_consumer.value[0].desired_count"
         run:
           path: sh
           args:
@@ -66,7 +60,52 @@ meta-manage-kafka-connector:
             - |
               source /assume-role
               set +x
-              DESIRED_COUNT=$(cat terraform-output-ingest/outputs.json | jq -r '.kafka_to_hbase_consumer.value[0].desired_count')
+              DESIRED_COUNT=$(cat terraform-output-ingest/outputs.json | jq -r "$DESIRED_COUNT_OUTPUT_NAME")
               aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${ECS_SERVICE} --desired-count ${DESIRED_COUNT}
         inputs:
           - name: terraform-output-ingest
+          
+    restart-ucfs-reconciliation:
+      .: (( inject meta-manage-ecs-services.plan.restart-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: ucfs-reconciliation
+
+    restart-equality-reconciliation:
+      .: (( inject meta-manage-ecs-services.plan.restart-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: equality-reconciliation
+
+    scale-down-ucfs-reconciliation:
+      .: (( inject meta-manage-ecs-services.plan.scale-down-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: ucfs-reconciliation
+
+    scale-down-equality-reconciliation:
+      .: (( inject meta-manage-ecs-services.plan.scale-down-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: equality-reconciliation
+
+    scale-up-ucfs-reconciliation:
+      .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: ucfs-reconciliation
+          DESIRED_COUNT_OUTPUT_NAME: ".k2hb_reconciliation.value.desired_count.ucfs_reconciliation"
+
+    scale-up-equality-reconciliation:
+      .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: equality-reconciliation
+          DESIRED_COUNT_OUTPUT_NAME: ".k2hb_reconciliation.value.desired_count.equality_reconciliation"
+
