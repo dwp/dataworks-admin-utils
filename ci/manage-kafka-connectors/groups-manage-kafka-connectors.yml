@@ -1,5 +1,0 @@
-groups:
-  - name: restart-k2s3
-    jobs:
-      - development-restart-k2s3
-      - qa-restart-k2s3
