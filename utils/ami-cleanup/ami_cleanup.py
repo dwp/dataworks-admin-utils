@@ -35,7 +35,9 @@ def get_arguments():
         "--keep-min", type=int, help="Minimum number of AMIs to keep", required=True
     )
     parser.add_argument(
-        "--dry-run", help="Set to False to perform deletion", required=True,
+        "--dry-run",
+        help="Set to False to perform deletion",
+        required=True,
     )
 
     args = parser.parse_args()
