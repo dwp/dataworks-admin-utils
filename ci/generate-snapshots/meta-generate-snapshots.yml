@@ -1,4 +1,4 @@
-meta-generate-snapshots:
+ meta-generate-snapshots:
   plan:
     generate-snapshots:
       task: generate-snapshots
@@ -22,6 +22,41 @@ meta-generate-snapshots:
               source /assume-role
               set +x
               export E2E_FEATURE_TAG_FILTER="@admin-generate-${SNAPSHOT_TYPE}-snapshots"
+              cd src/runners
+              ./run-ci.sh \
+              "../../../meta" \
+              "../../../terraform-output-ingest/outputs.json" \
+              "../../../terraform-output-internal-compute/outputs.json" \
+              "../../../terraform-output-snapshot-sender/outputs.json"
+        inputs:
+          - name: aws-dataworks-e2e-framework
+          - name: meta
+          - name: terraform-output-ingest
+          - name: terraform-output-internal-compute
+          - name: terraform-output-snapshot-sender
+
+    generate-snapshots-and-check-for-completion-status:
+      task: generate-snapshots-and-check-for-completion-status
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_python_boto_behave_repository))
+            tag: 0.0.24
+        params:
+          AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+          E2E_TEST_TIMEOUT: 300
+        run:
+          dir: aws-dataworks-e2e-framework
+          path: sh
+          args:
+            - -exc
+            - |
+              source /assume-role
+              set +x
+              export E2E_FEATURE_TAG_FILTER="@admin-generate-${SNAPSHOT_TYPE}-snapshots-with-completion-status-poller"
               cd src/runners
               ./run-ci.sh \
               "../../../meta" \

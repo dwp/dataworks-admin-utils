@@ -16,7 +16,7 @@ jobs:
           - .: (( inject meta.plan.terraform-output-ingest ))
           - .: (( inject meta.plan.terraform-output-internal-compute ))
           - .: (( inject meta.plan.terraform-output-snapshot-sender))
-      - .: (( inject meta-generate-snapshots.plan.generate-snapshots ))
+      - .: (( inject meta-generate-snapshots.plan.generate-snapshots-and-check-for-completion-status ))
         config:
           params:
             AWS_ACC: ((aws_account.development))
