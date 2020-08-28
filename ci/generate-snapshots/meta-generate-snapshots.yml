@@ -1,4 +1,4 @@
- meta-generate-snapshots:
+meta-generate-snapshots:
   plan:
     generate-snapshots:
       task: generate-snapshots
