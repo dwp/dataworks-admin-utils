@@ -27,4 +27,4 @@ jobs:
           params:
             AWS_ACC: ((aws_account.qa))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
-            E2E_FEATURE_TAG_FILTER: @admin-generate-full-snapshots
+            E2E_FEATURE_TAG_FILTER: @admin-generate-incremental-snapshots
