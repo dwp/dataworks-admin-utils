@@ -21,6 +21,7 @@ meta-generate-snapshots:
             - |
               source /assume-role
               set +x
+              export E2E_FEATURE_TAG_FILTER="@${E2E_FEATURE_TAG_FILTER}"
               cd src/runners
               ./run-ci.sh \
               "../../../meta" \
