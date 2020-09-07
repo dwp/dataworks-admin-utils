@@ -102,6 +102,7 @@ The following overrides can be passed through as config params from the environm
 * `GENERATE_SNAPSHOTS_END_TIME_OVERRIDE` -> if snapshot type passed in as "incremental" this can be used to provide the end time cut off for records to include in the incremental snapshot - must be a valid date in the format `%Y-%m-%dT%H:%M:%S.%f` and will default to midnight today if not passed in.
 * `GENERATE_SNAPSHOTS_TRIGGER_SNAPSHOT_SENDER_OVERRIDE` -> if passed in as `true` then this will cause the generated snapshots to *also be sent down to Crown by Snapshot Sender* - default is `false`
 * `GENERATE_SNAPSHOTS_REPROCESS_FILES_OVERRIDE` -> this flag sets whether when Snapshot Sender sends a file, it will error if it already exists. There are specific jobs to set this so should not be changed on standard ones.
+* `GENERATE_SNAPSHOTS_CORRELATION_ID_OVERRIDE` -> override the correlation id which is useful for re-running new nightly generate and send topics
 
 ### Pipeline: send-snapshots
 
