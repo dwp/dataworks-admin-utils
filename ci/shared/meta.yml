@@ -1,15 +1,30 @@
 meta:
   plan:
-    terraform-output-ingest:
-      task: terraform-output-ingest
+    terraform-common-config:
       config:
         platform: linux
         image_resource:
           type: docker-image
           source:
-            repository: ((terraform.repository))
-            version: ((terraform12.version))
-            tag: ((terraform12.version))
+            repository: ((dataworks.terraform_repository))
+            tag: ((dataworks.terraform_version))
+        params:
+          TF_INPUT: false
+          AWS_REGION: ((dataworks.aws_region))
+          TF_CLI_ARGS_apply: -lock-timeout=300s
+          TF_CLI_ARGS_plan: -lock-timeout=300s
+          TF_VAR_slack_webhook_url: ((dataworks.slack_webhook_url))
+
+    terraform-output-ingest:
+      task: terraform-output-ingest
+      .: (( inject meta.plan.terraform-common-config ))
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.terraform_repository))
+            tag: ((dataworks.terraform_version))
         run:
           path: sh
           args:
@@ -23,22 +38,17 @@ meta:
           - name: aws-ingestion
         outputs:
           - name: terraform-output-ingest
-      params:
-        TF_CLI_ARGS_plan: -lock-timeout=300s
-        TF_INPUT: "false"
-        TF_VAR_slack_webhook_url: ((slack.webhook_url))
-        AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
-        AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
+
     terraform-output-internal-compute:
       task: terraform-output-internal-compute
+      .: (( inject meta.plan.terraform-common-config ))
       config:
         platform: linux
         image_resource:
           type: docker-image
           source:
-            repository: ((terraform.repository))
-            version: ((terraform12.version))
-            tag: ((terraform12.version))
+            repository: ((dataworks.terraform_repository))
+            tag: ((dataworks.terraform_version))
         run:
           path: sh
           args:
@@ -52,22 +62,17 @@ meta:
           - name: aws-internal-compute
         outputs:
           - name: terraform-output-internal-compute
-      params:
-        TF_CLI_ARGS_plan: -lock-timeout=300s
-        TF_INPUT: "false"
-        TF_VAR_slack_webhook_url: ((slack.webhook_url))
-        AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
-        AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
-    terraform-output-sdx:
-      task: terraform-output-sdx
+
+    terraform-output-snapshot-sender:
+      task: terraform-output-snapshot-sender
+      .: (( inject meta.plan.terraform-common-config ))
       config:
         platform: linux
         image_resource:
           type: docker-image
           source:
-            repository: ((terraform.repository))
-            version: ((terraform12.version))
-            tag: ((terraform12.version))
+            repository: ((dataworks.terraform_repository))
+            tag: ((dataworks.terraform_version))
         run:
           path: sh
           args:
@@ -75,57 +80,9 @@ meta:
             - |
               terraform workspace show
               terraform init
-              terraform output --json > ../terraform-output-sdx/outputs.json
-          dir: aws-sdx
+              terraform output --json > ../terraform-output-snapshot-sender/outputs.json
+          dir: aws-snapshot-sender
         inputs:
-          - name: aws-sdx
+          - name: aws-snapshot-sender
         outputs:
-          - name: terraform-output-sdx
-      params:
-        TF_CLI_ARGS_plan: -lock-timeout=300s
-        TF_INPUT: "false"
-        TF_VAR_slack_webhook_url: ((slack.webhook_url))
-        AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
-        AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
-    create-aws-profiles:
-      task: create-aws-profiles
-      config:
-        platform: linux
-        image_resource:
-          type: docker-image
-          source:
-            repository: ((docker-awscli.repository))
-            version: ((docker-awscli.version))
-            tag: ((docker-awscli.version))
-        outputs:
-        - name: .aws
-        params:
-          AWS_ACCESS_KEY_ID: ((ci.aws_access_key_id))
-          AWS_SECRET_ACCESS_KEY: ((ci.aws_secret_access_key))
-          AWS_ROLE: ci
-        run:
-          path: sh
-          args:
-          - -exc
-          - |
-            cat <<EOF> .aws/credentials
-            [default]
-            aws_access_key_id = $AWS_ACCESS_KEY_ID
-            aws_secret_access_key = $AWS_SECRET_ACCESS_KEY
-
-            [$AWS_ROLE]
-            role_arn = arn:aws:iam::$AWS_ACC:role/$AWS_ROLE
-            source_profile = default
-            EOF
-
-            cat <<EOF> .aws/config
-            [default]
-            region = eu-west-2
-
-            [profile $AWS_ROLE]
-            region = eu-west-2
-            s3 =
-              max_concurrent_requests = 5
-              signature_version = s3v4
-              addressing_style = virtual
-            EOF
+          - name: terraform-output-snapshot-sender

@@ -27,6 +27,10 @@ git-hooks: ## Set up hooks in .git/hooks
 concourse-login: ## Login to concourse using Fly
 	fly -t concourse login -c https://concourse.service.dw/ -k -n dataworks
 
+.PHONY: aws-concourse-login
+aws-concourse-login: ## Login to AWS concourse using Fly
+	fly -t concourse login -c https://ci.dataworks.dwp.gov.uk/ -k -n dataworks
+
 .PHONY: update-lambda-cleanup-pipeline
 update-lambda-cleanup-pipeline: ## Update the lambda-cleanup pipeline
 	aviator -f aviator-lambda-cleanup.yml
@@ -39,9 +43,9 @@ update-scale-down-services-pipeline: ## Update the scale-down-services pipeline
 update-scale-up-services-pipeline: ## Update the scale-up-services pipeline
 	aviator -f aviator-scale-up-services.yml
 
-.PHONY: update-manage-kafka-connectors-pipeline
-update-manage-kafka-connectors-pipeline: ## Update the manage-kafka-connectors pipeline
-	aviator -f aviator-manage-kafka-connectors.yml
+.PHONY: update-manage-ecs-services-pipeline
+update-manage-ecs-services-pipeline: ## Update the manage-ecs-services pipeline
+	aviator -f aviator-manage-ecs-services.yml
 
 .PHONY: update-manage-environments-pipeline
 update-manage-environments-pipeline: ## Update the manage-environments pipeline
@@ -54,10 +58,6 @@ update-generate-snapshots-pipeline: ## Update the generate snapshots pipeline
 .PHONY: update-send-snapshots-pipeline
 update-send-snapshots-pipeline: ## Update the send snapshots pipeline
 	aviator -f aviator-send-snapshots.yml
-
-.PHONY: update-uc-list-snapshots-pipeline
-update-uc-list-snapshots-pipeline: ## Update the uc-list-snapshots pipeline
-	aviator -f aviator-uc-list-snapshots.yml
 
 .PHONY: update-ami-cleanup-pipeline
 update-ami-cleanup-pipeline: ## Update the ami-cleanup pipeline
@@ -79,9 +79,9 @@ pause-scale-down-services-pipeline: ## Pause the scale down services pipeline
 pause-scale-up-services-pipeline: ## Pause the scale up services pipeline
 	fly --target concourse pause-pipeline --pipeline scale-up-services
 
-.PHONY: pause-manage-kafka-connectors-pipeline
-pause-manage-kafka-connectors-pipeline: ## Pause the manage-kafka-connectors pipeline
-	fly --target concourse pause-pipeline --pipeline manage-kafka-connectors
+.PHONY: pause-manage-ecs-services-pipeline
+pause-manage-ecs-services-pipeline: ## Pause the manage-ecs-services pipeline
+	fly --target concourse pause-pipeline --pipeline manage-ecs-services
 
 .PHONY: pause-manage-environments-pipeline
 pause-manage-environments-pipeline: ## Pause the manage-environmentss pipeline
@@ -94,10 +94,6 @@ pause-generate-snapshots-pipeline: ## Pause the generate snapshots pipeline
 .PHONY: pause-send-snapshots-pipeline
 pause-send-snapshots-pipeline: ## Pause the send snapshots pipeline
 	fly --target concourse pause-pipeline --pipeline send-snapshots
-
-.PHONY: pause-uc-list-snapshots-pipeline
-pause-uc-list-snapshots-pipeline: ## Pause the uc-list-snapshots pipeline
-	fly --target concourse pause-pipeline --pipeline uc-list-snapshots
 
 .PHONY: pause-uc-data-load-pipeline
 pause-uc-data-load-pipeline: ## Pause the uc-data-load pipeline
@@ -119,9 +115,9 @@ unpause-scale-down-services-pipeline: ## Unpause the scale down services pipelin
 unpause-scale-up-services-pipeline: ## Unpause the scale up services pipeline
 	fly --target concourse unpause-pipeline --pipeline scale-up-services
 
-.PHONY: unpause-manage-kafka-connectors-pipeline
-unpause-manage-kafka-connectors-pipeline: ## Unpause the manage-kafka-connectors pipeline
-	fly --target concourse unpause-pipeline --pipeline manage-kafka-connectors
+.PHONY: unpause-manage-ecs-services-pipeline
+unpause-manage-ecs-services-pipeline: ## Unpause the manage-ecs-services pipeline
+	fly --target concourse unpause-pipeline --pipeline manage-ecs-services
 
 .PHONY: unpause-manage-environments-pipeline
 unpause-manage-environments-pipeline: ## Unpause the manage-environments pipeline
@@ -134,10 +130,6 @@ unpause-generate-snapshots-pipeline: ## Unpause the generate snapshots pipeline
 .PHONY: unpause-send-snapshots-pipeline
 unpause-send-snapshots-pipeline: ## Unpause the send snapshots pipeline
 	fly --target concourse unpause-pipeline --pipeline send-snapshots
-
-.PHONY: unpause-uc-list-snapshots-pipeline
-unpause-uc-list-snapshots-pipeline: ## Unpause the uc-list-snapshots pipeline
-	fly --target concourse unpause-pipeline --pipeline uc-list-snapshots
 
 .PHONY: unpause-uc-data-load-pipeline
 unpause-uc-data-load-pipeline: ## Unpause the uc-data-load pipeline

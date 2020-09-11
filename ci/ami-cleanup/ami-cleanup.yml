@@ -1,40 +1,39 @@
 jobs:
   - name: ami-cleanup-mgmtdev-dryrun
     plan:
-    - get: dataworks-admin-utils
-    - .: (( inject meta.plan.create-all-aws-profiles ))
-    - .: (( inject meta.plan.ami-cleanup-mgmt-dev ))
-      config:
-        params:
-          DRY_RUN: true
+      - get: dataworks-admin-utils
+      - .: (( inject meta.plan.ami-cleanup-mgmt-dev ))
+        config:
+          params:
+            DRY_RUN: true
 
   - name: ami-cleanup-mgmtdev
     plan:
-    - get: dataworks-admin-utils
-      passed:
-      - ami-cleanup-mgmtdev-dryrun
-    - .: (( inject meta.plan.create-all-aws-profiles ))
-    - .: (( inject meta.plan.ami-cleanup-mgmt-dev ))
-      config:
-        params:
-          DRY_RUN: false
+      - get: dataworks-admin-utils
+        passed:
+          - ami-cleanup-mgmtdev-dryrun
+      - .: (( inject meta.plan.ami-cleanup-mgmt-dev ))
+        config:
+          params:
+            DRY_RUN: false
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.management-dev)):role/ci
 
   - name: ami-cleanup-mgmt-dryrun
     plan:
-    - get: dataworks-admin-utils
-    - .: (( inject meta.plan.create-all-aws-profiles ))
-    - .: (( inject meta.plan.ami-cleanup-mgmt ))
-      config:
-        params:
-          DRY_RUN: true
+      - get: dataworks-admin-utils
+      - .: (( inject meta.plan.ami-cleanup-mgmt ))
+        config:
+          params:
+            DRY_RUN: true
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.management)):role/ci
 
   - name: ami-cleanup-mgmt
     plan:
-    - get: dataworks-admin-utils
-      passed:
-        - ami-cleanup-mgmt-dryrun
-    - .: (( inject meta.plan.create-all-aws-profiles ))
-    - .: (( inject meta.plan.ami-cleanup-mgmt ))
-      config:
-        params:
-          DRY_RUN: false
+      - get: dataworks-admin-utils
+        passed:
+          - ami-cleanup-mgmt-dryrun
+      - .: (( inject meta.plan.ami-cleanup-mgmt ))
+        config:
+          params:
+            DRY_RUN: false
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.management)):role/ci

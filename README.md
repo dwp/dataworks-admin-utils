@@ -5,16 +5,15 @@ Contains DataWorks administrative utilities
 
 There are multiple admin style pipelines which are released to the CI system:
 
-1. `lambda-cleanup`
-2. `scale-down-services`
-3. `scale-up-services`
-4. `manage-kafka-connectors`
-5. `manage-environments`
-6. `generate-snapshots`
-7. `send-snapshots`
-8. `uc-list-snapshots`
-9. `uc-data-load`
-10. `ami-cleanup`
+0. `lambda-cleanup`
+0. `scale-down-services`
+0. `scale-up-services`
+0. `manage-ecs-services`
+0. `manage-environments`
+0. `generate-snapshots`
+0. `send-snapshots`
+0. `uc-data-load`
+0. `ami-cleanup`
 
 ### Installing as a concourse pipeline
 
@@ -56,16 +55,20 @@ You can also pause or unpause the pipeline:
 * `make pause-scale-up-services-pipeline`
 * `make unpause-scale-up-services-pipeline`
 
-### Pipeline: manage-kafka-connectors
+### Pipeline: manage-ecs-services
 
-This is used recycle the Kafka connector ECS containers (kafka-to-hbase and kafka-to-s3) in a given environment. The files for this pipeline are in the ci/manage-kafka-connectors folder in this repo. To update this pipeline in CI, you can run the following make command:
+This is used to manage the following ECS containers:
+* Kafka connectors like kafka-to-s3 and kafka-to-hbase 
+* k2hb metadata reconciliation services for ucfs and equality feeds
 
-* `make update-manage-kafka-connectors-pipeline`
+The files for this pipeline are in the ci/manage-ecs-services folder in this repo. To update this pipeline in CI, you can run the following make command:
+
+* `make update-manage-ecs-services-pipeline`
 
 You can also pause or unpause the pipeline:
 
-* `make pause-manage-kafka-connectors-pipeline`
-* `make unpause-manage-kafka-connectors-pipeline`
+* `make pause-manage-ecs-services-pipeline`
+* `make unpause-manage-ecs-services-pipeline`
 
 ### Pipeline: manage-environments
 
@@ -99,6 +102,7 @@ The following overrides can be passed through as config params from the environm
 * `GENERATE_SNAPSHOTS_END_TIME_OVERRIDE` -> if snapshot type passed in as "incremental" this can be used to provide the end time cut off for records to include in the incremental snapshot - must be a valid date in the format `%Y-%m-%dT%H:%M:%S.%f` and will default to midnight today if not passed in.
 * `GENERATE_SNAPSHOTS_TRIGGER_SNAPSHOT_SENDER_OVERRIDE` -> if passed in as `true` then this will cause the generated snapshots to *also be sent down to Crown by Snapshot Sender* - default is `false`
 * `GENERATE_SNAPSHOTS_REPROCESS_FILES_OVERRIDE` -> this flag sets whether when Snapshot Sender sends a file, it will error if it already exists. There are specific jobs to set this so should not be changed on standard ones.
+* `GENERATE_SNAPSHOTS_CORRELATION_ID_OVERRIDE` -> override the correlation id which is useful for re-running new nightly generate and send topics
 
 ### Pipeline: send-snapshots
 
@@ -118,17 +122,8 @@ The following overrides can be passed through as config params from the environm
 * `SEND_SNAPSHOTS_DATE_OVERRIDE` -> a string for sending snapshots from a specific date folder in S3, must be in the format "YYYY-MM-DD" and will default to today's date if not overridden.
 * `SEND_SNAPSHOTS_TOPICS_OVERRIDE` -> a string to denote the specific topics/collections to be sent to Crown. Can be either "ALL" for the full default topic list, a comma separated list of full Kafka topic names representing the desired collections (i.e. `db.core.aaa,db.agentCore.bbbb`) or if not passed in it defaults to the job name.
 * `SEND_SNAPSHOTS_REPROCESS_FILES_OVERRIDE` -> this flag sets whether when Snapshot Sender sends a file, it will error if it already exists. There are specific jobs to set this so should not be changed on standard ones.
-
-### Pipeline: uc-list-snapshots
-
-This is used to list the files in the current folder set to be ingested by the import process. The files for this pipeline are in the ci/uc-list-snapshots folder in this repo. To update this pipeline in CI, you can run the following make command:
-
-* `make update-uc-list-snapshots-pipeline`
-
-You can also pause or unpause the pipeline:
-
-* `make pause-uc-list-snapshots-pipeline`
-* `make unpause-uc-list-snapshots-pipeline`
+* `SNAPSHOT_SENDER_SCALE_UP_OVERRIDE` -> if the amount of snappy instances needs to be fixed can use this to scale to a specific number, else will be the snappy asg max number
+* `SEND_SNAPSHOTS_CORRELATION_ID_OVERRIDE` -> use this to override the correlation id that is used for this run against the given topics (will overwrite existing dynamo db statuses for the topics you pass in, so use only when necessary to fix a prod run)
 
 ### Pipeline: uc-data-load
 
@@ -140,6 +135,14 @@ You can also pause or unpause the pipeline:
 
 * `make pause-uc-data-load-pipeline`
 * `make unpause-uc-data-load-pipeline`
+
+#### Overrides
+
+The following overrides can be passed through as config params from the environment jobs to the uc data load tasks in the pipelines:
+
+* `HISTORIC_IMPORTER_USE_ONE_MESSAGE_PER_PATH` -> a string of "true" will ensure that the prefixes passed from terraform will be split in to one message per comma delimited part of the string when sent to SQS and HDI uses one message per run, else one single message is sent to SQS with the comma delimited fill string in and HDI uses all the paths on one single run.
+* `HISTORIC_IMPORTER_SKIP_EARLIER_THAN_OVERRIDE` -> if passed in, records with a timestamp earlier than this are skipped in the historic import - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
+* `HISTORIC_IMPORTER_SKIP_LATER_THAN_OVERRIDE` -> if passed in, records with a timestamp later than this are skipped in the historic import - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
 
 ### Pipeline: ami-cleanup
 

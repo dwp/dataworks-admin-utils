@@ -3,11 +3,16 @@ groups:
   jobs:
   - development-generate-full-snapshots
   - qa-generate-full-snapshots
+  - integration-generate-full-snapshots
   - preprod-generate-full-snapshots
   - production-generate-full-snapshots
 - name: generate-incremental-snapshots
   jobs:
   - development-generate-incremental-snapshots
   - qa-generate-incremental-snapshots
+  - integration-generate-incremental-snapshots
   - preprod-generate-incremental-snapshots
   - production-generate-incremental-snapshots
+- name: nightly-generate-and-send
+  jobs:
+  - production-nightly-generate-and-send
