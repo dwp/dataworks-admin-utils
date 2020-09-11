@@ -1,0 +1,155 @@
+jobs:
+  - name: dev-restart-ucfs-trim-reconciled-records
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-ucfs-trim-reconciled-records ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+
+  - name: qa-restart-ucfs-trim-reconciled-records
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-ucfs-trim-reconciled-records ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+
+  - name: int-restart-ucfs-trim-reconciled-records
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-ucfs-trim-reconciled-records ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
+
+  - name: preprod-restart-ucfs-trim-reconciled-records
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-ucfs-trim-reconciled-records ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
+
+  - name: prod-restart-ucfs-trim-reconciled-records
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-ucfs-trim-reconciled-records ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
+
+  - name: dev-scale-down-ucfs-trim-reconciled-records
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-ucfs-trim-reconciled-records ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+
+  - name: qa-scale-down-ucfs-trim-reconciled-records
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-ucfs-trim-reconciled-records ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+
+  - name: int-scale-down-ucfs-trim-reconciled-records
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-ucfs-trim-reconciled-records ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
+
+  - name: preprod-scale-down-ucfs-trim-reconciled-records
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-ucfs-trim-reconciled-records ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
+
+  - name: prod-scale-down-ucfs-trim-reconciled-records
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-ucfs-trim-reconciled-records ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
+
+  - name: dev-scale-up-ucfs-trim-reconciled-records
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
+      - .: (( inject meta.plan.terraform-output-ingest ))
+        config:
+          params:
+            TF_WORKSPACE: default
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-ucfs-trim-reconciled-records ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+
+  - name: qa-scale-up-ucfs-trim-reconciled-records
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
+      - .: (( inject meta.plan.terraform-output-ingest ))
+        config:
+          params:
+            TF_WORKSPACE: qa
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-ucfs-trim-reconciled-records ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+
+  - name: int-scale-up-ucfs-trim-reconciled-records
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
+      - .: (( inject meta.plan.terraform-output-ingest ))
+        config:
+          params:
+            TF_WORKSPACE: integration
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-ucfs-trim-reconciled-records ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
+
+  - name: preprod-scale-up-ucfs-trim-reconciled-records
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
+      - .: (( inject meta.plan.terraform-output-ingest ))
+        config:
+          params:
+            TF_WORKSPACE: preprod
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-ucfs-trim-reconciled-records ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
+
+  - name: prod-scale-up-ucfs-trim-reconciled-records
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
+      - .: (( inject meta.plan.terraform-output-ingest ))
+        config:
+          params:
+            TF_WORKSPACE: production
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-ucfs-trim-reconciled-records ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci

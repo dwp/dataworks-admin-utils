@@ -79,6 +79,20 @@ meta-manage-ecs-services:
           ECS_CLUSTER: main
           ECS_SERVICE: equality-reconciliation
 
+    restart-ucfs-trim-reconciled-records:
+      .: (( inject meta-manage-ecs-services.plan.restart-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: ucfs-trim-reconciled-records
+
+    restart-equality-trim-reconciled-records:
+      .: (( inject meta-manage-ecs-services.plan.restart-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: equality-trim-reconciled-records
+
     scale-down-ucfs-reconciliation:
       .: (( inject meta-manage-ecs-services.plan.scale-down-ecs-service ))
       config:
@@ -92,6 +106,21 @@ meta-manage-ecs-services:
         params:
           ECS_CLUSTER: main
           ECS_SERVICE: equality-reconciliation
+
+
+    scale-down-ucfs-trim-reconciled-records:
+      .: (( inject meta-manage-ecs-services.plan.scale-down-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: ucfs-trim-reconciled-records
+
+    scale-down-equality-trim-reconciled-records:
+      .: (( inject meta-manage-ecs-services.plan.scale-down-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: equality-trim-reconciled-records
 
     scale-up-ucfs-reconciliation:
       .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service ))
@@ -109,3 +138,18 @@ meta-manage-ecs-services:
           ECS_SERVICE: equality-reconciliation
           DESIRED_COUNT_OUTPUT_NAME: ".k2hb_reconciliation.value.task_counts.equality_reconciliation"
 
+    scale-up-ucfs-trim-reconciled-records:
+      .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: ucfs-trim-reconciled-records
+          DESIRED_COUNT_OUTPUT_NAME: ".k2hb_reconciliation.value.task_counts.ucfs_trim_reconciled_records"
+
+    scale-up-equality-trim-reconciled-records:
+      .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: equality-trim-reconciled-records
+          DESIRED_COUNT_OUTPUT_NAME: ".k2hb_trim_reconciled_records.value.task_counts.equality_trim_reconciled_records"
