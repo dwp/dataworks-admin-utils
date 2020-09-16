@@ -13,6 +13,8 @@ jobs:
             trigger: false
           - get: aws-snapshot-sender
             trigger: false
+          - get: daily-at-half-past-5-am
+            trigger: true
       - in_parallel:
           - .: (( inject meta.plan.terraform-output-internal-compute ))
             params:
