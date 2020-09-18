@@ -3,9 +3,3 @@ resources:
   type: meta
 - name: meta-preprod
   type: meta
-- name: daily-at-half-past-5-am
-  type: time
-  source:
-    start: 05:30 AM
-    stop: 05:39 AM
-    location: UTC
