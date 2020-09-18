@@ -35,6 +35,7 @@ jobs:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
             TYPE: "htme_manifest"
       - .: (( inject meta-generate-snapshots.plan.generate-snapshots ))
+        task: generate-full-snapshots
         config:
           params:
             AWS_ACC: ((aws_account.production))
@@ -44,6 +45,7 @@ jobs:
             GENERATE_SNAPSHOTS_TRIGGER_SNAPSHOT_SENDER_OVERRIDE: true
             GENERATE_SNAPSHOTS_REPROCESS_FILES_OVERRIDE: true
       - .: (( inject meta-generate-snapshots.plan.generate-snapshots ))
+        task: generate-incremental-snapshots
         config:
           params:
             AWS_ACC: ((aws_account.production))
