@@ -1,9 +1,3 @@
 resources:
 - name: meta-integration
   type: meta
-- name: daily-at-midnight
-  type: time
-  source:
-    start: 12:01 AM
-    stop: 12:11 AM
-    location: UTC
