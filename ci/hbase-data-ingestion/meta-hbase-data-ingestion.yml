@@ -1,7 +1,7 @@
-meta-uc-data-load:
+meta-hbase-data-ingestion:
   plan:
-    uc-data-load:
-      task: uc-data-load
+    run-data-ingestion:
+      task: run-data-ingestion
       config:
         platform: linux
         image_resource:

@@ -1,9 +1,9 @@
 jobs:
-  - name: preprod
+  - name: historic-import-qa
     max_in_flight: 1
     plan:
       - put: meta
-        resource: meta-preprod
+        resource: meta-qa
       - get: aws-ingestion
         trigger: false
       - get: aws-internal-compute
@@ -15,20 +15,15 @@ jobs:
       - in_parallel:
           - .: (( inject meta.plan.terraform-output-internal-compute ))
             params:
-              TF_WORKSPACE: "preprod"
+              TF_WORKSPACE: "qa"
           - .: (( inject meta.plan.terraform-output-ingest ))
             params:
-              TF_WORKSPACE: "preprod"
+              TF_WORKSPACE: "qa"
           - .: (( inject meta.plan.terraform-output-snapshot-sender ))
             params:
-              TF_WORKSPACE: "preprod"
-      - .: (( inject meta-uc-data-load.plan.clear-manifest ))
+              TF_WORKSPACE: "qa"
+      - .: (( inject meta-hbase-data-ingestion.plan.run-data-ingestion ))
         config:
           params:
-            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
-      - .: (( inject meta-uc-data-load.plan.uc-data-load ))
-        config:
-          params:
-            AWS_ACC: ((aws_account.preprod))
-            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
-            ACTION_TAG: "@admin-uc-data-load"
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+            ACTION_TAG: "@admin-historic-data-import"

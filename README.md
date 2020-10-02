@@ -12,7 +12,7 @@ There are multiple admin style pipelines which are released to the CI system:
 0. `manage-environments`
 0. `generate-snapshots`
 0. `send-snapshots`
-0. `uc-data-load`
+0. `hbase-data-ingestion`
 0. `ami-cleanup`
 
 ### Installing as a concourse pipeline
@@ -125,16 +125,16 @@ The following overrides can be passed through as config params from the environm
 * `SNAPSHOT_SENDER_SCALE_UP_OVERRIDE` -> if the amount of snappy instances needs to be fixed can use this to scale to a specific number, else will be the snappy asg max number
 * `SEND_SNAPSHOTS_CORRELATION_ID_OVERRIDE` -> use this to override the correlation id that is used for this run against the given topics (will overwrite existing dynamo db statuses for the topics you pass in, so use only when necessary to fix a prod run)
 
-### Pipeline: uc-data-load
+### Pipeline: hbase-data-ingestion
 
-This is used to start the import process from the snapshot folders to HBase within the desired environment - it only kicks it off and does not monitor it. The files for this pipeline are in the ci/uc-data-load folder in this repo. To update this pipeline in CI, you can run the following make command:
+This is used to start the data ingestion process from the relevant snapshot folders to HBase within the desired environment. The files for this pipeline are in the ci/hbase-data-ingestion folder in this repo. To update this pipeline in CI, you can run the following make command:
 
-* `make update-uc-data-load-pipeline`
+* `make update-hbase-data-ingestion-pipeline`
 
 You can also pause or unpause the pipeline:
 
-* `make pause-uc-data-load-pipeline`
-* `make unpause-uc-data-load-pipeline`
+* `make pause-hbase-data-ingestion-pipeline`
+* `make unpause-hbase-data-ingestion-pipeline`
 
 #### Overrides
 

@@ -1,5 +1,5 @@
 jobs:
-  - name: qa
+  - name: historic-load-qa
     max_in_flight: 1
     plan:
       - put: meta
@@ -13,17 +13,12 @@ jobs:
       - get: aws-snapshot-sender
         trigger: false
       - in_parallel:
-          - .: (( inject meta.plan.terraform-output-internal-compute ))
-            params:
-              TF_WORKSPACE: "qa"
           - .: (( inject meta.plan.terraform-output-ingest ))
-            params:
-              TF_WORKSPACE: "qa"
-          - .: (( inject meta.plan.terraform-output-snapshot-sender ))
-            params:
-              TF_WORKSPACE: "qa"
-      - .: (( inject meta-uc-data-load.plan.uc-data-load ))
+          - .: (( inject meta.plan.terraform-output-internal-compute ))
+          - .: (( inject meta.plan.terraform-output-snapshot-sender))
+      - .: (( inject meta-hbase-data-ingestion.plan.run-data-ingestion ))
         config:
           params:
+            AWS_ACC: ((aws_account.qa))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
-            ACTION_TAG: "@admin-uc-data-load"
+            ACTION_TAG: "@admin-historic-data-load"

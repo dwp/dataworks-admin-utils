@@ -1,0 +1,24 @@
+jobs:
+  - name: corporate-load-qa
+    max_in_flight: 1
+    plan:
+      - put: meta
+        resource: meta-qa
+      - get: aws-ingestion
+        trigger: false
+      - get: aws-internal-compute
+        trigger: false
+      - get: aws-dataworks-e2e-framework
+        trigger: false
+      - get: aws-snapshot-sender
+        trigger: false
+      - in_parallel:
+          - .: (( inject meta.plan.terraform-output-ingest ))
+          - .: (( inject meta.plan.terraform-output-internal-compute ))
+          - .: (( inject meta.plan.terraform-output-snapshot-sender))
+      - .: (( inject meta-hbase-data-ingestion.plan.run-data-ingestion ))
+        config:
+          params:
+            AWS_ACC: ((aws_account.qa))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+            ACTION_TAG: "@admin-corporate-data-load"

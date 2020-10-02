@@ -1,5 +1,5 @@
 jobs:
-  - name: production-import-only
+  - name: historic-import-production
     max_in_flight: 1
     plan:
       - put: meta
@@ -22,11 +22,14 @@ jobs:
           - .: (( inject meta.plan.terraform-output-snapshot-sender ))
             params:
               TF_WORKSPACE: "production"
-      - .: (( inject meta-uc-data-load.plan.uc-data-load ))
+      - .: (( inject meta-hbase-data-ingestion.plan.clear-manifest ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
+      - .: (( inject meta-hbase-data-ingestion.plan.run-data-ingestion ))
         config:
           params:
             AWS_ACC: ((aws_account.production))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
-            ACTION_TAG: "@admin-uc-data-load-import-only"
+            ACTION_TAG: "@admin-historic-data-import"
             HISTORIC_IMPORTER_USE_ONE_MESSAGE_PER_PATH: "false"
-            HISTORIC_IMPORTER_SKIP_LATER_THAN_OVERRIDE: "2020-07-10T07:00:00.000"
