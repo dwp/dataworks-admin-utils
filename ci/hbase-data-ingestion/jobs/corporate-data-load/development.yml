@@ -13,10 +13,6 @@ jobs:
           trigger: false
         - get: aws-snapshot-sender
           trigger: false
-          - get: cdl-release
-            version:
-              tag: ((cdl_version))
-            trigger: true
       - in_parallel:
           - .: (( inject meta.plan.terraform-output-ingest ))
           - .: (( inject meta.plan.terraform-output-internal-compute ))

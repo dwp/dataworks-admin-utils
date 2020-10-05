@@ -3,6 +3,7 @@ groups:
   jobs:
   - historic-import-development
   - historic-import-qa
+  - historic-import-integration
   - historic-import-preprod
   - historic-import-production
   - historic-import-production-import-only

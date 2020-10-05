@@ -2,16 +2,17 @@ jobs:
   - name: historic-import-production
     max_in_flight: 1
     plan:
-      - put: meta
-        resource: meta-production
-      - get: aws-ingestion
-        trigger: false
-      - get: aws-internal-compute
-        trigger: false
-      - get: aws-dataworks-e2e-framework
-        trigger: false
-      - get: aws-snapshot-sender
-        trigger: false
+      - in_parallel:
+        - put: meta
+          resource: meta-production
+        - get: aws-ingestion
+          trigger: false
+        - get: aws-internal-compute
+          trigger: false
+        - get: aws-dataworks-e2e-framework
+          trigger: false
+        - get: aws-snapshot-sender
+          trigger: false
       - in_parallel:
           - .: (( inject meta.plan.terraform-output-internal-compute ))
             params:
