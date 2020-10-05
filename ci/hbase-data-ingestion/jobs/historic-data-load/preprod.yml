@@ -16,7 +16,7 @@ jobs:
           - .: (( inject meta.plan.terraform-output-ingest ))
           - .: (( inject meta.plan.terraform-output-internal-compute ))
           - .: (( inject meta.plan.terraform-output-snapshot-sender))
-      - .: (( inject meta-hbase-data-ingestion.plan.run-data-ingestion ))
+      - .: (( inject meta-hbase-data-ingestion.plan.run-data-import ))
         config:
           params:
             AWS_ACC: ((aws_account.preprod))
