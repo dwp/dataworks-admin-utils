@@ -63,9 +63,9 @@ update-send-snapshots-pipeline: ## Update the send snapshots pipeline
 update-ami-cleanup-pipeline: ## Update the ami-cleanup pipeline
 	aviator -f aviator-ami-cleanup.yml
 
-.PHONY: update-uc-data-load-pipeline
-update-uc-data-load-pipeline: ## Update the uc-data-load pipeline
-	aviator -f aviator-uc-data-load.yml
+.PHONY: update-hbase-data-ingestion-pipeline
+update-hbase-data-ingestion-pipeline: ## Update the hbase-data-ingestion pipeline
+	aviator -f aviator-hbase-data-ingestion.yml
 
 .PHONY: pause-lambda-cleanup-pipeline
 pause-lambda-cleanup-pipeline: ## Pause the lambda-cleanup pipeline
@@ -95,9 +95,9 @@ pause-generate-snapshots-pipeline: ## Pause the generate snapshots pipeline
 pause-send-snapshots-pipeline: ## Pause the send snapshots pipeline
 	fly --target concourse pause-pipeline --pipeline send-snapshots
 
-.PHONY: pause-uc-data-load-pipeline
-pause-uc-data-load-pipeline: ## Pause the uc-data-load pipeline
-	fly --target concourse pause-pipeline --pipeline uc-data-load
+.PHONY: pause-hbase-data-ingestion-pipeline
+pause-hbase-data-ingestion-pipeline: ## Pause the hbase-data-ingestion pipeline
+	fly --target concourse pause-pipeline --pipeline hbase-data-ingestion
 
 .PHONY: pause-ami-cleanup-pipeline
 pause-ami-cleanup-pipeline: ## Pause the ami-cleanup pipeline
@@ -131,9 +131,9 @@ unpause-generate-snapshots-pipeline: ## Unpause the generate snapshots pipeline
 unpause-send-snapshots-pipeline: ## Unpause the send snapshots pipeline
 	fly --target concourse unpause-pipeline --pipeline send-snapshots
 
-.PHONY: unpause-uc-data-load-pipeline
-unpause-uc-data-load-pipeline: ## Unpause the uc-data-load pipeline
-	fly --target concourse unpause-pipeline --pipeline uc-data-load
+.PHONY: unpause-hbase-data-ingestion-pipeline
+unpause-hbase-data-ingestion-pipeline: ## Unpause the hbase-data-ingestion pipeline
+	fly --target concourse unpause-pipeline --pipeline hbase-data-ingestion
 
 .PHONY: unpause-ami-cleanup-pipeline
 unpause-ami-cleanup-pipeline: ## Unpause the ami-cleanup pipeline

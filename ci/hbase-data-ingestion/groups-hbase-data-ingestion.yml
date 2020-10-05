@@ -1,0 +1,24 @@
+groups:
+- name: historic-data-import
+  jobs:
+  - historic-import-development
+  - historic-import-qa
+  - historic-import-integration
+  - historic-import-preprod
+  - historic-import-production
+  - historic-import-production-import-only
+  - historic-import-production-manifest-only
+- name: corporate-data-load
+  jobs:
+  - corporate-load-development
+  - corporate-load-qa
+  - corporate-load-integration
+  - corporate-load-preprod
+  - corporate-load-production
+- name: historic-data-load
+  jobs:
+  - historic-load-development
+  - historic-load-qa
+  - historic-load-integration
+  - historic-load-preprod
+  - historic-load-production

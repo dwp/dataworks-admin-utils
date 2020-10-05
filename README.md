@@ -12,7 +12,7 @@ There are multiple admin style pipelines which are released to the CI system:
 0. `manage-environments`
 0. `generate-snapshots`
 0. `send-snapshots`
-0. `uc-data-load`
+0. `hbase-data-ingestion`
 0. `ami-cleanup`
 
 ### Installing as a concourse pipeline
@@ -125,24 +125,38 @@ The following overrides can be passed through as config params from the environm
 * `SNAPSHOT_SENDER_SCALE_UP_OVERRIDE` -> if the amount of snappy instances needs to be fixed can use this to scale to a specific number, else will be the snappy asg max number
 * `SEND_SNAPSHOTS_CORRELATION_ID_OVERRIDE` -> use this to override the correlation id that is used for this run against the given topics (will overwrite existing dynamo db statuses for the topics you pass in, so use only when necessary to fix a prod run)
 
-### Pipeline: uc-data-load
+### Pipeline: hbase-data-ingestion
 
-This is used to start the import process from the snapshot folders to HBase within the desired environment - it only kicks it off and does not monitor it. The files for this pipeline are in the ci/uc-data-load folder in this repo. To update this pipeline in CI, you can run the following make command:
+This is used to start the data ingestion process from the relevant snapshot folders to HBase within the desired environment. The files for this pipeline are in the ci/hbase-data-ingestion folder in this repo. To update this pipeline in CI, you can run the following make command:
 
-* `make update-uc-data-load-pipeline`
+* `make update-hbase-data-ingestion-pipeline`
 
 You can also pause or unpause the pipeline:
 
-* `make pause-uc-data-load-pipeline`
-* `make unpause-uc-data-load-pipeline`
+* `make pause-hbase-data-ingestion-pipeline`
+* `make unpause-hbase-data-ingestion-pipeline`
+
+#### Job groups
+
+This pipeline has the following job groups:
+
+* `historic-data-import` -> this runs the HDI component (https://github.com/dwp/uc-historic-data-importer) to import historic data in to HBase via the HBase API
+* `corporate-data-load` -> this runs the CDL component (https://github.com/dwp/corporate-data-loader) to load corporate streamed data in to HBase via the HBase bulk loading technique
+* `historic-data-load` -> this runs the HDI component (https://github.com/dwp/historic-data-loader) to import historic data in to HBase via the HBase bulk loading technique
 
 #### Overrides
 
-The following overrides can be passed through as config params from the environment jobs to the uc data load tasks in the pipelines:
+The following overrides can be passed through as config params from the environment jobs to the `historic-data-load` tasks in the pipelines:
 
 * `HISTORIC_IMPORTER_USE_ONE_MESSAGE_PER_PATH` -> a string of "true" will ensure that the prefixes passed from terraform will be split in to one message per comma delimited part of the string when sent to SQS and HDI uses one message per run, else one single message is sent to SQS with the comma delimited fill string in and HDI uses all the paths on one single run.
 * `HISTORIC_IMPORTER_SKIP_EARLIER_THAN_OVERRIDE` -> if passed in, records with a timestamp earlier than this are skipped in the historic import - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
 * `HISTORIC_IMPORTER_SKIP_LATER_THAN_OVERRIDE` -> if passed in, records with a timestamp later than this are skipped in the historic import - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
+
+The following overrides can be passed through as config params from the environment jobs to the `corporate-data-load` or `historic-data-load` tasks in the pipelines:
+
+* `DATA_LOAD_TOPICS` -> must be a comma delimited list of the topics to load or can be `ALL` to use the default list - will default to `ALL`.
+* `DATA_LOAD_METADATA_STORE_TABLE` -> either `ucfs` or `equalities` to represent the metadata store table to write to - will default to `ucfs`.
+* `DATA_LOAD_S3_SUFFIX` -> if passed in, will add a suffix to the base S3 path that is used to store the historic or corporate storage and can be used to filter to files from a specific date (for corporate data) or database (for historic data) - will default to no suffix.
 
 ### Pipeline: ami-cleanup
 

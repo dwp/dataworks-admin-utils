@@ -1,17 +1,18 @@
 jobs:
-  - name: production-import-only-skip-records
+  - name: historic-import-production
     max_in_flight: 1
     plan:
-      - put: meta
-        resource: meta-production
-      - get: aws-ingestion
-        trigger: false
-      - get: aws-internal-compute
-        trigger: false
-      - get: aws-dataworks-e2e-framework
-        trigger: false
-      - get: aws-snapshot-sender
-        trigger: false
+      - in_parallel:
+        - put: meta
+          resource: meta-production
+        - get: aws-ingestion
+          trigger: false
+        - get: aws-internal-compute
+          trigger: false
+        - get: aws-dataworks-e2e-framework
+          trigger: false
+        - get: aws-snapshot-sender
+          trigger: false
       - in_parallel:
           - .: (( inject meta.plan.terraform-output-internal-compute ))
             params:
@@ -22,10 +23,14 @@ jobs:
           - .: (( inject meta.plan.terraform-output-snapshot-sender ))
             params:
               TF_WORKSPACE: "production"
-      - .: (( inject meta-uc-data-load.plan.uc-data-load ))
+      - .: (( inject meta-hbase-data-ingestion.plan.clear-manifest ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
+      - .: (( inject meta-hbase-data-ingestion.plan.run-data-load ))
         config:
           params:
             AWS_ACC: ((aws_account.production))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
-            ACTION_TAG: "@admin-uc-data-load-with-skip-import-only"
+            ACTION_TAG: "@admin-historic-data-import"
             HISTORIC_IMPORTER_USE_ONE_MESSAGE_PER_PATH: "false"

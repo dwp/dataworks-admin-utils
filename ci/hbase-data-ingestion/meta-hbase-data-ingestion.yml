@@ -1,0 +1,141 @@
+meta-hbase-data-ingestion:
+  plan:
+    run-data-import:
+      task: run-data-import
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_python_boto_behave_repository))
+            tag: 0.0.24
+        params:
+          AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+          E2E_TEST_TIMEOUT: 300
+        run:
+          dir: aws-dataworks-e2e-framework
+          path: sh
+          args:
+            - -exc
+            - |
+              source /assume-role
+              set +x
+              export E2E_FEATURE_TAG_FILTER="${ACTION_TAG}"
+
+              cd src/runners
+              ./run-ci.sh \
+              "../../../meta" \
+              "../../../terraform-output-ingest/outputs.json" \
+              "../../../terraform-output-internal-compute/outputs.json" \
+              "../../../terraform-output-snapshot-sender/outputs.json"
+        inputs:
+          - name: aws-dataworks-e2e-framework
+          - name: meta
+          - name: terraform-output-ingest
+          - name: terraform-output-internal-compute
+          - name: terraform-output-snapshot-sender
+
+    run-data-load:
+      task: run-data-load
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_python_boto_behave_repository))
+            tag: 0.0.24
+        params:
+          AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+          E2E_TEST_TIMEOUT: 300
+        run:
+          dir: aws-dataworks-e2e-framework
+          path: sh
+          args:
+            - -exc
+            - |
+              source /assume-role
+              set +x
+              export E2E_FEATURE_TAG_FILTER="${ACTION_TAG}"
+              export DATA_LOAD_TOPICS="${DATA_LOAD_TOPICS}"
+              export DATA_LOAD_METADATA_STORE_TABLE="${DATA_LOAD_METADATA_STORE_TABLE}"
+
+              if [[ "${ACTION_TAG}" == "@admin-corporate-data-load" ]]; then
+                if [[ "${DATA_LOAD_METADATA_STORE_TABLE}" == "equalities" ]]; then
+                  export DATA_LOAD_S3_BASE_PREFIX=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.s3_base_prefix_equalities')
+                  export DATA_LOAD_FILE_PATTERN=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.file_pattern_equalities')
+                else
+                  export DATA_LOAD_S3_BASE_PREFIX=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.s3_base_prefix_ucfs')
+                  export DATA_LOAD_FILE_PATTERN=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.file_pattern_ucfs')
+                fi
+              else
+                if [[ "${DATA_LOAD_METADATA_STORE_TABLE}" == "equalities" ]]; then
+                  export DATA_LOAD_S3_BASE_PREFIX=$(cat terraform-output-ingest/outputs.json | jq -r '.ucfs_historic_data_prefix.value')
+                  export DATA_LOAD_FILE_PATTERN=$(cat terraform-output-ingest/outputs.json | jq -r '.historic_data_loader.value.file_pattern_equalities')
+                else
+                  export DATA_LOAD_S3_BASE_PREFIX=$(cat terraform-output-ingest/outputs.json | jq -r '.ucfs_historic_data_prefix.value')
+                  export DATA_LOAD_FILE_PATTERN=$(cat terraform-output-ingest/outputs.json | jq -r '.historic_data_loader.value.file_pattern_ucfs')
+                fi
+              fi
+
+              if [[ ! -z "${DATA_LOAD_S3_SUFFIX}" ]]; then
+                export DATA_LOAD_S3_BASE_PREFIX="${DATA_LOAD_S3_BASE_PREFIX}/${DATA_LOAD_S3_SUFFIX}"
+              fi
+
+              cd src/runners
+              ./run-ci.sh \
+              "../../../meta" \
+              "../../../terraform-output-ingest/outputs.json" \
+              "../../../terraform-output-internal-compute/outputs.json" \
+              "../../../terraform-output-snapshot-sender/outputs.json"
+        inputs:
+          - name: aws-dataworks-e2e-framework
+          - name: meta
+          - name: terraform-output-ingest
+          - name: terraform-output-internal-compute
+          - name: terraform-output-snapshot-sender
+
+    clear-manifest:
+      task: clear-manifest
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              source /assume-role
+              set +x
+              S3_MANIFEST_BUCKET=$(cat terraform-output-ingest/outputs.json | jq -r '.s3_buckets.value.input_bucket')
+              S3_MANIFEST_PREFIX=$(cat terraform-output-internal-compute/outputs.json | jq -r '.manifest_s3_prefixes.value.import')
+
+              S3_LOCATION="s3://${S3_MANIFEST_BUCKET}/${S3_MANIFEST_PREFIX}/" 
+              TIMEOUT=120
+
+              aws s3 rm "${S3_LOCATION}" --recursive
+
+              TIME_TAKEN=10
+              while true; do
+                  if [[ ${TIME_TAKEN} > ${TIMEOUT} ]]; then
+                      break
+                  fi
+
+                  if [[ -z $(aws s3 ls "${S3_LOCATION}") ]]; then
+                      break
+                  fi
+
+                  TIME_TAKEN=$((TIME_TAKEN + 1))
+                  sleep 1
+              done
+        inputs:
+          - name: terraform-output-ingest
+          - name: terraform-output-internal-compute
