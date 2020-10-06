@@ -149,14 +149,19 @@ This pipeline has the following job groups:
 The following overrides can be passed through as config params from the environment jobs to the `historic-data-load` tasks in the pipelines:
 
 * `HISTORIC_IMPORTER_USE_ONE_MESSAGE_PER_PATH` -> a string of "true" will ensure that the prefixes passed from terraform will be split in to one message per comma delimited part of the string when sent to SQS and HDI uses one message per run, else one single message is sent to SQS with the comma delimited fill string in and HDI uses all the paths on one single run.
-* `HISTORIC_IMPORTER_SKIP_EARLIER_THAN_OVERRIDE` -> if passed in, records with a timestamp earlier than this are skipped in the historic import - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
-* `HISTORIC_IMPORTER_SKIP_LATER_THAN_OVERRIDE` -> if passed in, records with a timestamp later than this are skipped in the historic import - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
+* `HISTORIC_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE` -> if passed in, records with a timestamp earlier than this are skipped in the historic import - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
+* `HISTORIC_DATA_INGESTION_SKIP_LATER_THAN_OVERRIDE` -> if passed in, records with a timestamp later than this are skipped in the historic import - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
 
 The following overrides can be passed through as config params from the environment jobs to the `corporate-data-load` or `historic-data-load` tasks in the pipelines:
 
 * `DATA_LOAD_TOPICS` -> must be a comma delimited list of the topics to load or can be `ALL` to use the default list - will default to `ALL`.
 * `DATA_LOAD_METADATA_STORE_TABLE` -> either `ucfs` or `equalities` to represent the metadata store table to write to - will default to `ucfs`.
 * `DATA_LOAD_S3_SUFFIX` -> if passed in, will add a suffix to the base S3 path that is used to store the historic or corporate storage and can be used to filter to files from a specific date (for corporate data) or database (for historic data) - will default to no suffix.
+
+The following overrides can be passed through as config params from the environment jobs to the `historic-data-load` tasks only in the pipeline:
+
+* `HISTORIC_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE` -> if passed in, records with a timestamp earlier than this are skipped in the historic data load - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
+* `HISTORIC_DATA_INGESTION_SKIP_LATER_THAN_OVERRIDE` -> if passed in, records with a timestamp later than this are skipped in the historic data load - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
 
 ### Pipeline: ami-cleanup
 
