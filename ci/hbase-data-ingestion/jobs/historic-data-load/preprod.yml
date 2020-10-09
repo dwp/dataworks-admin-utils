@@ -15,8 +15,14 @@ jobs:
           trigger: false
       - in_parallel:
           - .: (( inject meta.plan.terraform-output-ingest ))
+            params:
+              TF_WORKSPACE: "preprod"
           - .: (( inject meta.plan.terraform-output-internal-compute ))
+            params:
+              TF_WORKSPACE: "preprod"
           - .: (( inject meta.plan.terraform-output-snapshot-sender))
+            params:
+              TF_WORKSPACE: "preprod"
       - .: (( inject meta-hbase-data-ingestion.plan.run-data-import ))
         config:
           params:
