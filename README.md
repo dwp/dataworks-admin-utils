@@ -156,7 +156,7 @@ The following overrides can be passed through as config params from the environm
 
 * `DATA_LOAD_TOPICS` -> must be a comma delimited list of the topics to load or can be `ALL` to use the default list - will default to `ALL`.
 * `DATA_LOAD_METADATA_STORE_TABLE` -> either `ucfs` or `equalities` to represent the metadata store table to write to - will default to `ucfs`.
-* `DATA_LOAD_S3_SUFFIX` -> if passed in, will add a suffix to the base S3 path that is used to store the historic or corporate storage and can be used to filter to files from a specific date (for corporate data) or database (for historic data) - will default to no suffix.
+* `DATA_LOAD_S3_SUFFIX` -> if passed in, will add a suffix to the base S3 path that is used to store the historic or corporate storage and can be used to filter to files from a specific date (for corporate data) or database (for historic data) - will default to no suffix. If multiple suffixes required, pass in a comma delimited list, each one will be added to the base S3 path in turn and a comma delimited list of these full prefixes passed to HDL/CDL.
 
 The following overrides can be passed through as config params from the environment jobs to the `historic-data-load` tasks only in the pipeline:
 
