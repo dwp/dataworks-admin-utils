@@ -49,6 +49,7 @@ meta-hbase-data-ingestion:
           AWS_REGION: ((dataworks.aws_region))
           AWS_DEFAULT_REGION: ((dataworks.aws_region))
           E2E_TEST_TIMEOUT: 300
+          ASSUME_DURATION: 14400
         run:
           dir: aws-dataworks-e2e-framework
           path: sh
