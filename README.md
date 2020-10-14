@@ -146,11 +146,12 @@ This pipeline has the following job groups:
 
 #### Overrides
 
-The following overrides can be passed through as config params from the environment jobs to the `historic-data-load` tasks in the pipelines:
+The following overrides can be passed through as config params from the environment jobs to the `historic-data-import` tasks in the pipelines:
 
 * `HISTORIC_IMPORTER_USE_ONE_MESSAGE_PER_PATH` -> a string of "true" will ensure that the prefixes passed from terraform will be split in to one message per comma delimited part of the string when sent to SQS and HDI uses one message per run, else one single message is sent to SQS with the comma delimited fill string in and HDI uses all the paths on one single run.
 * `HISTORIC_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE` -> if passed in, records with a timestamp earlier than this are skipped in the historic import - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
 * `HISTORIC_DATA_INGESTION_SKIP_LATER_THAN_OVERRIDE` -> if passed in, records with a timestamp later than this are skipped in the historic import - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
+* `HISTORIC_DATA_INGESTION_SKIP_EXISTING_RECORDS_OVERRIDE` -> if passed in as "true", records are checked for being in HBase first and only "put" if they do not exist.
 
 The following overrides can be passed through as config params from the environment jobs to the `corporate-data-load` or `historic-data-load` tasks in the pipelines:
 
