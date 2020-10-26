@@ -17,9 +17,21 @@ jobs:
           - .: (( inject meta.plan.terraform-output-ingest ))
           - .: (( inject meta.plan.terraform-output-internal-compute ))
           - .: (( inject meta.plan.terraform-output-snapshot-sender))
+      - .: (( inject meta-hbase-data-ingestion.plan.update-dynamo-db-table-settings ))
+        task: update-dynamo-db-table-settings-write-heavy
+        params:
+          TYPE: "write_heavy"
+          AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
       - .: (( inject meta-hbase-data-ingestion.plan.run-data-load ))
         config:
           params:
             AWS_ACC: ((aws_account.development))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
             ACTION_TAG: "@admin-historic-data-import"
+    ensure:
+      do:
+        - .: (( inject meta-hbase-data-ingestion.plan.update-dynamo-db-table-settings ))
+          task: update-dynamo-db-table-settings-normal
+          params:
+            TYPE: "normal"
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
