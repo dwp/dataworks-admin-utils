@@ -140,3 +140,84 @@ meta-hbase-data-ingestion:
         inputs:
           - name: terraform-output-ingest
           - name: terraform-output-internal-compute
+
+    update-dynamo-db-table-settings:
+      task: update-dynamo-db-table-settings
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              source /assume-role
+              set +x
+
+              function get_table_status {
+                aws dynamodb describe-table --region="$AWS_REGION" \
+                --table-name "$table_name" | \
+                jq -r '.Table.TableStatus'
+              }
+
+              function get_current_write_capacity {
+                aws dynamodb describe-table --region="$AWS_REGION" \
+                --table-name "$table_name" | \
+                jq -r '.Table.ProvisionedThroughput.WriteCapacityUnits'
+              }
+
+              function update_table {
+                aws dynamodb update-table --region="$AWS_REGION" \
+                --table-name "$table_name" \
+                --provisioned-throughput ReadCapacityUnits=$read_capacity,WriteCapacityUnits=$write_capacity
+              }
+              
+              table_name=$(cat terraform-output-ingest/outputs.json | jq -r '.hbase_metadata_capacity.value.table_name')
+
+              if [[ "$TYPE" == "write_heavy" ]]; then
+                export read_capacity=$(cat terraform-output-ingest/outputs.json | jq -r '.hbase_metadata_capacity.value.read_capacity_write_heavy_load')
+                export write_capacity=$(cat terraform-output-ingest/outputs.json | jq -r '.hbase_metadata_capacity.value.write_capacity_write_heavy_load')
+              else
+                export read_capacity=$(cat terraform-output-ingest/outputs.json | jq -r '.hbase_metadata_capacity.value.read_capacity_normal_load')
+                export write_capacity=$(cat terraform-output-ingest/outputs.json | jq -r '.hbase_metadata_capacity.value.write_capacity_normal_load')
+              fi
+              
+              current_capacity=$(get_current_write_capacity)
+              echo current_capacity: \'$current_capacity\'.
+              if [[ "$current_capacity" == "$write_capacity" ]]; then
+                echo Current capacity is the same as desired, exiting normally
+                exit 0
+              fi
+
+              update_table
+
+              i=0
+              while [[ $i -le 360 ]]; do #60 minutes timeout
+                current_status=$(get_table_status)
+                echo current_status: \'$current_status\'.
+
+                if [[ -z "$current_status" ]] || [[ "$current_status" == "null" ]]; then
+                  echo Could not retrieve the current table status, exiting normally
+                  exit 0
+                fi
+
+                if [ "$current_status" == "ACTIVE" ]; then
+                  echo "Table status is active, exiting normally."
+                  exit 0
+                fi
+
+                i=$((i+1))
+                echo "Table still updating, sleeping for 10 seconds."
+                sleep 10
+              done
+        inputs:
+          - name: meta
+          - name: terraform-output-ingest
