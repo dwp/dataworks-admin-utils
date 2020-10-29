@@ -35,10 +35,3 @@ jobs:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
             ACTION_TAG: "@admin-historic-data-import-import-only"
             HISTORIC_IMPORTER_USE_ONE_MESSAGE_PER_PATH: "false"
-    ensure:
-      do:
-        - .: (( inject meta-hbase-data-ingestion.plan.update-dynamo-db-table-settings ))
-          task: update-dynamo-db-table-settings-normal
-          params:
-            TYPE: "normal"
-            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
