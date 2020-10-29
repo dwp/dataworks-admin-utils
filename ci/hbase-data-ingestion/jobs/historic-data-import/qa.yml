@@ -33,10 +33,3 @@ jobs:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
             ACTION_TAG: "@admin-historic-data-import"
-    ensure:
-      do:
-        - .: (( inject meta-hbase-data-ingestion.plan.update-dynamo-db-table-settings ))
-          task: update-dynamo-db-table-settings-normal
-          params:
-            TYPE: "normal"
-            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
