@@ -25,10 +25,6 @@ git-hooks: ## Set up hooks in .git/hooks
 
 .PHONY: concourse-login
 concourse-login: ## Login to concourse using Fly
-	fly -t concourse login -c https://concourse.service.dw/ -k -n dataworks
-
-.PHONY: aws-concourse-login
-aws-concourse-login: ## Login to AWS concourse using Fly
 	fly -t concourse login -c https://ci.dataworks.dwp.gov.uk/ -k -n dataworks
 
 .PHONY: update-lambda-cleanup-pipeline
