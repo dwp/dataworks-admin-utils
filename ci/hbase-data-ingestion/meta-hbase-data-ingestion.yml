@@ -117,8 +117,8 @@ meta-hbase-data-ingestion:
             - |
               source /assume-role
               set +x
-              S3_MANIFEST_BUCKET=$(cat terraform-output-ingest/outputs.json | jq -r '.s3_buckets.value.input_bucket')
-              S3_MANIFEST_PREFIX=$(cat terraform-output-internal-compute/outputs.json | jq -r '.manifest_s3_prefixes.value.import')
+              S3_MANIFEST_BUCKET=$(cat terraform-output-internal-compute/outputs.json | jq -r '.manifest_bucket.value.id')
+              S3_MANIFEST_PREFIX=$(cat terraform-output-internal-compute/outputs.json | jq -r '.manifest_s3_prefixes.value.historic')
 
               S3_LOCATION="s3://${S3_MANIFEST_BUCKET}/${S3_MANIFEST_PREFIX}/" 
               TIMEOUT=120
@@ -139,7 +139,6 @@ meta-hbase-data-ingestion:
                   sleep 1
               done
         inputs:
-          - name: terraform-output-ingest
           - name: terraform-output-internal-compute
 
     update-dynamo-db-table-settings:
