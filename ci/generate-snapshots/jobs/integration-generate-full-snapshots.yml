@@ -27,6 +27,6 @@ jobs:
           params:
             AWS_ACC: ((aws_account.integration))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
-            E2E_FEATURE_TAG_FILTER: admin-generate-full-snapshots
+            E2E_FEATURE_TAG_FILTER: admin-generate-full-snapshots-with-completion-status-poller
             GENERATE_SNAPSHOTS_TOPICS_OVERRIDE: "db.matchingService.managementInformation,db.core.contract,db.accepted-data.address,db.agent-core.agent,db.agent-core.agentToDo,db.agent-core.team,db.core.claimant"
             GENERATE_SNAPSHOTS_TRIGGER_SNAPSHOT_SENDER_OVERRIDE: false
