@@ -3,6 +3,7 @@ groups:
   jobs:
   - development-send-snapshots
   - qa-send-snapshots
+  - integration-send-snapshots
   - preprod-send-snapshots
   - production-send-snapshots
   - production-reprocess-full-snapshots
