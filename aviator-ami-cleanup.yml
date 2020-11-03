@@ -8,6 +8,7 @@ spruce:
     to: aviator_pipeline_ami_cleanup.yml
 fly:
   name: ami-cleanup
-  target: aws-concourse
+  target: utility
   config: aviator_pipeline_ami_cleanup.yml
   expose: false
+  check_creds: true

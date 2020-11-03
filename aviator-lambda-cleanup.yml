@@ -8,6 +8,7 @@ spruce:
     to: aviator_pipeline_lambda_cleanup.yml
 fly:
   name: lambda-cleanup
-  target: aws-concourse
+  target: utility
   config: aviator_pipeline_lambda_cleanup.yml
   expose: true
+  check_creds: true
