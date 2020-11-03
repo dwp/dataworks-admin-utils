@@ -12,6 +12,7 @@ spruce:
     to: aviator_pipeline_manage_environments.yml
 fly:
   name: manage-environments
-  target: aws-concourse
+  target: utility
   config: aviator_pipeline_manage_environments.yml
   expose: false
+  check_creds: true
