@@ -3,78 +3,48 @@ groups:
     jobs:
       - development-restart-k2s3
       - dev-restart-equality-reconciliation
-      - dev-restart-equality-trim-reconciled-records
       - dev-restart-ucfs-reconciliation
-      - dev-restart-ucfs-trim-reconciled-records
       - dev-scale-down-equality-reconciliation
-      - dev-scale-down-equality-trim-reconciled-records
       - dev-scale-down-ucfs-reconciliation
-      - dev-scale-down-ucfs-trim-reconciled-records
       - dev-scale-up-equality-reconciliation
-      - dev-scale-up-equality-trim-reconciled-records
       - dev-scale-up-ucfs-reconciliation
-      - dev-scale-up-ucfs-trim-reconciled-records
 
   - name: qa
     jobs:
       - qa-restart-k2s3
       - qa-restart-equality-reconciliation
-      - qa-restart-equality-trim-reconciled-records
       - qa-restart-ucfs-reconciliation
-      - qa-restart-ucfs-trim-reconciled-records
       - qa-scale-down-equality-reconciliation
-      - qa-scale-down-equality-trim-reconciled-records
       - qa-scale-down-ucfs-reconciliation
-      - qa-scale-down-ucfs-trim-reconciled-records
       - qa-scale-up-equality-reconciliation
-      - qa-scale-up-equality-trim-reconciled-records
       - qa-scale-up-ucfs-reconciliation
-      - qa-scale-up-ucfs-trim-reconciled-records
 
   - name: integration
     jobs:
       - int-restart-equality-reconciliation
-      - int-restart-equality-trim-reconciled-records
       - int-restart-ucfs-reconciliation
-      - int-restart-ucfs-trim-reconciled-records
       - int-scale-down-equality-reconciliation
-      - int-scale-down-equality-trim-reconciled-records
       - int-scale-down-ucfs-reconciliation
-      - int-scale-down-ucfs-trim-reconciled-records
       - int-scale-up-equality-reconciliation
-      - int-scale-up-equality-trim-reconciled-records
       - int-scale-up-ucfs-reconciliation
-      - int-scale-up-ucfs-trim-reconciled-records
 
   - name: preprod
     jobs:
       - preprod-restart-equality-reconciliation
-      - preprod-restart-equality-trim-reconciled-records
       - preprod-restart-ucfs-reconciliation
-      - preprod-restart-ucfs-trim-reconciled-records
       - preprod-scale-down-equality-reconciliation
-      - preprod-scale-down-equality-trim-reconciled-records
       - preprod-scale-down-ucfs-reconciliation
-      - preprod-scale-down-ucfs-trim-reconciled-records
       - preprod-scale-up-equality-reconciliation
-      - preprod-scale-up-equality-trim-reconciled-records
       - preprod-scale-up-ucfs-reconciliation
-      - preprod-scale-up-ucfs-trim-reconciled-records
 
   - name: production
     jobs:
       - prod-restart-equality-reconciliation
-      - prod-restart-equality-trim-reconciled-records
       - prod-restart-ucfs-reconciliation
-      - prod-restart-ucfs-trim-reconciled-records
       - prod-scale-down-equality-reconciliation
-      - prod-scale-down-equality-trim-reconciled-records
       - prod-scale-down-ucfs-reconciliation
-      - prod-scale-down-ucfs-trim-reconciled-records
       - prod-scale-up-equality-reconciliation
-      - prod-scale-up-equality-trim-reconciled-records
       - prod-scale-up-ucfs-reconciliation
-      - prod-scale-up-ucfs-trim-reconciled-records
 
   - name: update-pipeline
     jobs:
