@@ -1,16 +1,13 @@
 resources:
-- name: meta-integration
-  type: meta
-
-- name: dataworks-admin-utils-generate-snapshots
+- name: dataworks-admin-utils-hbase-data-ingestion
   type: git
   source:
     branch: master
     uri: https://github.com/dwp/dataworks-admin-utils.git
     paths:
-      - ci/generate-snapshots/*
+      - ci/hbase-data-ingestion/*
       - ci/shared/*
       - ci/vars.yml
-      - aviator-generate-snapshots.yml
+      - aviator-hbase-data-ingestion.yml
   webhook_token: ((dataworks.concourse_github_webhook_token))
   check_every: 1h

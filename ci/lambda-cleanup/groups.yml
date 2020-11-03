@@ -1,0 +1,14 @@
+groups:
+  - name: lambda-cleanup
+    jobs:
+      - lambda-cleanup-development-job
+      - lambda-cleanup-qa-job
+      - lambda-cleanup-integration-job
+      - lambda-cleanup-preprod-job
+      - lambda-cleanup-production-job
+      - lambda-cleanup-management-dev-job
+      - lambda-cleanup-management-job
+
+  - name: update-pipeline
+    jobs:
+      - update-pipeline

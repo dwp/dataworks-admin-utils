@@ -6,3 +6,15 @@ resources:
       uri: https://github.com/dwp/dataworks-admin-utils.git
     webhook_token: ((dataworks.concourse_github_webhook_token))
     check_every: 1h
+
+  - name: dataworks-admin-utils-ami-cleanup
+    type: git
+    source:
+      branch: master
+      uri: https://github.com/dwp/dataworks-admin-utils.git
+      paths:
+        - ci/ami-cleanup/*
+        - ci/vars.yml
+        - aviator-ami-cleanup.yml
+    webhook_token: ((dataworks.concourse_github_webhook_token))
+    check_every: 1h

@@ -1,16 +1,13 @@
 resources:
-- name: meta-integration
-  type: meta
-
-- name: dataworks-admin-utils-generate-snapshots
+- name: dataworks-admin-utils-scale-up-services
   type: git
   source:
     branch: master
     uri: https://github.com/dwp/dataworks-admin-utils.git
     paths:
-      - ci/generate-snapshots/*
+      - ci/scale-up-services/*
       - ci/shared/*
       - ci/vars.yml
-      - aviator-generate-snapshots.yml
+      - aviator-scale-up-services.yml
   webhook_token: ((dataworks.concourse_github_webhook_token))
   check_every: 1h

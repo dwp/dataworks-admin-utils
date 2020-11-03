@@ -1,0 +1,11 @@
+groups:
+  - name: ami-cleanup
+    jobs:
+      - ami-cleanup-mgmtdev-dryrun
+      - ami-cleanup-mgmt-dryrun
+      - ami-cleanup-mgmtdev
+      - ami-cleanup-mgmt
+
+  - name: update-pipeline
+    jobs:
+      - update-pipeline

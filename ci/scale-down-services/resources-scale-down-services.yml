@@ -1,5 +1,19 @@
 resources:
 - name: meta-integration
   type: meta
+
 - name: meta-preprod
   type: meta
+
+- name: dataworks-admin-utils-scale-down-services
+  type: git
+  source:
+    branch: master
+    uri: https://github.com/dwp/dataworks-admin-utils.git
+    paths:
+      - ci/scale-down-services/*
+      - ci/shared/*
+      - ci/vars.yml
+      - aviator-scale-down-services.yml
+  webhook_token: ((dataworks.concourse_github_webhook_token))
+  check_every: 1h

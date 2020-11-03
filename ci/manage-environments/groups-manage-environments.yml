@@ -4,8 +4,13 @@ groups:
       - development-shutdown
       - qa-shutdown
       - integration-shutdown
+
   - name: startup-envs
     jobs:
       - development-startup
       - qa-startup
       - integration-startup
+
+  - name: update-pipeline
+    jobs:
+      - update-pipeline
