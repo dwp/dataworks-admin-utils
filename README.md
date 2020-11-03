@@ -191,3 +191,16 @@ To use:
 1. Uncomment the line with `taint` command.
 1. Aviator and run.
 1. When done, reset to HEAD of master branch and aviator in so that `taint` command is commented out in Concourse.
+
+
+### Pipeline: override config
+ ### generate-snapshots
+ The below describe the purpose of the flags used in generate snapshots pipelines.
+ These configurations are by default set to false , However they can set to true when needed and aviator the changes 
+ to take effect in concourse.
+ 1. GENERATE_SNAPSHOTS_TRIGGER_ADG_OVERRIDE - True to trigger ADG post HTME completion
+ 2. GENERATE_SNAPSHOTS_TRIGGER_SNAPSHOT_SENDER_OVERRIDE - True to trigger snapshot sender along with HTME
+ 3. GENERATE_SNAPSHOTS_REPROCESS_FILES_OVERRIDE - True to overwrite existing files of snapshot sender
+ 4. GENERATE_SNAPSHOTS_TOPICS_OVERRIDE - config to override with topic names to be processed by HTME and snapshot sender
+    
+
