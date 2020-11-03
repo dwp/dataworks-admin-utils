@@ -22,3 +22,4 @@ jobs:
             AWS_ACC: ((aws_account.development))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
             E2E_FEATURE_TAG_FILTER: admin-generate-full-snapshots-with-completion-status-poller
+            GENERATE_SNAPSHOTS_TRIGGER_ADG_OVERRIDE: true
