@@ -12,6 +12,7 @@ spruce:
     to: aviator_pipeline_send_snapshots.yml
 fly:
   name: send-snapshots
-  target: aws-concourse
+  target: utility
   config: aviator_pipeline_send_snapshots.yml
   expose: true
+  check_creds: true

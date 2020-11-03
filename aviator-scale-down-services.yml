@@ -12,6 +12,7 @@ spruce:
     to: aviator_pipeline_scale_down_services_pipeline.yml
 fly:
   name: scale-down-services
-  target: aws-concourse
+  target: utility
   config: aviator_pipeline_scale_down_services_pipeline.yml
   expose: true
+  check_creds: true

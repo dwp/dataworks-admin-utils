@@ -24,8 +24,12 @@ git-hooks: ## Set up hooks in .git/hooks
 	}
 
 .PHONY: concourse-login
-concourse-login: ## Login to concourse using Fly
-	fly -t concourse login -c https://ci.dataworks.dwp.gov.uk/ -k -n dataworks
+concourse-login: ## Login to dataworks team using Fly
+	fly -t aws-concourse login -c https://ci.dataworks.dwp.gov.uk/ -n dataworks
+
+.PHONY: utility-login
+utility-login: ## Login to utility team using Fly
+	fly -t utility login -c https://ci.dataworks.dwp.gov.uk/ -n utility
 
 .PHONY: update-lambda-cleanup-pipeline
 update-lambda-cleanup-pipeline: ## Update the lambda-cleanup pipeline
@@ -65,72 +69,72 @@ update-hbase-data-ingestion-pipeline: ## Update the hbase-data-ingestion pipelin
 
 .PHONY: pause-lambda-cleanup-pipeline
 pause-lambda-cleanup-pipeline: ## Pause the lambda-cleanup pipeline
-	fly --target concourse pause-pipeline --pipeline lambda-cleanup
+	fly --target utility pause-pipeline --pipeline lambda-cleanup
 
 .PHONY: pause-scale-down-services-pipeline
 pause-scale-down-services-pipeline: ## Pause the scale down services pipeline
-	fly --target concourse pause-pipeline --pipeline scale-down-services
+	fly --target utility pause-pipeline --pipeline scale-down-services
 
 .PHONY: pause-scale-up-services-pipeline
 pause-scale-up-services-pipeline: ## Pause the scale up services pipeline
-	fly --target concourse pause-pipeline --pipeline scale-up-services
+	fly --target utility pause-pipeline --pipeline scale-up-services
 
 .PHONY: pause-manage-ecs-services-pipeline
 pause-manage-ecs-services-pipeline: ## Pause the manage-ecs-services pipeline
-	fly --target concourse pause-pipeline --pipeline manage-ecs-services
+	fly --target utility pause-pipeline --pipeline manage-ecs-services
 
 .PHONY: pause-manage-environments-pipeline
 pause-manage-environments-pipeline: ## Pause the manage-environmentss pipeline
-	fly --target concourse pause-pipeline --pipeline manage-environments
+	fly --target utility pause-pipeline --pipeline manage-environments
 
 .PHONY: pause-generate-snapshots-pipeline
 pause-generate-snapshots-pipeline: ## Pause the generate snapshots pipeline
-	fly --target concourse pause-pipeline --pipeline generate-snapshots
+	fly --target utility pause-pipeline --pipeline generate-snapshots
 
 .PHONY: pause-send-snapshots-pipeline
 pause-send-snapshots-pipeline: ## Pause the send snapshots pipeline
-	fly --target concourse pause-pipeline --pipeline send-snapshots
+	fly --target utility pause-pipeline --pipeline send-snapshots
 
 .PHONY: pause-hbase-data-ingestion-pipeline
 pause-hbase-data-ingestion-pipeline: ## Pause the hbase-data-ingestion pipeline
-	fly --target concourse pause-pipeline --pipeline hbase-data-ingestion
+	fly --target utility pause-pipeline --pipeline hbase-data-ingestion
 
 .PHONY: pause-ami-cleanup-pipeline
 pause-ami-cleanup-pipeline: ## Pause the ami-cleanup pipeline
-	fly --target concourse pause-pipeline --pipeline ami-cleanup
+	fly --target utility pause-pipeline --pipeline ami-cleanup
 
 .PHONY: unpause-lambda-cleanup-pipeline
 unpause-lambda-cleanup-pipeline: ## Unpause the lambda-cleanup pipeline
-	fly --target concourse unpause-pipeline --pipeline lambda-cleanup
+	fly --target utility unpause-pipeline --pipeline lambda-cleanup
 
 .PHONY: unpause-scale-down-services-pipeline
 unpause-scale-down-services-pipeline: ## Unpause the scale down services pipeline
-	fly --target concourse unpause-pipeline --pipeline scale-down-services
+	fly --target utility unpause-pipeline --pipeline scale-down-services
 
 .PHONY: unpause-scale-up-services-pipeline
 unpause-scale-up-services-pipeline: ## Unpause the scale up services pipeline
-	fly --target concourse unpause-pipeline --pipeline scale-up-services
+	fly --target utility unpause-pipeline --pipeline scale-up-services
 
 .PHONY: unpause-manage-ecs-services-pipeline
 unpause-manage-ecs-services-pipeline: ## Unpause the manage-ecs-services pipeline
-	fly --target concourse unpause-pipeline --pipeline manage-ecs-services
+	fly --target utility unpause-pipeline --pipeline manage-ecs-services
 
 .PHONY: unpause-manage-environments-pipeline
 unpause-manage-environments-pipeline: ## Unpause the manage-environments pipeline
-	fly --target concourse unpause-pipeline --pipeline manage-environments
+	fly --target utility unpause-pipeline --pipeline manage-environments
 
 .PHONY: unpause-generate-snapshots-pipeline
 unpause-generate-snapshots-pipeline: ## Unpause the generate snapshots pipeline
-	fly --target concourse unpause-pipeline --pipeline generate-snapshots
+	fly --target utility unpause-pipeline --pipeline generate-snapshots
 
 .PHONY: unpause-send-snapshots-pipeline
 unpause-send-snapshots-pipeline: ## Unpause the send snapshots pipeline
-	fly --target concourse unpause-pipeline --pipeline send-snapshots
+	fly --target utility unpause-pipeline --pipeline send-snapshots
 
 .PHONY: unpause-hbase-data-ingestion-pipeline
 unpause-hbase-data-ingestion-pipeline: ## Unpause the hbase-data-ingestion pipeline
-	fly --target concourse unpause-pipeline --pipeline hbase-data-ingestion
+	fly --target utility unpause-pipeline --pipeline hbase-data-ingestion
 
 .PHONY: unpause-ami-cleanup-pipeline
 unpause-ami-cleanup-pipeline: ## Unpause the ami-cleanup pipeline
-	fly --target concourse unpause-pipeline --pipeline ami-cleanup
+	fly --target utility unpause-pipeline --pipeline ami-cleanup

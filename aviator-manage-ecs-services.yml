@@ -12,6 +12,7 @@ spruce:
     to: aviator_pipeline_manage_kafka_connectors.yml
 fly:
   name: manage-ecs-services
-  target: aws-concourse
+  target: utility
   config: aviator_pipeline_manage_kafka_connectors.yml
   expose: true
+  check_creds: true

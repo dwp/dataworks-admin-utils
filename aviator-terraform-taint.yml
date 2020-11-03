@@ -12,6 +12,7 @@ spruce:
     to: aviator_pipeline_terraform-taint.yml
 fly:
   name: terraform-taint
-  target: aws-concourse
+  target: utility
   config: aviator_pipeline_terraform-taint.yml
   expose: false
+  check_creds: true
