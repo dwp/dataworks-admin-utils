@@ -1,0 +1,32 @@
+jobs:
+  - name: update-pipeline
+    plan:
+      - get: dataworks-admin-utils
+        resource: dataworks-admin-utils-scale-up-services
+        trigger: true
+      - task: aviator
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: ((dataworks.docker_aviator_repository))
+              version: ((dataworks.docker_aviator_version))
+          run:
+            path: sh
+            args:
+              - -exc
+              - |
+                sed -i 's/fly/nofly/' aviator-scale-up-services.yml
+                /usr/bin/aviator -f aviator-scale-up-services.yml
+                mv aviator_pipeline_scale_up_services.yml ../pipeline
+                mv ci/vars.yml ../pipeline
+            dir: dataworks-admin-utils
+          inputs:
+            - name: dataworks-admin-utils
+          outputs:
+            - name: pipeline
+      - set_pipeline: scale-up-services
+        file: pipeline/aviator_pipeline_scale_up_services.yml
+        var_files:
+          - pipeline/vars.yml

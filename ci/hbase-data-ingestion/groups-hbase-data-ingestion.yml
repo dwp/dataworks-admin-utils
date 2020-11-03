@@ -8,6 +8,7 @@ groups:
   - historic-import-production
   - historic-import-production-import-only
   - historic-import-production-manifest-only
+
 - name: corporate-data-load
   jobs:
   - corporate-load-development
@@ -15,6 +16,7 @@ groups:
   - corporate-load-integration
   - corporate-load-preprod
   - corporate-load-production
+
 - name: historic-data-load
   jobs:
   - historic-load-development
@@ -22,3 +24,7 @@ groups:
   - historic-load-integration
   - historic-load-preprod
   - historic-load-production
+
+- name: update-pipeline
+  jobs:
+    - update-pipeline

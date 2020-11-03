@@ -9,10 +9,10 @@ spruce:
         regexp: ".*yml"
       - with_in: ci/shared/
         regexp: ".*yml"
-    to: aviator_pipeline_scale_up_services_pipeline.yml
+    to: aviator_pipeline_scale_up_services.yml
 fly:
   name: scale-up-services
   target: utility
-  config: aviator_pipeline_scale_up_services_pipeline.yml
+  config: aviator_pipeline_scale_up_services.yml
   expose: true
   check_creds: true

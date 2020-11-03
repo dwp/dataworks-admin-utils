@@ -6,6 +6,7 @@ groups:
   - dev-scale-up-snapshotsender
   - dev-scale-up-k2hb
   - dev-scale-up-kafka-stub
+
 - name: scale-up-qa-services
   jobs:
   - qa-scale-up-hdi
@@ -13,6 +14,7 @@ groups:
   - qa-scale-up-snapshotsender
   - qa-scale-up-k2hb
   - qa-scale-up-kafka-stub
+
 - name: scale-up-integration-services
   jobs:
   - integration-scale-up-hdi
@@ -20,15 +22,21 @@ groups:
   - integration-scale-up-snapshotsender
   - integration-scale-up-k2hb
   - integration-scale-up-kafka-stub
+
 - name: scale-up-preprod-services
   jobs:
   - preprod-scale-up-hdi
   - preprod-scale-up-htme
   - preprod-scale-up-snapshotsender
   - preprod-scale-up-k2hb
+
 - name: scale-up-production-services
   jobs:
   - prod-scale-up-hdi
   - prod-scale-up-htme
   - prod-scale-up-snapshotsender
   - prod-scale-up-k2hb
+
+- name: update-pipeline
+  jobs:
+    - update-pipeline
