@@ -67,6 +67,10 @@ update-ami-cleanup-pipeline: ## Update the ami-cleanup pipeline
 update-hbase-data-ingestion-pipeline: ## Update the hbase-data-ingestion pipeline
 	aviator -f aviator-hbase-data-ingestion.yml
 
+.PHONY: update-terraform-taint-pipeline
+update-terraform-taint-pipeline: ## Update the terraform-taint pipeline
+	aviator -f aviator-terraform-taint.yml
+
 .PHONY: pause-lambda-cleanup-pipeline
 pause-lambda-cleanup-pipeline: ## Pause the lambda-cleanup pipeline
 	fly --target utility pause-pipeline --pipeline lambda-cleanup
@@ -103,6 +107,10 @@ pause-hbase-data-ingestion-pipeline: ## Pause the hbase-data-ingestion pipeline
 pause-ami-cleanup-pipeline: ## Pause the ami-cleanup pipeline
 	fly --target utility pause-pipeline --pipeline ami-cleanup
 
+.PHONY: pause-terraform-taint-pipeline
+pause-terraform-taint-pipeline: ## Pause the terraform-taint pipeline
+	fly --target utility pause-pipeline --pipeline terraform-taint
+
 .PHONY: unpause-lambda-cleanup-pipeline
 unpause-lambda-cleanup-pipeline: ## Unpause the lambda-cleanup pipeline
 	fly --target utility unpause-pipeline --pipeline lambda-cleanup
@@ -138,3 +146,7 @@ unpause-hbase-data-ingestion-pipeline: ## Unpause the hbase-data-ingestion pipel
 .PHONY: unpause-ami-cleanup-pipeline
 unpause-ami-cleanup-pipeline: ## Unpause the ami-cleanup pipeline
 	fly --target utility unpause-pipeline --pipeline ami-cleanup
+
+.PHONY: unpause-terraform-taint-pipeline
+unpause-terraform-taint-pipeline: ## Unpause the terraform-taint pipeline
+	fly --target utility unpause-pipeline --pipeline terraform-taint
