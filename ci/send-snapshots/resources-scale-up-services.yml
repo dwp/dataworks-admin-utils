@@ -1,16 +1,13 @@
 resources:
-- name: meta-integration
-  type: meta
-
-- name: dataworks-admin-utils-generate-snapshots
+- name: dataworks-admin-utils-send-snapshots
   type: git
   source:
     branch: master
     uri: https://github.com/dwp/dataworks-admin-utils.git
     paths:
-      - ci/generate-snapshots/*
+      - ci/send-snapshots/*
       - ci/shared/*
       - ci/vars.yml
-      - aviator-generate-snapshots.yml
+      - aviator-send-snapshots.yml
   webhook_token: ((dataworks.concourse_github_webhook_token))
   check_every: 1h

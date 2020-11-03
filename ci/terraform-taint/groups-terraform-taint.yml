@@ -1,0 +1,14 @@
+groups:
+  - name: terraform-taint
+    jobs:
+      - development-terraform-taint
+      - qa-terraform-taint
+      - integration-terraform-taint
+      - preprod-terraform-taint
+      - production-terraform-taint
+      - management-dev-terraform-taint
+      - management-terraform-taint
+
+  - name: update-pipeline
+    jobs:
+      - update-pipeline

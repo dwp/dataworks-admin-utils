@@ -7,9 +7,15 @@ groups:
   - preprod-send-snapshots
   - production-send-snapshots
   - production-reprocess-full-snapshots
+
 - name: send-incremental-snapshots
   jobs:
   - production-reprocess-incremental-snapshots
+
 - name: nifi-heartbeat
   jobs:
     - production-nifi-heartbeat
+
+- name: update-pipeline
+  jobs:
+    - update-pipeline

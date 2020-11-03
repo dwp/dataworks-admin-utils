@@ -31,6 +31,19 @@ concourse-login: ## Login to dataworks team using Fly
 utility-login: ## Login to utility team using Fly
 	fly -t utility login -c https://ci.dataworks.dwp.gov.uk/ -n utility
 
+.PHONY: update-all-pipelines
+update-all-pipelines: ## Update all the pipelines
+	aviator -f aviator-lambda-cleanup.yml
+	aviator -f aviator-scale-down-services.yml
+	aviator -f aviator-scale-up-services.yml
+	aviator -f aviator-manage-ecs-services.yml
+	aviator -f aviator-manage-environments.yml
+	aviator -f aviator-generate-snapshots.yml
+	aviator -f aviator-send-snapshots.yml
+	aviator -f aviator-ami-cleanup.yml
+	aviator -f aviator-hbase-data-ingestion.yml
+	aviator -f aviator-terraform-taint.yml
+
 .PHONY: update-lambda-cleanup-pipeline
 update-lambda-cleanup-pipeline: ## Update the lambda-cleanup pipeline
 	aviator -f aviator-lambda-cleanup.yml

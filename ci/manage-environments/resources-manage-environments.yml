@@ -1,0 +1,13 @@
+resources:
+  - name: dataworks-admin-utils-manage-environments
+    type: git
+    source:
+      branch: master
+      uri: https://github.com/dwp/dataworks-admin-utils.git
+      paths:
+        - ci/manage-environments/*
+        - ci/shared/*
+        - ci/vars.yml
+        - aviator-manage-environments.yml
+    webhook_token: ((dataworks.concourse_github_webhook_token))
+    check_every: 1h

@@ -31,3 +31,16 @@ resources:
       uri: https://((dataworks.enterprise_github_url))/dip/aws-internet-egress.git
     check_every: 15m
     webhook_token: ((dataworks.concourse_github_webhook_token))
+
+  - name: dataworks-admin-utils-terraform-taint
+    type: git
+    source:
+      branch: master
+      uri: https://github.com/dwp/dataworks-admin-utils.git
+      paths:
+        - ci/terraform-taint/*
+        - ci/shared/*
+        - ci/vars.yml
+        - aviator-terraform-taint.yml
+    webhook_token: ((dataworks.concourse_github_webhook_token))
+    check_every: 1h
