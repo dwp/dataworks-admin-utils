@@ -33,8 +33,7 @@ jobs:
           params:
             AWS_ACC: ((aws_account.preprod))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
-            E2E_FEATURE_TAG_FILTER: admin-generate-full-snapshots-with-completion-status-poller
-            GENERATE_SNAPSHOTS_TOPICS_OVERRIDE: "db.work-search-core.job"
+            E2E_FEATURE_TAG_FILTER: admin-generate-full-snapshots
+            GENERATE_SNAPSHOTS_TOPICS_OVERRIDE: "ALL"
             GENERATE_SNAPSHOTS_TRIGGER_SNAPSHOT_SENDER_OVERRIDE: false
-            GENERATE_SNAPSHOTS_REPROCESS_FILES_OVERRIDE: false
-            GENERATE_SNAPSHOTS_TRIGGER_ADG_OVERRIDE: false
+            GENERATE_SNAPSHOTS_USE_POLLER_OVERRIDE: false
