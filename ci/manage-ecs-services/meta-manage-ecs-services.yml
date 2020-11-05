@@ -32,7 +32,7 @@ meta-manage-ecs-services:
               set -- junk $TASK_ARNS
               shift
               for TASK_ARN; do
-                aws cs stop-task --cluster ${ECS_CLUSTER} --task ${TASK_ARN};
+                aws ecs stop-task --cluster ${ECS_CLUSTER} --task ${TASK_ARN};
               done
 
     scale-down-ecs-service:
