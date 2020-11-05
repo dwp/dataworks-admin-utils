@@ -55,6 +55,7 @@ meta-manage-ecs-services:
                 service_arn_raw=$(sed -e 's/^"//' -e 's/"$//' <<<"${service_arn}")
                 aws ecs update-service --cluster ${ECS_CLUSTER} --service ${service_arn_raw} --desired-count ${DESIRED_COUNT}
               done
+              rm temp.json
 
     scale-up-ecs-service:
       task: scale-up-ecs-service
@@ -77,6 +78,7 @@ meta-manage-ecs-services:
                 service_arn_raw=$(sed -e 's/^"//' -e 's/"$//' <<<"${service_arn}")
                 aws ecs update-service --cluster ${ECS_CLUSTER} --service ${service_arn_raw} --desired-count ${DESIRED_COUNT}
               done
+              rm temp.json
         inputs:
           - name: terraform-output-ingest
           
