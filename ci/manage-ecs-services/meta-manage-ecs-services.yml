@@ -18,6 +18,9 @@ meta-manage-ecs-services:
       task: restart-ecs-service
       .: (( inject meta-manage-ecs-services.plan.manage-ecs-common ))
       config:
+        params:
+          AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
         run:
           path: sh
           args:
@@ -25,11 +28,11 @@ meta-manage-ecs-services:
             - |
               source /assume-role
               set +x
-              TASK_ARNS=$(aws --region=eu-west-2 ecs list-tasks --cluster ${ECS_CLUSTER} --service-name ${ECS_SERVICE} --query 'taskArns' --output text)
+              TASK_ARNS=$(aws ecs list-tasks --cluster ${ECS_CLUSTER} --service-name ${ECS_SERVICE} --query 'taskArns' --output text)
               set -- junk $TASK_ARNS
               shift
               for TASK_ARN; do
-                aws --region=eu-west-2 ecs stop-task --cluster ${ECS_CLUSTER} --task ${TASK_ARN};
+                aws cs stop-task --cluster ${ECS_CLUSTER} --task ${TASK_ARN};
               done
 
     scale-down-ecs-service:
@@ -37,6 +40,8 @@ meta-manage-ecs-services:
       .: (( inject meta-manage-ecs-services.plan.manage-ecs-common ))
       config:
         params:
+          AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
           DESIRED_COUNT: 0
         run:
           path: sh
@@ -45,9 +50,10 @@ meta-manage-ecs-services:
             - |
               source /assume-role
               set +x
-              SERVICE_ARNS=$(aws --region=eu-west-2 ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]" --output text)
-              for SERVICE_ARN; do
-                aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${SERVICE_ARN} --desired-count ${DESIRED_COUNT}
+              echo $(aws ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]" | jq -r .serviceArns) > temp.json
+              jq -c '.[]' temp.json | while read service_arn; do
+                service_arn_raw=$(sed -e 's/^"//' -e 's/"$//' <<<"${service_arn}")
+                aws ecs update-service --cluster ${ECS_CLUSTER} --service ${service_arn_raw} --desired-count ${DESIRED_COUNT}
               done
 
     scale-up-ecs-service:
@@ -55,6 +61,8 @@ meta-manage-ecs-services:
       .: (( inject meta-manage-ecs-services.plan.manage-ecs-common ))
       config:
         params:
+          AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
           DESIRED_COUNT_OUTPUT_NAME: ".kafka_to_hbase_consumer.value[0].desired_count"
         run:
           path: sh
@@ -64,9 +72,10 @@ meta-manage-ecs-services:
               source /assume-role
               set +x
               DESIRED_COUNT=$(cat terraform-output-ingest/outputs.json | jq -r "$DESIRED_COUNT_OUTPUT_NAME")
-              SERVICE_ARNS=$(aws --region=eu-west-2 ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]" --output text)
-              for SERVICE_ARN; do
-                aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${SERVICE_ARN} --desired-count ${DESIRED_COUNT}
+              echo $(aws ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]" | jq -r .serviceArns) > temp.json
+              jq -c '.[]' temp.json | while read service_arn; do
+                service_arn_raw=$(sed -e 's/^"//' -e 's/"$//' <<<"${service_arn}")
+                aws ecs update-service --cluster ${ECS_CLUSTER} --service ${service_arn_raw} --desired-count ${DESIRED_COUNT}
               done
         inputs:
           - name: terraform-output-ingest
