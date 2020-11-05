@@ -45,7 +45,10 @@ meta-manage-ecs-services:
             - |
               source /assume-role
               set +x
-              aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${ECS_SERVICE} --desired-count ${DESIRED_COUNT}
+              SERVICE_ARNS=$(aws --region=eu-west-2 ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]" --output text)
+              for SERVICE_ARN; do
+                aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${SERVICE_ARN} --desired-count ${DESIRED_COUNT}
+              done
 
     scale-up-ecs-service:
       task: scale-up-ecs-service
@@ -61,7 +64,10 @@ meta-manage-ecs-services:
               source /assume-role
               set +x
               DESIRED_COUNT=$(cat terraform-output-ingest/outputs.json | jq -r "$DESIRED_COUNT_OUTPUT_NAME")
-              aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${ECS_SERVICE} --desired-count ${DESIRED_COUNT}
+              SERVICE_ARNS=$(aws --region=eu-west-2 ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]" --output text)
+              for SERVICE_ARN; do
+                aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${SERVICE_ARN} --desired-count ${DESIRED_COUNT}
+              done
         inputs:
           - name: terraform-output-ingest
           
