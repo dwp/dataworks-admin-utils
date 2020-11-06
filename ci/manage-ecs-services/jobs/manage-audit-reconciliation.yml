@@ -1,0 +1,157 @@
+jobs:
+  - name: dev-restart-audit-reconciliation
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-audit-reconciliation ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+
+  - name: qa-restart-audit-reconciliation
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-audit-reconciliation ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+
+  - name: int-restart-audit-reconciliation
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-audit-reconciliation ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
+
+  - name: preprod-restart-audit-reconciliation
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-audit-reconciliation ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
+
+  - name: prod-restart-audit-reconciliation
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-audit-reconciliation ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
+
+
+  - name: dev-scale-down-audit-reconciliation
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-audit-reconciliation ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+
+  - name: qa-scale-down-audit-reconciliation
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-audit-reconciliation ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+
+  - name: int-scale-down-audit-reconciliation
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-audit-reconciliation ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
+
+  - name: preprod-scale-down-audit-reconciliation
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-audit-reconciliation ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
+
+  - name: prod-scale-down-audit-reconciliation
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-audit-reconciliation ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
+
+
+  - name: dev-scale-up-audit-reconciliation
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
+      - .: (( inject meta.plan.terraform-output-ingest ))
+        config:
+          params:
+            TF_WORKSPACE: default
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-audit-reconciliation ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+
+  - name: qa-scale-up-audit-reconciliation
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
+      - .: (( inject meta.plan.terraform-output-ingest ))
+        config:
+          params:
+            TF_WORKSPACE: qa
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-audit-reconciliation ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+
+  - name: int-scale-up-audit-reconciliation
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
+      - .: (( inject meta.plan.terraform-output-ingest ))
+        config:
+          params:
+            TF_WORKSPACE: integration
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-audit-reconciliation ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
+
+  - name: preprod-scale-up-audit-reconciliation
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
+      - .: (( inject meta.plan.terraform-output-ingest ))
+        config:
+          params:
+            TF_WORKSPACE: preprod
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-audit-reconciliation ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
+
+  - name: prod-scale-up-audit-reconciliation
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: aws-ingestion
+            trigger: false
+      - .: (( inject meta.plan.terraform-output-ingest ))
+        config:
+          params:
+            TF_WORKSPACE: production
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-audit-reconciliation ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci

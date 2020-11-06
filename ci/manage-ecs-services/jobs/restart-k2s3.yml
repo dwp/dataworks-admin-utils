@@ -1,5 +1,5 @@
 jobs:
-  - name: development-restart-k2s3
+  - name: dev-restart-k2s3
     max_in_flight: 1
     plan:
       - .: (( inject meta-manage-ecs-services.plan.restart-ecs-service ))
