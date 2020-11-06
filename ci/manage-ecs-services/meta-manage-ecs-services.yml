@@ -50,10 +50,10 @@ meta-manage-ecs-services:
             - |
               source /assume-role
               set +x
-              echo $(aws ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]" | jq -r .serviceArns) > temp.json
+              echo $(aws ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]") > temp.json
               jq -c '.[]' temp.json | while read service_arn; do
-                service_arn_raw=$(sed -e 's/^"//' -e 's/"$//' <<<"${service_arn}")
-                aws ecs update-service --cluster ${ECS_CLUSTER} --service ${service_arn_raw} --desired-count ${DESIRED_COUNT}
+                service_arn=$(echo "$service_arn" | jq -r .)
+                aws ecs update-service --cluster ${ECS_CLUSTER} --service "${service_arn}" --desired-count ${DESIRED_COUNT}
               done
               rm temp.json
 
@@ -73,10 +73,10 @@ meta-manage-ecs-services:
               source /assume-role
               set +x
               DESIRED_COUNT=$(cat terraform-output-ingest/outputs.json | jq -r "$DESIRED_COUNT_OUTPUT_NAME")
-              echo $(aws ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]" | jq -r .serviceArns) > temp.json
+              echo $(aws ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]") > temp.json
               jq -c '.[]' temp.json | while read service_arn; do
-                service_arn_raw=$(sed -e 's/^"//' -e 's/"$//' <<<"${service_arn}")
-                aws ecs update-service --cluster ${ECS_CLUSTER} --service ${service_arn_raw} --desired-count ${DESIRED_COUNT}
+                service_arn=$(echo "$service_arn" | jq -r .)
+                aws ecs update-service --cluster ${ECS_CLUSTER} --service "${service_arn}" --desired-count ${DESIRED_COUNT}
               done
               rm temp.json
         inputs:
