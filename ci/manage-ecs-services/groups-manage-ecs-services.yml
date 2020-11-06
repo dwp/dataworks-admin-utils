@@ -1,50 +1,65 @@
 groups:
   - name: development
     jobs:
-      - development-restart-k2s3
+      - dev-restart-k2s3
       - dev-restart-equality-reconciliation
       - dev-restart-ucfs-reconciliation
+      - dev-restart-audit-reconciliation
       - dev-scale-down-equality-reconciliation
       - dev-scale-down-ucfs-reconciliation
+      - dev-scale-down-audit-reconciliation
       - dev-scale-up-equality-reconciliation
       - dev-scale-up-ucfs-reconciliation
+      - dev-scale-up-audit-reconciliation
 
   - name: qa
     jobs:
       - qa-restart-k2s3
       - qa-restart-equality-reconciliation
       - qa-restart-ucfs-reconciliation
+      - qa-restart-audit-reconciliation
       - qa-scale-down-equality-reconciliation
       - qa-scale-down-ucfs-reconciliation
+      - qa-scale-down-audit-reconciliation
       - qa-scale-up-equality-reconciliation
       - qa-scale-up-ucfs-reconciliation
+      - qa-scale-up-audit-reconciliation
 
   - name: integration
     jobs:
       - int-restart-equality-reconciliation
       - int-restart-ucfs-reconciliation
+      - int-restart-audit-reconciliation
       - int-scale-down-equality-reconciliation
       - int-scale-down-ucfs-reconciliation
+      - int-scale-down-audit-reconciliation
       - int-scale-up-equality-reconciliation
       - int-scale-up-ucfs-reconciliation
+      - int-scale-up-audit-reconciliation
 
   - name: preprod
     jobs:
       - preprod-restart-equality-reconciliation
       - preprod-restart-ucfs-reconciliation
+      - preprod-restart-audit-reconciliation
       - preprod-scale-down-equality-reconciliation
       - preprod-scale-down-ucfs-reconciliation
+      - preprod-scale-down-audit-reconciliation
       - preprod-scale-up-equality-reconciliation
       - preprod-scale-up-ucfs-reconciliation
+      - preprod-scale-up-audit-reconciliation
 
   - name: production
     jobs:
       - prod-restart-equality-reconciliation
       - prod-restart-ucfs-reconciliation
+      - prod-restart-audit-reconciliation
       - prod-scale-down-equality-reconciliation
       - prod-scale-down-ucfs-reconciliation
+      - prod-scale-down-audit-reconciliation
       - prod-scale-up-equality-reconciliation
       - prod-scale-up-ucfs-reconciliation
+      - prod-scale-up-audit-reconciliation
 
   - name: update-pipeline
     jobs:
