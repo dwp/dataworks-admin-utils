@@ -11,3 +11,11 @@ resources:
       - aviator-scale-up-services.yml
   webhook_token: ((dataworks.concourse_github_webhook_token))
   check_every: 1h
+
+- name: utc-2pm-saturdays
+  type: time
+  source:
+    start: 2:00 PM
+    stop: 2:05 PM
+    location: UTC
+    days: [Saturday]

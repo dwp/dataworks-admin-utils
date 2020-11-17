@@ -5,6 +5,8 @@ jobs:
       - in_parallel:
           - put: meta
             resource: meta-qa
+          - get: utc-midday-saturdays
+            trigger: true
           - get: aws-internal-compute
             trigger: false
           - get: aws-ingestion
