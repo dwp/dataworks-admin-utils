@@ -35,3 +35,5 @@ jobs:
             AWS_ACC: ((aws_account.production))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
             ACTION_TAG: "@admin-corporate-data-load"
+            DATA_LOAD_TOPICS: "data.businessAudit"
+            DATA_LOAD_METADATA_STORE_TABLE: "audit"
