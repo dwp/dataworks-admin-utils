@@ -69,13 +69,13 @@ meta-hbase-data-ingestion:
               if [[ "${ACTION_TAG}" == "@admin-corporate-data-load" ]]; then
                 if [[ "${DATA_LOAD_METADATA_STORE_TABLE}" == "equalities" ]]; then
                   export DATA_LOAD_S3_BASE_PREFIX=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.s3_base_prefix_equalities')
-                  export DATA_LOAD_FILE_PATTERN=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.file_pattern_equalities')
+                  export DATA_LOAD_S3_FILE_PATTERN=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.file_pattern_equalities')
                 elif [[ "${DATA_LOAD_METADATA_STORE_TABLE}" == "audit" ]]; then
                   export DATA_LOAD_S3_BASE_PREFIX=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.s3_base_prefix_audit')
-                  export DATA_LOAD_FILE_PATTERN=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.file_pattern_audit')
+                  export DATA_LOAD_S3_FILE_PATTERN=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.file_pattern_audit')
                 else
                   export DATA_LOAD_S3_BASE_PREFIX=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.s3_base_prefix_ucfs')
-                  export DATA_LOAD_FILE_PATTERN=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.file_pattern_ucfs')
+                  export DATA_LOAD_S3_FILE_PATTERN=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.file_pattern_ucfs')
                 fi
               fi
 
