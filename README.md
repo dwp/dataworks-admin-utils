@@ -164,6 +164,11 @@ The following overrides can be passed through as config params from the environm
 * `HISTORIC_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE` -> if passed in, records with a timestamp earlier than this are skipped in the historic data load - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
 * `HISTORIC_DATA_INGESTION_SKIP_LATER_THAN_OVERRIDE` -> if passed in, records with a timestamp later than this are skipped in the historic data load - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
 
+The following overrides can be passed through as config params from the environment jobs to the `corporate-data-load` tasks only in the pipeline:
+
+* `CORPORATE_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE` -> if passed in, the data load is run from the files from this day (inclusive) onwards (if not passed in runs on the entire dataset) - format of date must be `yyyy-MM-dd`.
+* `CORPORATE_DATA_INGESTION_SKIP_LATER_THAN_OVERRIDE` -> if CORPORATE_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE is passed in, then this must be too and it must be a date later than that one or the same as - this signifies the last day (inclusive) of date to load (if it is the same as CORPORATE_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE then only one day is processed) - format of date must be `yyyy-MM-dd`.
+
 ### Pipeline: ami-cleanup
 
 A utility to clean up old AMIs. The files for this pipeline are in the ci/ami-cleanup folder in this repo. To update this pipeline in CI, you can run the following make command:
