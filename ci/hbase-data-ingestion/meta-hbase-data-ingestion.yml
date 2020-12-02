@@ -65,6 +65,8 @@ meta-hbase-data-ingestion:
               export E2E_FEATURE_TAG_FILTER="${ACTION_TAG}"
               export DATA_LOAD_TOPICS="${DATA_LOAD_TOPICS}"
               export DATA_LOAD_METADATA_STORE_TABLE="${DATA_LOAD_METADATA_STORE_TABLE}"
+              export CORPORATE_DATA_INGESTION_SKIP_LATER_THAN_OVERRIDE="${CORPORATE_DATA_INGESTION_SKIP_LATER_THAN_OVERRIDE}"
+              export CORPORATE_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE="${CORPORATE_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE}"
 
               if [[ "${ACTION_TAG}" == "@admin-corporate-data-load" ]]; then
                 echo "Setting CDL properties"
