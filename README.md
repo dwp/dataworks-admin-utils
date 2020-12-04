@@ -168,6 +168,7 @@ The following overrides can be passed through as config params from the environm
 
 * `CORPORATE_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE` -> if passed in, the data load is run from the files from this day (inclusive) onwards (if not passed in runs on the entire dataset) - format of date must be `yyyy-MM-dd`.
 * `CORPORATE_DATA_INGESTION_SKIP_LATER_THAN_OVERRIDE` -> if CORPORATE_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE is passed in, then this must be too and it must be a date later than that one or the same as - this signifies the last day (inclusive) of date to load (if it is the same as CORPORATE_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE then only one day is processed) - format of date must be `yyyy-MM-dd`.
+* `CORPORATE_DATA_INGESTION_PREFIX_PER_EXECUTION_OVERRIDE` -> if passed in as `true` then for every prefix that will be loaded, a new execution of the data load will occur. If not then all the prefixes will be sent to one execution of the jar at the same time (this is the default).
 
 ### Pipeline: ami-cleanup
 
