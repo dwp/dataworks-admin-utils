@@ -29,11 +29,6 @@ jobs:
           - .: (( inject meta.plan.terraform-output-ingest-consumers ))
             params:
               TF_WORKSPACE: "qa"
-      - .: (( inject meta-hbase-data-ingestion.plan.update-dynamo-db-table-settings ))
-        task: update-dynamo-db-table-settings-write-heavy
-        params:
-          TYPE: "write_heavy"
-          AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
       - .: (( inject meta-hbase-data-ingestion.plan.run-data-load ))
         config:
           params:

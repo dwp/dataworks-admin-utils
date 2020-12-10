@@ -35,3 +35,7 @@ jobs:
             AWS_ACC: ((aws_account.production))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
             ACTION_TAG: "@admin-corporate-data-load"
+            DATA_LOAD_TOPICS: "db.matchingService.managementInformation"
+            DATA_LOAD_METADATA_STORE_TABLE: "main"
+            CORPORATE_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE: "2020-11-24"
+            CORPORATE_DATA_INGESTION_SKIP_LATER_THAN_OVERRIDE: "2020-11-24"
