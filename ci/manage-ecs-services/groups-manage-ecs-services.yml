@@ -11,6 +11,9 @@ groups:
       - dev-scale-up-equality-reconciliation
       - dev-scale-up-ucfs-reconciliation
       - dev-scale-up-audit-reconciliation
+      - dev-restart-ucfs-claimant-consumer
+      - dev-scale-down-ucfs-claimant-consumer
+      - dev-scale-up-ucfs-claimant-consumer
 
   - name: qa
     jobs:
@@ -24,6 +27,9 @@ groups:
       - qa-scale-up-equality-reconciliation
       - qa-scale-up-ucfs-reconciliation
       - qa-scale-up-audit-reconciliation
+      - qa-restart-ucfs-claimant-consumer
+      - qa-scale-down-ucfs-claimant-consumer
+      - qa-scale-up-ucfs-claimant-consumer
 
   - name: integration
     jobs:
@@ -36,6 +42,9 @@ groups:
       - int-scale-up-equality-reconciliation
       - int-scale-up-ucfs-reconciliation
       - int-scale-up-audit-reconciliation
+      - int-restart-ucfs-claimant-consumer
+      - int-scale-down-ucfs-claimant-consumer
+      - int-scale-up-ucfs-claimant-consumer
 
   - name: preprod
     jobs:
@@ -48,6 +57,9 @@ groups:
       - preprod-scale-up-equality-reconciliation
       - preprod-scale-up-ucfs-reconciliation
       - preprod-scale-up-audit-reconciliation
+      - preprod-restart-ucfs-claimant-consumer
+      - preprod-scale-down-ucfs-claimant-consumer
+      - preprod-scale-up-ucfs-claimant-consumer
 
   - name: production
     jobs:
@@ -60,6 +72,9 @@ groups:
       - prod-scale-up-equality-reconciliation
       - prod-scale-up-ucfs-reconciliation
       - prod-scale-up-audit-reconciliation
+      - prod-restart-ucfs-claimant-consumer
+      - prod-scale-down-ucfs-claimant-consumer
+      - prod-scale-up-ucfs-claimant-consumer
 
   - name: update-pipeline
     jobs:

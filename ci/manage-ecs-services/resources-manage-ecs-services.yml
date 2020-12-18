@@ -22,3 +22,12 @@ resources:
         - aviator-manage-ecs-services.yml
     webhook_token: ((dataworks.concourse_github_webhook_token))
     check_every: 1h
+
+  - name: dataworks-aws-ucfs-claimant-consumer
+    type: git
+    source:
+      branch: master
+      repository: dwp/dataworks-aws-ucfs-claimant-consumer
+      uri: https://github.com/dwp/dataworks-aws-ucfs-claimant-consumer.git
+    check_every: 5m
+    webhook_token: ((dataworks.concourse_github_webhook_token))

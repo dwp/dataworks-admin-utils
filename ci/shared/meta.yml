@@ -140,3 +140,57 @@ meta:
           - name: terraform-bootstrap-ingest-consumers
         outputs:
           - name: terraform-output-ingest-consumers
+
+    terraform-bootstrap:
+      task: terraform-bootstrap
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: dwpdigital/jinja-yaml-aws
+            version: 0.0.19
+            tag: 0.0.19
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              python bootstrap_terraform.py
+              sed -i '/^assume_role/ d' terraform.tfvars
+              cp terraform.tf ../terraform-bootstrap
+              cp terraform.tfvars ../terraform-bootstrap
+          dir: tf-repo
+        inputs:
+          - name: tf-repo
+        outputs:
+          - name: terraform-bootstrap
+      params:
+        AWS_REGION: eu-west-2
+
+    terraform-output-ucfs-claimant-consumer:
+      task: terraform-output-ucfs-claimant-consumer
+      .: (( inject meta.plan.terraform-common-config ))
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.terraform_repository))
+            tag: ((dataworks.terraform_version))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              cp ../terraform-bootstrap/terraform.tf .
+              cp ../terraform-bootstrap/terraform.tfvars .
+              terraform workspace show
+              terraform init
+              terraform output --json > ../terraform-output-ucfs-claimant-consumer/outputs.json
+          dir: dataworks-aws-ucfs-claimant-consumer
+        inputs:
+          - name: dataworks-aws-ucfs-claimant-consumer
+          - name: terraform-bootstrap
+        outputs:
+          - name: terraform-output-ucfs-claimant-consumer
