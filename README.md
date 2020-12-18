@@ -60,6 +60,7 @@ You can also pause or unpause the pipeline:
 This is used to manage the following ECS containers:
 * Kafka connectors like kafka-to-s3 and kafka-to-hbase 
 * k2hb metadata reconciliation services for ucfs and equality feeds
+* UCFS Claimant Kafka consumer
 
 The files for this pipeline are in the ci/manage-ecs-services folder in this repo. To update this pipeline in CI, you can run the following make command:
 
