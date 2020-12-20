@@ -1,0 +1,172 @@
+jobs:
+  - name: dev-restart-ucfs-claimant-consumer
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-ucfs-claimant-consumer ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+
+  - name: qa-restart-ucfs-claimant-consumer
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-ucfs-claimant-consumer ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+
+  - name: int-restart-ucfs-claimant-consumer
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-ucfs-claimant-consumer ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
+
+  - name: preprod-restart-ucfs-claimant-consumer
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-ucfs-claimant-consumer ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
+
+  - name: prod-restart-ucfs-claimant-consumer
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-ucfs-claimant-consumer ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
+
+
+  - name: dev-scale-down-ucfs-claimant-consumer
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-ucfs-claimant-consumer ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+
+  - name: qa-scale-down-ucfs-claimant-consumer
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-ucfs-claimant-consumer ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+
+  - name: int-scale-down-ucfs-claimant-consumer
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-ucfs-claimant-consumer ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
+
+  - name: preprod-scale-down-ucfs-claimant-consumer
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-ucfs-claimant-consumer ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
+
+  - name: prod-scale-down-ucfs-claimant-consumer
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-ucfs-claimant-consumer ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
+
+
+  - name: dev-scale-up-ucfs-claimant-consumer
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: dataworks-aws-ucfs-claimant-consumer
+            trigger: false
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          tf-repo: dataworks-aws-ucfs-claimant-consumer
+      - .: (( inject meta.plan.terraform-output-ucfs-claimant-consumer ))
+        config:
+          params:
+            TF_WORKSPACE: default
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service-ucfs-claimant-consumer))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+
+  - name: qa-scale-up-ucfs-claimant-consumer
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: dataworks-aws-ucfs-claimant-consumer
+            trigger: false
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          tf-repo: dataworks-aws-ucfs-claimant-consumer
+      - .: (( inject meta.plan.terraform-output-ucfs-claimant-consumer ))
+        config:
+          params:
+            TF_WORKSPACE: qa
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service-ucfs-claimant-consumer))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+
+  - name: int-scale-up-ucfs-claimant-consumer
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: dataworks-aws-ucfs-claimant-consumer
+            trigger: false
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          tf-repo: dataworks-aws-ucfs-claimant-consumer
+      - .: (( inject meta.plan.terraform-output-ucfs-claimant-consumer ))
+        config:
+          params:
+            TF_WORKSPACE: integration
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service-ucfs-claimant-consumer))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
+
+  - name: preprod-scale-up-ucfs-claimant-consumer
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: dataworks-aws-ucfs-claimant-consumer
+            trigger: false
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          tf-repo: dataworks-aws-ucfs-claimant-consumer
+      - .: (( inject meta.plan.terraform-output-ucfs-claimant-consumer ))
+        config:
+          params:
+            TF_WORKSPACE: preprod
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service-ucfs-claimant-consumer))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
+
+  - name: prod-scale-up-ucfs-claimant-consumer
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: dataworks-aws-ucfs-claimant-consumer
+            trigger: false
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          tf-repo: dataworks-aws-ucfs-claimant-consumer
+      - .: (( inject meta.plan.terraform-output-ucfs-claimant-consumer ))
+        config:
+          params:
+            TF_WORKSPACE: production
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service-ucfs-claimant-consumer ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
