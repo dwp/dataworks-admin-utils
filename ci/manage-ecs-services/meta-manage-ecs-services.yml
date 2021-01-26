@@ -18,9 +18,6 @@ meta-manage-ecs-services:
       task: restart-ecs-service
       .: (( inject meta-manage-ecs-services.plan.manage-ecs-common ))
       config:
-        params:
-          AWS_REGION: ((dataworks.aws_region))
-          AWS_DEFAULT_REGION: ((dataworks.aws_region))
         run:
           path: sh
           args:
@@ -28,16 +25,11 @@ meta-manage-ecs-services:
             - |
               source /assume-role
               set +x
-              echo $(aws ecs list-services --cluster "${ECS_CLUSTER}" --query "serviceArns[?contains(@, '${ECS_SERVICE}')]") > temp.json
-              jq -c '.[]' temp.json | while read service_arn; do
-                service_arn=$(echo "$service_arn" | jq -r .)
-                service_name=$(aws ecs describe-services --cluster "${ECS_CLUSTER}" --services "$service_arn" | jq -r '.services[0].serviceName')
-                TASK_ARNS=$(aws ecs list-tasks --cluster "${ECS_CLUSTER}" --service-name "${service_name}" --query 'taskArns' --output text)
-                set -- junk $TASK_ARNS
-                shift
-                for TASK_ARN; do
-                  aws ecs stop-task --cluster "${ECS_CLUSTER}" --task "${TASK_ARN}";
-                done
+              TASK_ARNS=$(aws --region=eu-west-2 ecs list-tasks --cluster ${ECS_CLUSTER} --service-name ${ECS_SERVICE} --query 'taskArns' --output text)
+              set -- junk $TASK_ARNS
+              shift
+              for TASK_ARN; do
+                aws --region=eu-west-2 ecs stop-task --cluster ${ECS_CLUSTER} --task ${TASK_ARN};
               done
 
     scale-down-ecs-service:
@@ -45,8 +37,6 @@ meta-manage-ecs-services:
       .: (( inject meta-manage-ecs-services.plan.manage-ecs-common ))
       config:
         params:
-          AWS_REGION: ((dataworks.aws_region))
-          AWS_DEFAULT_REGION: ((dataworks.aws_region))
           DESIRED_COUNT: 0
         run:
           path: sh
@@ -55,20 +45,16 @@ meta-manage-ecs-services:
             - |
               source /assume-role
               set +x
-              echo $(aws ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]") > temp.json
-              jq -c '.[]' temp.json | while read service_arn; do
-                service_arn=$(echo "$service_arn" | jq -r .)
-                aws ecs update-service --cluster ${ECS_CLUSTER} --service "${service_arn}" --desired-count ${DESIRED_COUNT}
+              SERVICE_ARNS=$(aws --region=eu-west-2 ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]" --output text)
+              for SERVICE_ARN; do
+                aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${SERVICE_ARN} --desired-count ${DESIRED_COUNT}
               done
-              rm temp.json
 
     scale-up-ecs-service:
       task: scale-up-ecs-service
       .: (( inject meta-manage-ecs-services.plan.manage-ecs-common ))
       config:
         params:
-          AWS_REGION: ((dataworks.aws_region))
-          AWS_DEFAULT_REGION: ((dataworks.aws_region))
           DESIRED_COUNT_OUTPUT_NAME: ".kafka_to_hbase_consumer.value[0].desired_count"
         run:
           path: sh
@@ -78,41 +64,12 @@ meta-manage-ecs-services:
               source /assume-role
               set +x
               DESIRED_COUNT=$(cat terraform-output-ingest/outputs.json | jq -r "$DESIRED_COUNT_OUTPUT_NAME")
-              echo $(aws ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]") > temp.json
-              jq -c '.[]' temp.json | while read service_arn; do
-                service_arn=$(echo "$service_arn" | jq -r .)
-                aws ecs update-service --cluster ${ECS_CLUSTER} --service "${service_arn}" --desired-count ${DESIRED_COUNT}
+              SERVICE_ARNS=$(aws --region=eu-west-2 ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]" --output text)
+              for SERVICE_ARN; do
+                aws --region=eu-west-2 ecs update-service --cluster ${ECS_CLUSTER} --service ${SERVICE_ARN} --desired-count ${DESIRED_COUNT}
               done
-              rm temp.json
         inputs:
           - name: terraform-output-ingest
-
-    scale-up-ecs-service-ucfs-claimant-consumer:
-      task: scale-up-ecs-service-ucfs-claimant-consumer
-      .: (( inject meta-manage-ecs-services.plan.manage-ecs-common ))
-      config:
-        params:
-          AWS_REGION: ((dataworks.aws_region))
-          AWS_DEFAULT_REGION: ((dataworks.aws_region))
-          DESIRED_COUNT_OUTPUT_NAME: ".claimant_api_kafka_consumer.value.task_count"
-          ECS_CLUSTER: ingestion
-          ECS_SERVICE: claimant-api-kafka-consumer
-        run:
-          path: sh
-          args:
-            - -exc
-            - |
-              source /assume-role
-              set +x
-              DESIRED_COUNT=$(cat terraform-output-ucfs-claimant-consumer/outputs.json | jq -r "$DESIRED_COUNT_OUTPUT_NAME")
-              echo $(aws ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]") > temp.json
-              jq -c '.[]' temp.json | while read service_arn; do
-                service_arn=$(echo "$service_arn" | jq -r .)
-                aws ecs update-service --cluster ${ECS_CLUSTER} --service "${service_arn}" --desired-count ${DESIRED_COUNT}
-              done
-              rm temp.json
-        inputs:
-          - name: terraform-output-ucfs-claimant-consumer
           
     restart-ucfs-reconciliation:
       .: (( inject meta-manage-ecs-services.plan.restart-ecs-service ))
@@ -128,19 +85,12 @@ meta-manage-ecs-services:
           ECS_CLUSTER: main
           ECS_SERVICE: equality-reconciliation
 
-    restart-audit-reconciliation:
+    restart-stub-nifi:
       .: (( inject meta-manage-ecs-services.plan.restart-ecs-service ))
       config:
         params:
           ECS_CLUSTER: main
-          ECS_SERVICE: audit-reconciliation
-
-    restart-ucfs-claimant-consumer:
-      .: (( inject meta-manage-ecs-services.plan.restart-ecs-service ))
-      config:
-        params:
-          ECS_CLUSTER: ingestion
-          ECS_SERVICE: claimant-api-kafka-consumer
+          ECS_SERVICE: stub-nifi
 
     scale-down-ucfs-reconciliation:
       .: (( inject meta-manage-ecs-services.plan.scale-down-ecs-service ))
@@ -156,19 +106,12 @@ meta-manage-ecs-services:
           ECS_CLUSTER: main
           ECS_SERVICE: equality-reconciliation
 
-    scale-down-audit-reconciliation:
+    scale-down-stub-nifi:
       .: (( inject meta-manage-ecs-services.plan.scale-down-ecs-service ))
       config:
         params:
           ECS_CLUSTER: main
-          ECS_SERVICE: audit-reconciliation
-
-    scale-down-ucfs-claimant-consumer:
-      .: (( inject meta-manage-ecs-services.plan.scale-down-ecs-service ))
-      config:
-        params:
-          ECS_CLUSTER: ingestion
-          ECS_SERVICE: claimant-api-kafka-consumer
+          ECS_SERVICE: stub-nifi
 
     scale-up-ucfs-reconciliation:
       .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service ))
@@ -176,7 +119,7 @@ meta-manage-ecs-services:
         params:
           ECS_CLUSTER: main
           ECS_SERVICE: ucfs-reconciliation
-          DESIRED_COUNT_OUTPUT_NAME: ".k2hb_reconciliation.value.task_counts.ucfs_reconciliation"
+          DESIRED_COUNT_OUTPUT_NAME: ".k2hb_reconciliation.value.desired_count.ucfs_reconciliation"
 
     scale-up-equality-reconciliation:
       .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service ))
@@ -184,12 +127,5 @@ meta-manage-ecs-services:
         params:
           ECS_CLUSTER: main
           ECS_SERVICE: equality-reconciliation
-          DESIRED_COUNT_OUTPUT_NAME: ".k2hb_reconciliation.value.task_counts.equality_reconciliation"
+          DESIRED_COUNT_OUTPUT_NAME: ".k2hb_reconciliation.value.desired_count.equality_reconciliation"
 
-    scale-up-audit-reconciliation:
-      .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service ))
-      config:
-        params:
-          ECS_CLUSTER: main
-          ECS_SERVICE: audit-reconciliation
-          DESIRED_COUNT_OUTPUT_NAME: ".k2hb_reconciliation.value.task_counts.audit_reconciliation"
