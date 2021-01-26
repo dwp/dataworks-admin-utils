@@ -14,6 +14,8 @@ groups:
       - dev-restart-ucfs-claimant-consumer
       - dev-scale-down-ucfs-claimant-consumer
       - dev-scale-up-ucfs-claimant-consumer
+      - dev-scale-down-stub-nifi
+      - dev-restart-stub-nifi
 
   - name: qa
     jobs:
@@ -30,6 +32,8 @@ groups:
       - qa-restart-ucfs-claimant-consumer
       - qa-scale-down-ucfs-claimant-consumer
       - qa-scale-up-ucfs-claimant-consumer
+      - qa-scale-down-stub-nifi
+      - qa-restart-stub-nifi
 
   - name: integration
     jobs:
@@ -45,6 +49,8 @@ groups:
       - int-restart-ucfs-claimant-consumer
       - int-scale-down-ucfs-claimant-consumer
       - int-scale-up-ucfs-claimant-consumer
+      - int-scale-down-stub-nifi
+      - int-restart-stub-nifi
 
   - name: preprod
     jobs:
