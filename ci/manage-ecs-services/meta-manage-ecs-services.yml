@@ -142,6 +142,13 @@ meta-manage-ecs-services:
           ECS_CLUSTER: ingestion
           ECS_SERVICE: claimant-api-kafka-consumer
 
+    restart-stub-nifi:
+      .: (( inject meta-manage-ecs-services.plan.restart-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: stub-nifi
+
     scale-down-ucfs-reconciliation:
       .: (( inject meta-manage-ecs-services.plan.scale-down-ecs-service ))
       config:
@@ -169,6 +176,13 @@ meta-manage-ecs-services:
         params:
           ECS_CLUSTER: ingestion
           ECS_SERVICE: claimant-api-kafka-consumer
+
+    scale-down-stub-nifi:
+      .: (( inject meta-manage-ecs-services.plan.scale-down-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: stub-nifi
 
     scale-up-ucfs-reconciliation:
       .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service ))
