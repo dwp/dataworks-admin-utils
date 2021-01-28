@@ -59,14 +59,17 @@ groups:
       - dev-scale-up-ucfs-reconciliation
       - dev-scale-up-audit-reconciliation
       - dev-scale-up-ucfs-claimant-consumer
+      - dev-scale-up-stub-nifi
       - qa-scale-up-equality-reconciliation
       - qa-scale-up-ucfs-reconciliation
       - qa-scale-up-audit-reconciliation
       - qa-scale-up-ucfs-claimant-consumer
+      - qa-scale-up-stub-nifi
       - int-scale-up-equality-reconciliation
       - int-scale-up-ucfs-reconciliation
       - int-scale-up-audit-reconciliation
       - int-scale-up-ucfs-claimant-consumer
+      - int-scale-up-stub-nifi
       - preprod-scale-up-equality-reconciliation
       - preprod-scale-up-ucfs-reconciliation
       - preprod-scale-up-audit-reconciliation

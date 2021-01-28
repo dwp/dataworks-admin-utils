@@ -113,6 +113,33 @@ meta-manage-ecs-services:
               rm temp.json
         inputs:
           - name: terraform-output-ucfs-claimant-consumer
+
+    scale-up-ecs-service-stub-nifi:
+      task: scale-up-ecs-service-stub-nifi
+      .: (( inject meta-manage-ecs-services.plan.manage-ecs-common ))
+      config:
+        params:
+          AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+          DESIRED_COUNT_OUTPUT_NAME: ".stub_nifi_task_count.value"
+          ECS_CLUSTER: main
+          ECS_SERVICE: stub_nifi
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              source /assume-role
+              set +x
+              DESIRED_COUNT=$(cat terraform-output-snapshot-sender/outputs.json | jq -r "$DESIRED_COUNT_OUTPUT_NAME")
+              echo $(aws ecs list-services --cluster ${ECS_CLUSTER} --query "serviceArns[?contains(@, '${ECS_SERVICE}')]") > temp.json
+              jq -c '.[]' temp.json | while read service_arn; do
+                service_arn=$(echo "$service_arn" | jq -r .)
+                aws ecs update-service --cluster ${ECS_CLUSTER} --service "${service_arn}" --desired-count ${DESIRED_COUNT}
+              done
+              rm temp.json
+        inputs:
+          - name: terraform-output-snapshot-sender
           
     restart-ucfs-reconciliation:
       .: (( inject meta-manage-ecs-services.plan.restart-ecs-service ))
@@ -147,7 +174,7 @@ meta-manage-ecs-services:
       config:
         params:
           ECS_CLUSTER: main
-          ECS_SERVICE: stub-nifi
+          ECS_SERVICE: stub_nifi
 
     scale-down-ucfs-reconciliation:
       .: (( inject meta-manage-ecs-services.plan.scale-down-ecs-service ))
@@ -182,7 +209,7 @@ meta-manage-ecs-services:
       config:
         params:
           ECS_CLUSTER: main
-          ECS_SERVICE: stub-nifi
+          ECS_SERVICE: stub_nifi
 
     scale-up-ucfs-reconciliation:
       .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service ))
@@ -207,3 +234,18 @@ meta-manage-ecs-services:
           ECS_CLUSTER: main
           ECS_SERVICE: audit-reconciliation
           DESIRED_COUNT_OUTPUT_NAME: ".k2hb_reconciliation.value.task_counts.audit_reconciliation"
+
+    scale-up-audit-reconciliation:
+      .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: audit-reconciliation
+          DESIRED_COUNT_OUTPUT_NAME: ".k2hb_reconciliation.value.task_counts.audit_reconciliation"
+
+    scale-up-stub-nifi:
+      .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service ))
+      config:
+        params:
+          ECS_CLUSTER: main
+          ECS_SERVICE: stub_nifi
