@@ -1,85 +1,82 @@
 groups:
-  - name: development
+  - name: restart
     jobs:
+      - dev-restart-stub-nifi
       - dev-restart-k2s3
       - dev-restart-equality-reconciliation
       - dev-restart-ucfs-reconciliation
       - dev-restart-audit-reconciliation
-      - dev-scale-down-equality-reconciliation
-      - dev-scale-down-ucfs-reconciliation
-      - dev-scale-down-audit-reconciliation
-      - dev-scale-up-equality-reconciliation
-      - dev-scale-up-ucfs-reconciliation
-      - dev-scale-up-audit-reconciliation
       - dev-restart-ucfs-claimant-consumer
-      - dev-scale-down-ucfs-claimant-consumer
-      - dev-scale-up-ucfs-claimant-consumer
-      - dev-scale-down-stub-nifi
-      - dev-restart-stub-nifi
-
-  - name: qa
-    jobs:
+      - qa-restart-stub-nifi
       - qa-restart-k2s3
       - qa-restart-equality-reconciliation
       - qa-restart-ucfs-reconciliation
       - qa-restart-audit-reconciliation
-      - qa-scale-down-equality-reconciliation
-      - qa-scale-down-ucfs-reconciliation
-      - qa-scale-down-audit-reconciliation
-      - qa-scale-up-equality-reconciliation
-      - qa-scale-up-ucfs-reconciliation
-      - qa-scale-up-audit-reconciliation
       - qa-restart-ucfs-claimant-consumer
-      - qa-scale-down-ucfs-claimant-consumer
-      - qa-scale-up-ucfs-claimant-consumer
-      - qa-scale-down-stub-nifi
-      - qa-restart-stub-nifi
-
-  - name: integration
-    jobs:
+      - int-restart-stub-nifi
       - int-restart-equality-reconciliation
       - int-restart-ucfs-reconciliation
       - int-restart-audit-reconciliation
-      - int-scale-down-equality-reconciliation
-      - int-scale-down-ucfs-reconciliation
-      - int-scale-down-audit-reconciliation
-      - int-scale-up-equality-reconciliation
-      - int-scale-up-ucfs-reconciliation
-      - int-scale-up-audit-reconciliation
       - int-restart-ucfs-claimant-consumer
-      - int-scale-down-ucfs-claimant-consumer
-      - int-scale-up-ucfs-claimant-consumer
-      - int-scale-down-stub-nifi
-      - int-restart-stub-nifi
-
-  - name: preprod
-    jobs:
       - preprod-restart-equality-reconciliation
       - preprod-restart-ucfs-reconciliation
       - preprod-restart-audit-reconciliation
-      - preprod-scale-down-equality-reconciliation
-      - preprod-scale-down-ucfs-reconciliation
-      - preprod-scale-down-audit-reconciliation
-      - preprod-scale-up-equality-reconciliation
-      - preprod-scale-up-ucfs-reconciliation
-      - preprod-scale-up-audit-reconciliation
       - preprod-restart-ucfs-claimant-consumer
-      - preprod-scale-down-ucfs-claimant-consumer
-      - preprod-scale-up-ucfs-claimant-consumer
-
-  - name: production
-    jobs:
       - prod-restart-equality-reconciliation
       - prod-restart-ucfs-reconciliation
       - prod-restart-audit-reconciliation
+      - prod-restart-ucfs-claimant-consumer
+
+  - name: scale-down
+    jobs:
+      - dev-scale-down-stub-nifi
+      - dev-scale-down-equality-reconciliation
+      - dev-scale-down-ucfs-reconciliation
+      - dev-scale-down-audit-reconciliation
+      - dev-scale-down-ucfs-claimant-consumer
+      - qa-scale-down-stub-nifi
+      - qa-scale-down-equality-reconciliation
+      - qa-scale-down-ucfs-reconciliation
+      - qa-scale-down-audit-reconciliation
+      - qa-scale-down-ucfs-claimant-consumer
+      - int-scale-down-equality-reconciliation
+      - int-scale-down-ucfs-reconciliation
+      - int-scale-down-audit-reconciliation
+      - int-scale-down-ucfs-claimant-consumer
+      - int-scale-down-stub-nifi
+      - preprod-scale-down-equality-reconciliation
+      - preprod-scale-down-ucfs-reconciliation
+      - preprod-scale-down-audit-reconciliation
+      - preprod-scale-down-ucfs-claimant-consumer
       - prod-scale-down-equality-reconciliation
       - prod-scale-down-ucfs-reconciliation
       - prod-scale-down-audit-reconciliation
+      - prod-scale-down-ucfs-claimant-consumer
+
+  - name: scale-up
+    jobs:
+      - dev-scale-up-equality-reconciliation
+      - dev-scale-up-ucfs-reconciliation
+      - dev-scale-up-audit-reconciliation
+      - dev-scale-up-ucfs-claimant-consumer
+      - dev-scale-up-stub-nifi
+      - qa-scale-up-equality-reconciliation
+      - qa-scale-up-ucfs-reconciliation
+      - qa-scale-up-audit-reconciliation
+      - qa-scale-up-ucfs-claimant-consumer
+      - qa-scale-up-stub-nifi
+      - int-scale-up-equality-reconciliation
+      - int-scale-up-ucfs-reconciliation
+      - int-scale-up-audit-reconciliation
+      - int-scale-up-ucfs-claimant-consumer
+      - int-scale-up-stub-nifi
+      - preprod-scale-up-equality-reconciliation
+      - preprod-scale-up-ucfs-reconciliation
+      - preprod-scale-up-audit-reconciliation
+      - preprod-scale-up-ucfs-claimant-consumer
       - prod-scale-up-equality-reconciliation
       - prod-scale-up-ucfs-reconciliation
       - prod-scale-up-audit-reconciliation
-      - prod-restart-ucfs-claimant-consumer
-      - prod-scale-down-ucfs-claimant-consumer
       - prod-scale-up-ucfs-claimant-consumer
 
   - name: update-pipeline
