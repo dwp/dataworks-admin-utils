@@ -1,13 +1,35 @@
 resources:
-- name: dataworks-admin-utils-hbase-data-ingestion
-  type: git
-  source:
-    branch: master
-    uri: https://github.com/dwp/dataworks-admin-utils.git
-    paths:
-      - ci/hbase-data-ingestion/*
-      - ci/shared/*
-      - ci/vars.yml
-      - aviator-hbase-data-ingestion.yml
-  webhook_token: ((dataworks.concourse_github_webhook_token))
-  check_every: 1h
+  - name: dataworks-admin-utils-hbase-data-ingestion
+    type: git
+    source:
+      branch: master
+      uri: https://github.com/dwp/dataworks-admin-utils.git
+      paths:
+        - ci/hbase-data-ingestion/*
+        - ci/shared/*
+        - ci/vars.yml
+        - aviator-hbase-data-ingestion.yml
+    webhook_token: ((dataworks.concourse_github_webhook_token))
+    check_every: 1h
+
+  - name: aws-internal-compute
+    type: git
+    source:
+      branch: master
+      api_endpoint: https://((dataworks.enterprise_github_url))/api/v3/
+      username: ((dataworks.enterprise_github_username))
+      password: ((dataworks-secrets.enterprise_github_pat))
+      uri: https://((dataworks.enterprise_github_url))/dip/aws-internal-compute.git
+    check_every: 5m
+    webhook_token: ((dataworks.concourse_github_webhook_token))
+
+  - name: aws-ingestion
+    type: git
+    source:
+      branch: master
+      api_endpoint: https://((dataworks.enterprise_github_url))/api/v3/
+      username: ((dataworks.enterprise_github_username))
+      password: ((dataworks-secrets.enterprise_github_pat))
+      uri: https://((dataworks.enterprise_github_url))/dip/aws-ingestion.git
+    check_every: 5m
+    webhook_token: ((dataworks.concourse_github_webhook_token))

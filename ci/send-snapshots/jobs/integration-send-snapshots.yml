@@ -4,30 +4,8 @@ jobs:
     plan:
       - put: meta
         resource: meta-integration
-      - get: aws-ingestion
-        trigger: false
-      - get: aws-internal-compute
-        trigger: false
       - get: aws-dataworks-e2e-framework
         trigger: false
-      - get: dataworks-aws-ingest-consumers
-        trigger: false
-      - get: aws-snapshot-sender
-        trigger: false
-      - .: (( inject meta.plan.terraform-bootstrap-ingest-consumers ))
-      - in_parallel:
-          - .: (( inject meta.plan.terraform-output-internal-compute ))
-            params:
-              TF_WORKSPACE: "integration"
-          - .: (( inject meta.plan.terraform-output-ingest ))
-            params:
-              TF_WORKSPACE: "integration"
-          - .: (( inject meta.plan.terraform-output-snapshot-sender ))
-            params:
-              TF_WORKSPACE: "integration"
-          - .: (( inject meta.plan.terraform-output-ingest-consumers ))
-            params:
-              TF_WORKSPACE: "integration"
       - .: (( inject meta-send-snapshots.plan.send-snapshots ))
         config:
           params:
