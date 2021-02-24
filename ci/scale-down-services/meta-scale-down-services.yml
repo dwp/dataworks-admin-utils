@@ -24,17 +24,7 @@ meta-scale-down-services:
               export E2E_FEATURE_TAG_FILTER="@admin-scale-down-${SERVICE_NAME}"
               cd src/runners
               ./run-ci.sh \
-              "../../../meta" \
-              "../../../terraform-output-ingest/outputs.json" \
-              "../../../terraform-output-internal-compute/outputs.json" \
-              "../../../terraform-output-snapshot-sender/outputs.json" \
-              "NOT_SET" \
-              "NOT_SET" \
-              "../../../terraform-output-ingest-consumers/outputs.json"
+              "../../../meta"
         inputs:
           - name: aws-dataworks-e2e-framework
           - name: meta
-          - name: terraform-output-ingest
-          - name: terraform-output-internal-compute
-          - name: terraform-output-snapshot-sender
-          - name: terraform-output-ingest-consumers
