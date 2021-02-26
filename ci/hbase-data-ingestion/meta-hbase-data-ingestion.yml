@@ -14,7 +14,7 @@ meta-hbase-data-ingestion:
           AWS_DEFAULT_REGION: ((dataworks.aws_region))
           E2E_TEST_TIMEOUT: 300
         run:
-          dir: aws-dataworks-e2e-framework
+          dir: dataworks-behavioural-framework
           path: sh
           args:
             - -exc
@@ -27,7 +27,7 @@ meta-hbase-data-ingestion:
               ./run-ci.sh \
               "../../../meta"
         inputs:
-          - name: aws-dataworks-e2e-framework
+          - name: dataworks-behavioural-framework
           - name: meta
 
     run-data-load:
@@ -45,7 +45,7 @@ meta-hbase-data-ingestion:
           E2E_TEST_TIMEOUT: 300
           ASSUME_DURATION: 43200
         run:
-          dir: aws-dataworks-e2e-framework
+          dir: dataworks-behavioural-framework
           path: sh
           args:
             - -exc
@@ -86,7 +86,7 @@ meta-hbase-data-ingestion:
               ./run-ci.sh \
               "../../../meta"
         inputs:
-          - name: aws-dataworks-e2e-framework
+          - name: dataworks-behavioural-framework
           - name: meta
 
     clear-manifest:

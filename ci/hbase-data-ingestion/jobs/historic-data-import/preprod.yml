@@ -9,7 +9,7 @@ jobs:
           trigger: false
         - get: aws-internal-compute
           trigger: false
-        - get: aws-dataworks-e2e-framework
+        - get: dataworks-behavioural-framework
           trigger: false
       - in_parallel:
         - .: (( inject meta.plan.terraform-output-ingest ))

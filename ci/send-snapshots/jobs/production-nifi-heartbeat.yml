@@ -11,7 +11,7 @@ jobs:
         resource: meta-production
       - get: every-60-minutes
         trigger: true
-      - get: aws-dataworks-e2e-framework
+      - get: dataworks-behavioural-framework
         trigger: false
       - .: (( inject meta-send-snapshots.plan.send-snapshots ))
         config:
