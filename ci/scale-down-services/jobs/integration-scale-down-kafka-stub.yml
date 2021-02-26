@@ -7,7 +7,7 @@ jobs:
             resource: meta-integration
           - get: utc-midday-saturdays
             trigger: true
-          - get: aws-dataworks-e2e-framework
+          - get: dataworks-behavioural-framework
             trigger: false
       - .: (( inject meta-scale-down-services.plan.scale-down-services ))
         config:

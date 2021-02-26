@@ -14,7 +14,7 @@ meta-send-snapshots:
           AWS_DEFAULT_REGION: ((dataworks.aws_region))
           E2E_TEST_TIMEOUT: 300
         run:
-          dir: aws-dataworks-e2e-framework
+          dir: dataworks-behavioural-framework
           path: sh
           args:
             - -exc
@@ -25,5 +25,5 @@ meta-send-snapshots:
               ./run-ci.sh \
               "../../../meta"
         inputs:
-          - name: aws-dataworks-e2e-framework
+          - name: dataworks-behavioural-framework
           - name: meta

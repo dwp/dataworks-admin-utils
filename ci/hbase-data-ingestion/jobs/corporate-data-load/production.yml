@@ -5,7 +5,7 @@ jobs:
       - in_parallel:
         - put: meta
           resource: meta-production
-      - get: aws-dataworks-e2e-framework
+      - get: dataworks-behavioural-framework
         trigger: false
       - .: (( inject meta-hbase-data-ingestion.plan.run-data-load ))
         config:

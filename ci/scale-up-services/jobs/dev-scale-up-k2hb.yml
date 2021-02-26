@@ -5,7 +5,7 @@ jobs:
       - in_parallel:
           - put: meta
             resource: meta-development
-          - get: aws-dataworks-e2e-framework
+          - get: dataworks-behavioural-framework
             trigger: false
       - .: (( inject meta-scale-up-services.plan.scale-up-services ))
         config:
