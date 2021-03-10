@@ -6,7 +6,8 @@ groups:
   - dev-scale-down-snapshotsender
   - dev-scale-down-k2hb
   - dev-scale-down-kafka-stub
-  
+  - dev-scale-down-ingestion-ecs-cluster
+
 - name: scale-down-qa-services
   jobs:
   - qa-scale-down-hdi
@@ -14,6 +15,7 @@ groups:
   - qa-scale-down-snapshotsender
   - qa-scale-down-k2hb
   - qa-scale-down-kafka-stub
+  - qa-scale-down-ingestion-ecs-cluster
 
 - name: scale-down-integration-services
   jobs:
@@ -22,6 +24,7 @@ groups:
   - integration-scale-down-snapshotsender
   - integration-scale-down-k2hb
   - integration-scale-down-kafka-stub
+  - integration-scale-down-ingestion-ecs-cluster
 
 - name: scale-down-preprod-services
   jobs:
@@ -29,6 +32,8 @@ groups:
   - preprod-scale-down-htme
   - preprod-scale-down-snapshotsender
   - preprod-scale-down-k2hb
+  - preprod-scale-down-ingestion-ecs-cluster
+
 
 - name: scale-down-prod-services
   jobs:
@@ -36,6 +41,7 @@ groups:
   - prod-scale-down-htme
   - prod-scale-down-snapshotsender
   - prod-scale-down-k2hb
+  - prod-scale-down-ingestion-ecs-cluster
 
 - name: update-pipeline
   jobs:
