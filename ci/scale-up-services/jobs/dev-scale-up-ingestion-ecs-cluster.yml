@@ -1,0 +1,15 @@
+jobs:
+  - name: dev-scale-up-ingestion-ecs-cluster
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - put: meta
+            resource: meta-development
+          - get: dataworks-behavioural-framework
+            trigger: false
+      - .: (( inject meta-scale-up-services.plan.scale-up-services ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+            AWS_ACC: ((aws_account.development))
+            SERVICE_NAME: "ingestion-ecs-cluster"
