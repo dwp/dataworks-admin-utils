@@ -1,0 +1,16 @@
+jobs:
+  - name: historic-import-preprod-import-only
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+        - put: meta
+          resource: meta-preprod
+        - get: dataworks-behavioural-framework
+          trigger: false
+      - .: (( inject meta-hbase-data-ingestion.plan.run-data-load ))
+        config:
+          params:
+            AWS_ACC: ((aws_account.preprod))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
+            ACTION_TAG: "@admin-historic-data-import-import-only"
+            HISTORIC_IMPORTER_USE_ONE_MESSAGE_PER_PATH: "false"
