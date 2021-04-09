@@ -5,6 +5,8 @@ groups:
   - historic-import-qa
   - historic-import-integration
   - historic-import-preprod
+  - historic-import-preprod-import-only
+  - historic-import-preprod-manifest-only
   - historic-import-production
   - historic-import-production-import-only
   - historic-import-production-manifest-only

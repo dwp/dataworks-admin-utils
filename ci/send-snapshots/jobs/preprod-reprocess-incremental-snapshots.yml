@@ -1,17 +1,17 @@
 jobs:
-  - name: production-reprocess-incremental-snapshots
+  - name: preprod-reprocess-incremental-snapshots
     max_in_flight: 1
     plan:
       - put: meta
-        resource: meta-production
+        resource: meta-preprod
       - get: dataworks-behavioural-framework
         trigger: false
       - .: (( inject meta-send-snapshots.plan.send-snapshots ))
         config:
           params:
-            AWS_ACC: ((aws_account.production))
-            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
-            SEND_SNAPSHOTS_DATE_OVERRIDE: "2021-04-02"
+            AWS_ACC: ((aws_account.preprod))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
+            SEND_SNAPSHOTS_DATE_OVERRIDE: "2021-03-25"
             SEND_SNAPSHOTS_TOPICS_OVERRIDE: "ALL"
             SEND_SNAPSHOTS_REPROCESS_FILES_OVERRIDE: "true"
             E2E_FEATURE_TAG_FILTER: "@admin-send-incremental-snapshots-to-crown"
