@@ -104,6 +104,8 @@ The following overrides can be passed through as config params from the environm
 * `GENERATE_SNAPSHOTS_TRIGGER_SNAPSHOT_SENDER_OVERRIDE` -> if passed in as `true` then this will cause the generated snapshots to *also be sent down to Crown by Snapshot Sender* - default is `false`
 * `GENERATE_SNAPSHOTS_REPROCESS_FILES_OVERRIDE` -> this flag sets whether when Snapshot Sender sends a file, it will error if it already exists. There are specific jobs to set this so should not be changed on standard ones.
 * `GENERATE_SNAPSHOTS_CORRELATION_ID_OVERRIDE` -> override the correlation id which is useful for re-running new nightly generate and send topics
+* `GENERATE_SNAPSHOTS_EXPORT_DATE_OVERRIDE` -> Used to specify the location for the snapshots so if re-sending a day that is not today then set this to the relevant day in the format `YYYY-MM-DD`
+* `GENERATE_SNAPSHOTS_TRIGGER_ADG_OVERRIDE` -> True to trigger ADG after HTME has finished - default is `false`
 
 ### Pipeline: send-snapshots
 
