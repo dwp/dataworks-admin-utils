@@ -106,6 +106,7 @@ The following overrides can be passed through as config params from the environm
 * `GENERATE_SNAPSHOTS_CORRELATION_ID_OVERRIDE` -> override the correlation id which is useful for re-running new nightly generate and send topics
 * `GENERATE_SNAPSHOTS_EXPORT_DATE_OVERRIDE` -> Used to specify the location for the snapshots so if re-sending a day that is not today then set this to the relevant day in the format `YYYY-MM-DD`
 * `GENERATE_SNAPSHOTS_TRIGGER_ADG_OVERRIDE` -> True to trigger ADG after HTME has finished - default is `false`
+* `GENERATE_SNAPSHOTS_TRIGGER_PDM_OVERRIDE` -> True to trigger PDM after HTME and ADG have finished - default is `false`
 
 ### Pipeline: send-snapshots
 
