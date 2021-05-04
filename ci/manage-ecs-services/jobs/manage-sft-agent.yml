@@ -87,6 +87,9 @@ jobs:
       - in_parallel:
           - get: dataworks-aws-data-egress
             trigger: false
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          tf-repo: dataworks-aws-data-egress
       - .: (( inject meta.plan.terraform-output-dataworks-aws-data-egress ))
         config:
           params:
@@ -102,6 +105,9 @@ jobs:
       - in_parallel:
           - get: dataworks-aws-data-egress
             trigger: false
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          tf-repo: dataworks-aws-data-egress
       - .: (( inject meta.plan.terraform-output-dataworks-aws-data-egress ))
         config:
           params:
@@ -117,6 +123,9 @@ jobs:
       - in_parallel:
           - get: dataworks-aws-data-egress
             trigger: false
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          tf-repo: dataworks-aws-data-egress
       - .: (( inject meta.plan.terraform-output-dataworks-aws-data-egress ))
         config:
           params:
@@ -132,6 +141,9 @@ jobs:
       - in_parallel:
           - get: dataworks-aws-data-egress
             trigger: false
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          tf-repo: dataworks-aws-data-egress
       - .: (( inject meta.plan.terraform-output-dataworks-aws-data-egress ))
         config:
           params:
@@ -147,6 +159,9 @@ jobs:
       - in_parallel:
           - get: dataworks-aws-data-egress
             trigger: false
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          tf-repo: dataworks-aws-data-egress
       - .: (( inject meta.plan.terraform-output-dataworks-aws-data-egress ))
         config:
           params:
