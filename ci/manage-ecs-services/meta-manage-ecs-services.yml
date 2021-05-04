@@ -121,7 +121,7 @@ meta-manage-ecs-services:
         params:
           AWS_REGION: ((dataworks.aws_region))
           AWS_DEFAULT_REGION: ((dataworks.aws_region))
-          DESIRED_COUNT_OUTPUT_NAME: ".sft_agent_service.desired_count"
+          DESIRED_COUNT_OUTPUT_NAME: ".sft_agent_service.value.desired_count"
           ECS_CLUSTER: data-egress
           ECS_SERVICE: sft-agent
         run:
@@ -282,7 +282,7 @@ meta-manage-ecs-services:
         params:
           ECS_CLUSTER: data-egress
           ECS_SERVICE: sft-agent
-          DESIRED_COUNT_OUTPUT_NAME: ".sft_agent_service.desired_count"
+          DESIRED_COUNT_OUTPUT_NAME: ".sft_agent_service.value.desired_count"
 
     scale-up-stub-nifi:
       .: (( inject meta-manage-ecs-services.plan.scale-up-ecs-service ))
