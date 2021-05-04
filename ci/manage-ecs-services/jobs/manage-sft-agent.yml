@@ -1,0 +1,157 @@
+jobs:
+  - name: dev-restart-sft-agent
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-sft-agent ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+
+  - name: qa-restart-sft-agent
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-sft-agent ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+
+  - name: int-restart-sft-agent
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-sft-agent ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
+
+  - name: preprod-restart-sft-agent
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-sft-agent ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
+
+  - name: prod-restart-sft-agent
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.restart-sft-agent ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
+
+
+  - name: dev-scale-down-sft-agent
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-sft-agent ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+
+  - name: qa-scale-down-sft-agent
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-sft-agent ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+
+  - name: int-scale-down-sft-agent
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-sft-agent ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
+
+  - name: preprod-scale-down-sft-agent
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-sft-agent ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
+
+  - name: prod-scale-down-sft-agent
+    max_in_flight: 1
+    plan:
+      - .: (( inject meta-manage-ecs-services.plan.scale-down-sft-agent ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
+
+
+  - name: dev-scale-up-sft-agent
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: dataworks-aws-data-egress
+            trigger: false
+      - .: (( inject meta.plan.terraform-output-dataworks-aws-data-egress ))
+        config:
+          params:
+            TF_WORKSPACE: default
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-sft-agent ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+
+  - name: qa-scale-up-sft-agent
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: dataworks-aws-data-egress
+            trigger: false
+      - .: (( inject meta.plan.terraform-output-dataworks-aws-data-egress ))
+        config:
+          params:
+            TF_WORKSPACE: qa
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-sft-agent ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+
+  - name: int-scale-up-sft-agent
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: dataworks-aws-data-egress
+            trigger: false
+      - .: (( inject meta.plan.terraform-output-dataworks-aws-data-egress ))
+        config:
+          params:
+            TF_WORKSPACE: integration
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-sft-agent ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
+
+  - name: preprod-scale-up-sft-agent
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: dataworks-aws-data-egress
+            trigger: false
+      - .: (( inject meta.plan.terraform-output-dataworks-aws-data-egress ))
+        config:
+          params:
+            TF_WORKSPACE: preprod
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-sft-agent ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
+
+  - name: prod-scale-up-sft-agent
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: dataworks-aws-data-egress
+            trigger: false
+      - .: (( inject meta.plan.terraform-output-dataworks-aws-data-egress ))
+        config:
+          params:
+            TF_WORKSPACE: production
+      - .: (( inject meta-manage-ecs-services.plan.scale-up-sft-agent ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
