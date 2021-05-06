@@ -7,12 +7,28 @@ jobs:
   - name: production-nifi-heartbeat
     max_in_flight: 1
     plan:
-      - put: meta
-        resource: meta-production
-      - get: every-60-minutes
-        trigger: true
-      - get: dataworks-behavioural-framework
-        trigger: false
+      - in_parallel:
+        - put: meta
+          resource: meta-production
+        - get: every-60-minutes
+          trigger: true
+        - get: aws-snapshot-sender
+          trigger: false
+        - get: aws-internal-compute
+          trigger: false
+        - get: dataworks-behavioural-framework
+          trigger: false
+
+      - .: (( inject meta-send-snapshots.plan.terraform-output-internal-compute ))
+        config:
+          params:
+            TF_WORKSPACE: "production"
+
+      - .: (( inject meta-send-snapshots.plan.upload-heartbeat-files ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
+
       - .: (( inject meta-send-snapshots.plan.send-snapshots ))
         config:
           params:
