@@ -12,19 +12,20 @@ jobs:
           resource: meta-production
         - get: every-60-minutes
           trigger: true
-        - get: aws-snapshot-sender
-          trigger: false
         - get: aws-internal-compute
           trigger: false
         - get: dataworks-behavioural-framework
           trigger: false
 
-      - .: (( inject meta-send-snapshots.plan.terraform-output-internal-compute ))
-        config:
-          params:
-            TF_WORKSPACE: "production"
+      - in_parallel:
+        - .: (( inject meta-send-snapshots.plan.terraform-output-internal-compute ))
+          config:
+            params:
+              TF_WORKSPACE: "production"
 
-      - .: (( inject meta-send-snapshots.plan.upload-heartbeat-files ))
+        - .: (( inject meta-send-snapshots.plan.set-date ))
+
+      - .: (( inject meta-send-snapshots.plan.copy-heartbeat-file ))
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci

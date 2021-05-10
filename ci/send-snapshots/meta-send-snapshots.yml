@@ -52,8 +52,27 @@ meta-send-snapshots:
         outputs:
           - name: terraform-output-internal-compute
 
-    upload-heartbeat-files:
-      task: upload-heartbeat-files
+    set-date:
+      task: set-date
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_python_boto_behave_repository))
+            tag: ((dataworks.docker_python_boto_behave_version))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              date -d "yesterday" +'%Y-%m-%d' > date.txt
+          dir: set-date-output
+        outputs:
+          - name: set-date-output
+
+    copy-heartbeat-file:
+      task: copy-heartbeat-file
       config:
         platform: linux
         image_resource:
@@ -73,18 +92,18 @@ meta-send-snapshots:
               source /assume-role
               set +x
 
-              S3_BUCKET=$(cat ../terraform-output-internal-compute/outputs.json | jq -r '.htme_s3_bucket.value.id')
-              S3_PREFIX=$(cat ../terraform-output-internal-compute/outputs.json | jq -r '.htme_s3_folder.value.id')
-              S3_LOCATION="s3://${S3_BUCKET}/${S3_PREFIX}/NIFI_HEARTBEAT/full/" 
+              export YESTERDAY=$(cat set-date-output/date.txt)
 
-              echo "S3 location is '${S3_LOCATION}'"
-              cd files/snapshot-sender/heartbeat_files
+              S3_BUCKET=$(cat terraform-output-internal-compute/outputs.json | jq -r '.htme_s3_bucket.value.id')
+              S3_PREFIX=$(cat terraform-output-internal-compute/outputs.json | jq -r '.htme_s3_folder.value.id')
 
-              echo "Listing local files"
-              ls
+              S3_LOCATION_FROM="s3://${S3_BUCKET}/${S3_PREFIX}/${YESTERDAY}/full/db.accepted-data.calculateDeductions-000-003-000001.txt.gz.enc"
+              S3_LOCATION_TO="s3://${S3_BUCKET}/${S3_PREFIX}/NIFI_HEARTBEAT/full/db.nifi-heartbeat.production-001-001-0.txt.gz.enc"
 
-              aws s3 cp . "${S3_LOCATION}" --recursive
-          dir: aws-snapshot-sender
+              echo "S3 location from is '${S3_LOCATION_FROM}'"
+              echo "S3 location to is '${S3_LOCATION_TO}'"
+
+              aws s3 cp "${S3_LOCATION_FROM}" "${S3_LOCATION_TO}" --metadata-directive "COPY"
         inputs:
           - name: terraform-output-internal-compute
-          - name: aws-snapshot-sender
+          - name: set-date-output
