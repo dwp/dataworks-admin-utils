@@ -12,17 +12,6 @@ resources:
   webhook_token: ((dataworks.concourse_github_webhook_token))
   check_every: 1h
 
-- name: aws-snapshot-sender
-  type: git
-  source:
-    branch: master
-    api_endpoint: https://((dataworks.enterprise_github_url))/api/v3/
-    username: ((dataworks.enterprise_github_username))
-    password: ((dataworks-secrets.enterprise_github_pat))
-    uri: https://((dataworks.enterprise_github_url))/dip/aws-snapshot-sender.git
-  check_every: 15m
-  webhook_token: ((dataworks.concourse_github_webhook_token))
-
 - name: aws-internal-compute
   type: git
   source:
