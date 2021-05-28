@@ -85,9 +85,12 @@ jobs:
     max_in_flight: 1
     plan:
       - in_parallel:
-          - get: aws-ingestion
+          - get: dataworks-aws-ingest-consumers
             trigger: false
-      - .: (( inject meta.plan.terraform-output-ingest ))
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          tf-repo: dataworks-aws-ingest-consumers
+      - .: (( inject meta.plan.terraform-output-ingest-consumers ))
         config:
           params:
             TF_WORKSPACE: default
@@ -100,9 +103,12 @@ jobs:
     max_in_flight: 1
     plan:
       - in_parallel:
-          - get: aws-ingestion
+          - get: dataworks-aws-ingest-consumers
             trigger: false
-      - .: (( inject meta.plan.terraform-output-ingest ))
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          tf-repo: dataworks-aws-ingest-consumers
+      - .: (( inject meta.plan.terraform-output-ingest-consumers ))
         config:
           params:
             TF_WORKSPACE: qa
@@ -115,9 +121,12 @@ jobs:
     max_in_flight: 1
     plan:
       - in_parallel:
-          - get: aws-ingestion
+          - get: dataworks-aws-ingest-consumers
             trigger: false
-      - .: (( inject meta.plan.terraform-output-ingest ))
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          tf-repo: dataworks-aws-ingest-consumers
+      - .: (( inject meta.plan.terraform-output-ingest-consumers ))
         config:
           params:
             TF_WORKSPACE: integration
@@ -130,9 +139,12 @@ jobs:
     max_in_flight: 1
     plan:
       - in_parallel:
-          - get: aws-ingestion
+          - get: dataworks-aws-ingest-consumers
             trigger: false
-      - .: (( inject meta.plan.terraform-output-ingest ))
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          tf-repo: dataworks-aws-ingest-consumers
+      - .: (( inject meta.plan.terraform-output-ingest-consumers ))
         config:
           params:
             TF_WORKSPACE: preprod
@@ -145,9 +157,12 @@ jobs:
     max_in_flight: 1
     plan:
       - in_parallel:
-          - get: aws-ingestion
+          - get: dataworks-aws-ingest-consumers
             trigger: false
-      - .: (( inject meta.plan.terraform-output-ingest ))
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          tf-repo: dataworks-aws-ingest-consumers
+      - .: (( inject meta.plan.terraform-output-ingest-consumers ))
         config:
           params:
             TF_WORKSPACE: production
