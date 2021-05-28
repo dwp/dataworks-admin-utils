@@ -90,6 +90,33 @@ meta:
       params:
         AWS_REGION: eu-west-2
 
+    terraform-output-ingest-consumers:
+      task: terraform-output-ingest-consumers
+      .: (( inject meta.plan.terraform-common-config ))
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.terraform_repository))
+            tag: ((dataworks.terraform_version))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              cp ../terraform-bootstrap/terraform.tf .
+              cp ../terraform-bootstrap/terraform.tfvars .
+              terraform workspace show
+              terraform init
+              terraform output --json > ../terraform-output-ingest-consumers/outputs.json
+          dir: dataworks-aws-ingest-consumers
+        inputs:
+          - name: dataworks-aws-ingest-consumers
+          - name: terraform-bootstrap
+        outputs:
+          - name: terraform-output-ingest-consumers
+
     terraform-output-ucfs-claimant-consumer:
       task: terraform-output-ucfs-claimant-consumer
       .: (( inject meta.plan.terraform-common-config ))
