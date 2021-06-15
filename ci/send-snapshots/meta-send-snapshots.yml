@@ -8,13 +8,13 @@ meta-send-snapshots:
           type: docker-image
           source:
             repository: ((dataworks.docker_python_boto_behave_repository))
-            tag: 0.0.24
+            tag: ((dataworks.docker_python_boto_behave_version))
         params:
           AWS_REGION: ((dataworks.aws_region))
           AWS_DEFAULT_REGION: ((dataworks.aws_region))
           E2E_TEST_TIMEOUT: 300
         run:
-          dir: aws-dataworks-e2e-framework
+          dir: dataworks-behavioural-framework
           path: sh
           args:
             - -exc
@@ -23,17 +23,87 @@ meta-send-snapshots:
               set +x
               cd src/runners
               ./run-ci.sh \
-              "../../../meta" \
-              "../../../terraform-output-ingest/outputs.json" \
-              "../../../terraform-output-internal-compute/outputs.json" \
-              "../../../terraform-output-snapshot-sender/outputs.json" \
-              "NOT_SET" \
-              "NOT_SET" \
-              "../../../terraform-output-ingest-consumers/outputs.json"
+              "../../../meta"
         inputs:
-          - name: aws-dataworks-e2e-framework
+          - name: dataworks-behavioural-framework
           - name: meta
-          - name: terraform-output-ingest
+
+    terraform-output-internal-compute:
+      task: terraform-output-internal-compute
+      .: (( inject meta.plan.terraform-common-config ))
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.terraform_repository))
+            tag: ((dataworks.terraform_version))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              terraform workspace show
+              terraform init
+              terraform output --json > ../terraform-output-internal-compute/outputs.json
+          dir: aws-internal-compute
+        inputs:
+          - name: aws-internal-compute
+        outputs:
           - name: terraform-output-internal-compute
-          - name: terraform-output-snapshot-sender
-          - name: terraform-output-ingest-consumers
+
+    set-date:
+      task: set-date
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_python_boto_behave_repository))
+            tag: ((dataworks.docker_python_boto_behave_version))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              date -d "yesterday" +'%Y-%m-%d' > date.txt
+          dir: set-date-output
+        outputs:
+          - name: set-date-output
+
+    copy-heartbeat-file:
+      task: copy-heartbeat-file
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+          ASSUME_DURATION: 14400
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              source /assume-role
+              set +x
+
+              export YESTERDAY=$(cat set-date-output/date.txt)
+
+              S3_BUCKET=$(cat terraform-output-internal-compute/outputs.json | jq -r '.htme_s3_bucket.value.id')
+              S3_PREFIX=$(cat terraform-output-internal-compute/outputs.json | jq -r '.htme_s3_folder.value.id')
+
+              S3_LOCATION_FROM="s3://${S3_BUCKET}/${S3_PREFIX}/${YESTERDAY}/full/db.accepted-data.calculateDeductions-000-003-000001.txt.gz.enc"
+              S3_LOCATION_TO="s3://${S3_BUCKET}/${S3_PREFIX}/NIFI_HEARTBEAT/full/db.nifi-heartbeat.production-001-001-0.txt.gz.enc"
+
+              echo "S3 location from is '${S3_LOCATION_FROM}'"
+              echo "S3 location to is '${S3_LOCATION_TO}'"
+
+              aws s3 cp "${S3_LOCATION_FROM}" "${S3_LOCATION_TO}" --metadata-directive "COPY"
+        inputs:
+          - name: terraform-output-internal-compute
+          - name: set-date-output

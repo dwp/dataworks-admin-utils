@@ -4,34 +4,13 @@ jobs:
     plan:
       - put: meta
         resource: meta-qa
-      - get: aws-ingestion
+      - get: dataworks-behavioural-framework
         trigger: false
-      - get: aws-internal-compute
-        trigger: false
-      - get: aws-dataworks-e2e-framework
-        trigger: false
-      - get: dataworks-aws-ingest-consumers
-        trigger: false
-      - get: aws-snapshot-sender
-        trigger: false
-      - .: (( inject meta.plan.terraform-bootstrap-ingest-consumers ))
-      - in_parallel:
-          - .: (( inject meta.plan.terraform-output-internal-compute ))
-            params:
-              TF_WORKSPACE: "qa"
-          - .: (( inject meta.plan.terraform-output-ingest ))
-            params:
-              TF_WORKSPACE: "qa"
-          - .: (( inject meta.plan.terraform-output-snapshot-sender ))
-            params:
-              TF_WORKSPACE: "qa"
-          - .: (( inject meta.plan.terraform-output-ingest-consumers ))
-            params:
-              TF_WORKSPACE: "qa"
       - .: (( inject meta-generate-snapshots.plan.generate-snapshots ))
         config:
           params:
             AWS_ACC: ((aws_account.qa))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
-            E2E_FEATURE_TAG_FILTER: admin-generate-full-snapshots-with-completion-status-poller
-            GENERATE_SNAPSHOTS_TRIGGER_ADG_OVERRIDE: false
+            E2E_FEATURE_TAG_FILTER: admin-generate-full-snapshots
+            GENERATE_SNAPSHOTS_TOPICS_OVERRIDE: "ALL"
+            GENERATE_SNAPSHOTS_TRIGGER_SNAPSHOT_SENDER_OVERRIDE: false

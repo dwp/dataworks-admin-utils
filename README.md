@@ -60,6 +60,7 @@ You can also pause or unpause the pipeline:
 This is used to manage the following ECS containers:
 * Kafka connectors like kafka-to-s3 and kafka-to-hbase 
 * k2hb metadata reconciliation services for ucfs and equality feeds
+* UCFS Claimant Kafka consumer
 
 The files for this pipeline are in the ci/manage-ecs-services folder in this repo. To update this pipeline in CI, you can run the following make command:
 
@@ -103,6 +104,9 @@ The following overrides can be passed through as config params from the environm
 * `GENERATE_SNAPSHOTS_TRIGGER_SNAPSHOT_SENDER_OVERRIDE` -> if passed in as `true` then this will cause the generated snapshots to *also be sent down to Crown by Snapshot Sender* - default is `false`
 * `GENERATE_SNAPSHOTS_REPROCESS_FILES_OVERRIDE` -> this flag sets whether when Snapshot Sender sends a file, it will error if it already exists. There are specific jobs to set this so should not be changed on standard ones.
 * `GENERATE_SNAPSHOTS_CORRELATION_ID_OVERRIDE` -> override the correlation id which is useful for re-running new nightly generate and send topics
+* `GENERATE_SNAPSHOTS_EXPORT_DATE_OVERRIDE` -> Used to specify the location for the snapshots so if re-sending a day that is not today then set this to the relevant day in the format `YYYY-MM-DD`
+* `GENERATE_SNAPSHOTS_TRIGGER_ADG_OVERRIDE` -> True to trigger ADG after HTME has finished - default is `false`
+* `GENERATE_SNAPSHOTS_TRIGGER_PDM_OVERRIDE` -> True to trigger PDM after HTME and ADG have finished - default is `false`
 
 ### Pipeline: send-snapshots
 
@@ -156,13 +160,19 @@ The following overrides can be passed through as config params from the environm
 The following overrides can be passed through as config params from the environment jobs to the `corporate-data-load` or `historic-data-load` tasks in the pipelines:
 
 * `DATA_LOAD_TOPICS` -> must be a comma delimited list of the topics to load or can be `ALL` to use the default list - will default to `ALL`.
-* `DATA_LOAD_METADATA_STORE_TABLE` -> either `ucfs` or `equalities` to represent the metadata store table to write to - will default to `ucfs`.
+* `DATA_LOAD_METADATA_STORE_TABLE` -> either `ucfs`, `equalities` or audit to represent the metadata store table to write to (for CDL only, this also decides the s3 base path as well as the s3 file pattern to use - HDL only ever has one) - will default to `ucfs`.
 * `DATA_LOAD_S3_SUFFIX` -> if passed in, will add a suffix to the base S3 path that is used to store the historic or corporate storage and can be used to filter to files from a specific date (for corporate data) or database (for historic data) - will default to no suffix. If multiple suffixes required, pass in a comma delimited list, each one will be added to the base S3 path in turn and a comma delimited list of these full prefixes passed to HDL/CDL.
 
 The following overrides can be passed through as config params from the environment jobs to the `historic-data-load` tasks only in the pipeline:
 
 * `HISTORIC_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE` -> if passed in, records with a timestamp earlier than this are skipped in the historic data load - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
 * `HISTORIC_DATA_INGESTION_SKIP_LATER_THAN_OVERRIDE` -> if passed in, records with a timestamp later than this are skipped in the historic data load - format of date time must be `yyyy-MM-dd'T'HH:mm:ss.SSS` with an optional literal `Z` at the end.
+
+The following overrides can be passed through as config params from the environment jobs to the `corporate-data-load` tasks only in the pipeline:
+
+* `CORPORATE_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE` -> if passed in, the data load is run from the files from this day (inclusive) onwards (if not passed in runs on the entire dataset) - format of date must be `yyyy-MM-dd`.
+* `CORPORATE_DATA_INGESTION_SKIP_LATER_THAN_OVERRIDE` -> if CORPORATE_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE is passed in, then this must be too and it must be a date later than that one or the same as - this signifies the last day (inclusive) of date to load (if it is the same as CORPORATE_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE then only one day is processed) - format of date must be `yyyy-MM-dd`.
+* `CORPORATE_DATA_INGESTION_PREFIX_PER_EXECUTION_OVERRIDE` -> if passed in as `true` then for every prefix that will be loaded, a new execution of the data load will occur. If not then all the prefixes will be sent to one execution of the jar at the same time (this is the default).
 
 ### Pipeline: ami-cleanup
 

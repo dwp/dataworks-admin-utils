@@ -8,13 +8,13 @@ meta-hbase-data-ingestion:
           type: docker-image
           source:
             repository: ((dataworks.docker_python_boto_behave_repository))
-            tag: 0.0.24
+            tag: 0.0.26
         params:
           AWS_REGION: ((dataworks.aws_region))
           AWS_DEFAULT_REGION: ((dataworks.aws_region))
           E2E_TEST_TIMEOUT: 300
         run:
-          dir: aws-dataworks-e2e-framework
+          dir: dataworks-behavioural-framework
           path: sh
           args:
             - -exc
@@ -25,20 +25,10 @@ meta-hbase-data-ingestion:
 
               cd src/runners
               ./run-ci.sh \
-              "../../../meta" \
-              "../../../terraform-output-ingest/outputs.json" \
-              "../../../terraform-output-internal-compute/outputs.json" \
-              "../../../terraform-output-snapshot-sender/outputs.json" \
-              "NOT_SET" \
-              "NOT_SET" \
-              "../../../terraform-output-ingest-consumers/outputs.json"
+              "../../../meta"
         inputs:
-          - name: aws-dataworks-e2e-framework
+          - name: dataworks-behavioural-framework
           - name: meta
-          - name: terraform-output-ingest
-          - name: terraform-output-internal-compute
-          - name: terraform-output-snapshot-sender
-          - name: terraform-output-ingest-consumers
 
     run-data-load:
       task: run-data-load
@@ -48,14 +38,14 @@ meta-hbase-data-ingestion:
           type: docker-image
           source:
             repository: ((dataworks.docker_python_boto_behave_repository))
-            tag: 0.0.24
+            tag: ((dataworks.docker_python_boto_behave_version))
         params:
           AWS_REGION: ((dataworks.aws_region))
           AWS_DEFAULT_REGION: ((dataworks.aws_region))
           E2E_TEST_TIMEOUT: 300
-          ASSUME_DURATION: 14400
+          ASSUME_DURATION: 43200
         run:
-          dir: aws-dataworks-e2e-framework
+          dir: dataworks-behavioural-framework
           path: sh
           args:
             - -exc
@@ -65,23 +55,27 @@ meta-hbase-data-ingestion:
               export E2E_FEATURE_TAG_FILTER="${ACTION_TAG}"
               export DATA_LOAD_TOPICS="${DATA_LOAD_TOPICS}"
               export DATA_LOAD_METADATA_STORE_TABLE="${DATA_LOAD_METADATA_STORE_TABLE}"
+              export CORPORATE_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE="${CORPORATE_DATA_INGESTION_SKIP_EARLIER_THAN_OVERRIDE}"
+              export CORPORATE_DATA_INGESTION_SKIP_LATER_THAN_OVERRIDE="${CORPORATE_DATA_INGESTION_SKIP_LATER_THAN_OVERRIDE}"
 
               if [[ "${ACTION_TAG}" == "@admin-corporate-data-load" ]]; then
+                echo "Setting CDL properties"
                 if [[ "${DATA_LOAD_METADATA_STORE_TABLE}" == "equalities" ]]; then
-                  export DATA_LOAD_S3_BASE_PREFIX=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.s3_base_prefix_equalities')
-                  export DATA_LOAD_FILE_PATTERN=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.file_pattern_equalities')
+                  echo "Setting equalities table values"
+                  export DATA_LOAD_S3_BASE_PREFIX=$(cat ../terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.s3_base_prefix_equalities')
+                  export DATA_LOAD_S3_FILE_PATTERN=$(cat ../terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.file_pattern_equalities')
+                elif [[ "${DATA_LOAD_METADATA_STORE_TABLE}" == "audit" ]]; then
+                  echo "Setting audit table values"
+                  export DATA_LOAD_S3_BASE_PREFIX=$(cat ../terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.s3_base_prefix_audit')
+                  export DATA_LOAD_S3_FILE_PATTERN=$(cat ../terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.file_pattern_audit')
                 else
-                  export DATA_LOAD_S3_BASE_PREFIX=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.s3_base_prefix_ucfs')
-                  export DATA_LOAD_FILE_PATTERN=$(cat terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.file_pattern_ucfs')
+                  echo "Setting default values"
+                  export DATA_LOAD_S3_BASE_PREFIX=$(cat ../terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.s3_base_prefix_ucfs')
+                  export DATA_LOAD_S3_FILE_PATTERN=$(cat ../terraform-output-ingest/outputs.json | jq -r '.corporate_data_loader.value.file_pattern_ucfs')
                 fi
+                echo "Set DATA_LOAD_S3_BASE_PREFIX to '${DATA_LOAD_S3_BASE_PREFIX}' and DATA_LOAD_S3_FILE_PATTERN to '${DATA_LOAD_S3_FILE_PATTERN}'"
               else
-                if [[ "${DATA_LOAD_METADATA_STORE_TABLE}" == "equalities" ]]; then
-                  export DATA_LOAD_S3_BASE_PREFIX=$(cat terraform-output-ingest/outputs.json | jq -r '.ucfs_historic_data_prefix.value')
-                  export DATA_LOAD_FILE_PATTERN=$(cat terraform-output-ingest/outputs.json | jq -r '.historic_data_loader.value.file_pattern_equalities')
-                else
-                  export DATA_LOAD_S3_BASE_PREFIX=$(cat terraform-output-ingest/outputs.json | jq -r '.ucfs_historic_data_prefix.value')
-                  export DATA_LOAD_FILE_PATTERN=$(cat terraform-output-ingest/outputs.json | jq -r '.historic_data_loader.value.file_pattern_ucfs')
-                fi
+                echo "Not setting CDL properties as ACTION_TAG is set to '${ACTION_TAG}'"
               fi
 
               if [[ ! -z "${DATA_LOAD_S3_SUFFIX}" ]]; then
@@ -90,20 +84,10 @@ meta-hbase-data-ingestion:
 
               cd src/runners
               ./run-ci.sh \
-              "../../../meta" \
-              "../../../terraform-output-ingest/outputs.json" \
-              "../../../terraform-output-internal-compute/outputs.json" \
-              "../../../terraform-output-snapshot-sender/outputs.json" \
-              "NOT_SET" \
-              "NOT_SET" \
-              "../../../terraform-output-ingest-consumers/outputs.json"
+              "../../../meta"
         inputs:
-          - name: aws-dataworks-e2e-framework
+          - name: dataworks-behavioural-framework
           - name: meta
-          - name: terraform-output-ingest
-          - name: terraform-output-internal-compute
-          - name: terraform-output-snapshot-sender
-          - name: terraform-output-ingest-consumers
 
     clear-manifest:
       task: clear-manifest
@@ -149,84 +133,26 @@ meta-hbase-data-ingestion:
         inputs:
           - name: terraform-output-internal-compute
 
-    update-dynamo-db-table-settings:
-      task: update-dynamo-db-table-settings
+    terraform-output-internal-compute:
+      task: terraform-output-internal-compute
+      .: (( inject meta.plan.terraform-common-config ))
       config:
         platform: linux
         image_resource:
           type: docker-image
           source:
-            repository: ((dataworks.docker_awscli_repository))
-            version: ((dataworks.docker_awscli_version))
-            tag: ((dataworks.docker_awscli_version))
-        params:
-          AWS_REGION: ((dataworks.aws_region))
-          AWS_DEFAULT_REGION: ((dataworks.aws_region))
-          ASSUME_DURATION: 14400
+            repository: ((dataworks.terraform_repository))
+            tag: ((dataworks.terraform_version))
         run:
           path: sh
           args:
             - -exc
             - |
-              source /assume-role
-              set +x
-
-              function get_table_status {
-                aws dynamodb describe-table --region="$AWS_REGION" \
-                --table-name "$table_name" | \
-                jq -r '.Table.TableStatus'
-              }
-
-              function get_current_write_capacity {
-                aws dynamodb describe-table --region="$AWS_REGION" \
-                --table-name "$table_name" | \
-                jq -r '.Table.ProvisionedThroughput.WriteCapacityUnits'
-              }
-
-              function update_table {
-                aws dynamodb update-table --region="$AWS_REGION" \
-                --table-name "$table_name" \
-                --provisioned-throughput ReadCapacityUnits=$read_capacity,WriteCapacityUnits=$write_capacity
-              }
-              
-              table_name=$(cat terraform-output-ingest/outputs.json | jq -r '.hbase_metadata_capacity.value.table_name')
-
-              if [[ "$TYPE" == "write_heavy" ]]; then
-                export read_capacity=$(cat terraform-output-ingest/outputs.json | jq -r '.hbase_metadata_capacity.value.read_capacity_write_heavy_load')
-                export write_capacity=$(cat terraform-output-ingest/outputs.json | jq -r '.hbase_metadata_capacity.value.write_capacity_write_heavy_load')
-              else
-                export read_capacity=$(cat terraform-output-ingest/outputs.json | jq -r '.hbase_metadata_capacity.value.read_capacity_normal_load')
-                export write_capacity=$(cat terraform-output-ingest/outputs.json | jq -r '.hbase_metadata_capacity.value.write_capacity_normal_load')
-              fi
-              
-              current_capacity=$(get_current_write_capacity)
-              echo current_capacity: \'$current_capacity\'.
-              if [[ "$current_capacity" == "$write_capacity" ]]; then
-                echo Current capacity is the same as desired, exiting normally
-                exit 0
-              fi
-
-              update_table
-
-              i=0
-              while [[ $i -le 360 ]]; do #60 minutes timeout
-                current_status=$(get_table_status)
-                echo current_status: \'$current_status\'.
-
-                if [[ -z "$current_status" ]] || [[ "$current_status" == "null" ]]; then
-                  echo Could not retrieve the current table status, exiting normally
-                  exit 0
-                fi
-
-                if [ "$current_status" == "ACTIVE" ]; then
-                  echo "Table status is active, exiting normally."
-                  exit 0
-                fi
-
-                i=$((i+1))
-                echo "Table still updating, sleeping for 10 seconds."
-                sleep 10
-              done
+              terraform workspace show
+              terraform init
+              terraform output --json > ../terraform-output-internal-compute/outputs.json
+          dir: aws-internal-compute
         inputs:
-          - name: meta
-          - name: terraform-output-ingest
+          - name: aws-internal-compute
+        outputs:
+          - name: terraform-output-internal-compute

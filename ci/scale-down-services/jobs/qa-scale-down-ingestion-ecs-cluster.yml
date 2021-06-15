@@ -1,0 +1,15 @@
+jobs:
+  - name: qa-scale-down-ingestion-ecs-cluster
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - put: meta
+            resource: meta-qa
+          - get: dataworks-behavioural-framework
+            trigger: false
+      - .: (( inject meta-scale-down-services.plan.scale-down-services ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+            AWS_ACC: ((aws_account.qa))
+            SERVICE_NAME: "ingestion-ecs-cluster"

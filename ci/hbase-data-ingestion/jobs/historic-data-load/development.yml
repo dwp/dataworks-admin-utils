@@ -5,22 +5,8 @@ jobs:
       - in_parallel:
         - put: meta
           resource: meta-development
-        - get: aws-ingestion
+        - get: dataworks-behavioural-framework
           trigger: false
-        - get: aws-internal-compute
-          trigger: false
-        - get: aws-dataworks-e2e-framework
-          trigger: false
-        - get: dataworks-aws-ingest-consumers
-          trigger: false
-        - get: aws-snapshot-sender
-          trigger: false
-      - .: (( inject meta.plan.terraform-bootstrap-ingest-consumers ))
-      - in_parallel:
-          - .: (( inject meta.plan.terraform-output-ingest ))
-          - .: (( inject meta.plan.terraform-output-internal-compute ))
-          - .: (( inject meta.plan.terraform-output-snapshot-sender))
-          - .: (( inject meta.plan.terraform-output-ingest-consumers ))
       - .: (( inject meta-hbase-data-ingestion.plan.run-data-import ))
         config:
           params:
