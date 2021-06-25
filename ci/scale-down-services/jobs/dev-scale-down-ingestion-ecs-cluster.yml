@@ -4,7 +4,7 @@ jobs:
     plan:
       - in_parallel:
           - put: meta
-            resource: meta-dev
+            resource: meta-development
           - get: dataworks-behavioural-framework
             trigger: false
       - .: (( inject meta-scale-down-services.plan.scale-down-services ))

@@ -142,7 +142,7 @@ meta-hbase-data-ingestion:
           type: docker-image
           source:
             repository: ((dataworks.terraform_repository))
-            tag: ((dataworks.terraform_version))
+            tag: ((dataworks.terraform_13_version))
         run:
           path: sh
           args:
