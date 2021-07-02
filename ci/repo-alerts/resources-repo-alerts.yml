@@ -1,0 +1,28 @@
+resources:
+  - name: slack
+    type: slack-notification
+    source:
+      url: ((dataworks.slack_webhook_url))
+
+  - name: chs-auditlog
+    type: git
+    source:
+      branch: master
+      username: ((dataworks.enterprise_github_username))
+      password: ((dataworks-secrets.enterprise_github_pat))
+      uri: https://((dataworks.enterprise_github_url))/dip/chs-auditlog.git
+    check_every: 5m
+
+  - name: dataworks-admin-utils-repo-alerts
+    type: git
+    source:
+      branch: master
+      uri: https://github.com/dwp/dataworks-admin-utils.git
+      paths:
+        - ci/manage-environments/*
+        - ci/shared/*
+        - ci/vars.yml
+        - aviator-repo-alerts.yml
+    webhook_token: ((dataworks.concourse_github_webhook_token))
+    check_every: 1h
+
