@@ -1,8 +1,0 @@
-groups:
-  - name: master
-    jobs:
-      - slack-notification
-
-  - name: update-pipeline
-    jobs:
-      - update-pipeline
