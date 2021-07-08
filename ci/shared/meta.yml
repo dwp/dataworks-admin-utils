@@ -170,3 +170,31 @@ meta:
           - name: terraform-bootstrap
         outputs:
           - name: terraform-output-dataworks-aws-data-egress
+
+    update-pipeline:
+      task: aviator
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_aviator_repository))
+            version: ((dataworks.docker_aviator_version))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              sed -i 's/fly/nofly/' "$aviator_filename"
+              /usr/bin/aviator -f "$aviator_filename"
+              mv "$aviator_filename" ../pipeline/aviator_pipeline.yml
+              mv ci/vars.yml ../pipeline
+          dir: dataworks-admin-utils
+        inputs:
+          - name: dataworks-admin-utils
+        outputs:
+          - name: pipeline
+        set_pipeline: dataworks-admin-utils
+        file: pipeline/aviator_pipeline.yml
+        var_files:
+          - pipeline/vars.yml
