@@ -14,6 +14,11 @@ There are multiple admin style pipelines which are released to the CI system:
 0. `send-snapshots`
 0. `hbase-data-ingestion`
 0. `ami-cleanup`
+0. `adg-emr-admin`
+0. `clive-emr-admin`
+0. `kickstart-adg-emr-admin`
+0. `mongo-latest-emr-admin`
+0. `pdm-emr-admin`
 
 ### Installing as a concourse pipeline
 
@@ -200,3 +205,22 @@ To use:
 1. Uncomment the line with `taint` command.
 1. Aviator and run.
 1. When done, reset to HEAD of master branch and aviator in so that `taint` command is commented out in Concourse.
+
+### Pipelines ending `*-emr-admin`
+
+Administrative jobs for the data products have been collated into the utility team to permit the removal of aviator privileges. These can be used to stop and start specified EMR clusters.
+
+You can update one of these pipeline using this:
+
+* `make update-<PIPELINE-NAME>-emr-admin-pipeline`
+
+You can also pause or unpause the pipeline:
+
+* `make pause-<PIPELINE-NAME>-emr-admin-pipeline`
+* `make unpause-<PIPELINE-NAME>-emr-admin-pipeline`
+
+To use:
+1. Follow steps 1 to 3 in the `Installing as a concourse pipeline` section above
+1. Add the required variables to your local file as per defined in the jobs `.yml` files
+1. Aviator your changes using `make update-<PIPELINE-NAME>-emr-admin-pipeline`
+1. Browse to the concourse UI for your pipeline and run the job for the environment of your choice
