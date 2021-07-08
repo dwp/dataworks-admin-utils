@@ -47,21 +47,26 @@ update-all-pipelines: ## Update all the pipelines
 	aviator -f aviator-adg-emr-services.yml
 	aviator -f aviator-clive-emr-services.yml
 	aviator -f aviator-pdm-emr-services.yml
+	aviator -f aviator-kickstart-adg-emr-services.yml
+
+.PHONY: update-kickstart-adg-emr-services-pipeline
+update-kickstart-adg-emr-services-pipeline: ## Update the kickstart-adg-emr-services pipeline
+	aviator -f aviator-kickstart-adg-emr-services.yml
 
 .PHONY: update-mongo-latest-emr-services-pipeline
-update-lambda-cleanup-pipeline: ## Update the lambda-cleanup pipeline
+update-mongo-latest-emr-services-pipeline: ## Update the mongo-latest-emr-services pipeline
 	aviator -f aviator-mongo-latest-emr-services.yml
 
 .PHONY: update-adg-emr-services-pipeline
-update-lambda-cleanup-pipeline: ## Update the lambda-cleanup pipeline
+update-adg-emr-services-pipeline: ## Update the adg-emr-services pipeline
 	aviator -f aviator-adg-emr-services.yml
 
 .PHONY: update-clive-emr-services-pipeline
-update-lambda-cleanup-pipeline: ## Update the lambda-cleanup pipeline
+update-clive-emr-services-pipeline: ## Update the clive-emr-services pipeline
 	aviator -f aviator-clive-emr-services.yml
 
 .PHONY: update-pdm-emr-services-pipeline
-update-lambda-cleanup-pipeline: ## Update the lambda-cleanup pipeline
+update-pdm-emr-services-pipeline: ## Update the pdm-emr-services pipeline
 	aviator -f aviator-pdm-emr-services.yml
 
 .PHONY: update-lambda-cleanup-pipeline
@@ -104,20 +109,24 @@ update-hbase-data-ingestion-pipeline: ## Update the hbase-data-ingestion pipelin
 update-terraform-taint-pipeline: ## Update the terraform-taint pipeline
 	aviator -f aviator-terraform-taint.yml
 
+.PHONY: pause-kickstart-adg-emr-services-pipeline
+pause-kickstart-adg-emr-services-pipeline: ## pause the kickstart-adg-emr-services pipeline
+	fly --target utility pause-pipeline --pipeline kickstart-adg-emr-services
+
 .PHONY: pause-mongo-latest-emr-services-pipeline
-pause-lambda-cleanup-pipeline: ## pause the lambda-cleanup pipeline
+pause-mongo-latest-emr-services-pipeline: ## pause the mongo-latest-emr-services pipeline
 	fly --target utility pause-pipeline --pipeline mongo-latest-emr-services
 
 .PHONY: pause-adg-emr-services-pipeline
-pause-lambda-cleanup-pipeline: ## pause the lambda-cleanup pipeline
+pause-adg-emr-services-pipeline: ## pause the adg-emr-services pipeline
 	fly --target utility pause-pipeline --pipeline adg-emr-services
 
 .PHONY: pause-clive-emr-services-pipeline
-pause-lambda-cleanup-pipeline: ## pause the lambda-cleanup pipeline
+pause-clive-emr-services-pipeline: ## pause the clive-emr-services pipeline
 	fly --target utility pause-pipeline --pipeline clive-emr-services
 
 .PHONY: pause-pdm-emr-services-pipeline
-pause-lambda-cleanup-pipeline: ## pause the lambda-cleanup pipeline
+pause-pdm-emr-services-pipeline: ## pause the pdm-emr-services pipeline
 	fly --target utility pause-pipeline --pipeline pdm-emr-services
 
 .PHONY: pause-lambda-cleanup-pipeline
@@ -160,20 +169,24 @@ pause-ami-cleanup-pipeline: ## Pause the ami-cleanup pipeline
 pause-terraform-taint-pipeline: ## Pause the terraform-taint pipeline
 	fly --target utility pause-pipeline --pipeline terraform-taint
 	
+.PHONY: unpause-kickstart-adg-emr-services-pipeline
+unpause-kickstart-adg-emr-services-pipeline: ## unpause the kickstart-adg-emr-services pipeline
+	fly --target utility unpause-pipeline --pipeline kickstart-adg-emr-services
+
 .PHONY: unpause-mongo-latest-emr-services-pipeline
-unpause-lambda-cleanup-pipeline: ## unpause the lambda-cleanup pipeline
+unpause-mongo-latest-emr-services-pipeline: ## unpause the mongo-latest-emr-services pipeline
 	fly --target utility unpause-pipeline --pipeline mongo-latest-emr-services
 
 .PHONY: unpause-adg-emr-services-pipeline
-unpause-lambda-cleanup-pipeline: ## unpause the lambda-cleanup pipeline
+unpause-adg-emr-services-pipeline: ## unpause the adg-emr-services pipeline
 	fly --target utility unpause-pipeline --pipeline adg-emr-services
 
 .PHONY: unpause-clive-emr-services-pipeline
-unpause-lambda-cleanup-pipeline: ## unpause the lambda-cleanup pipeline
+unpause-clive-emr-services-pipeline: ## unpause the clive-emr-services pipeline
 	fly --target utility unpause-pipeline --pipeline clive-emr-services
 
 .PHONY: unpause-pdm-emr-services-pipeline
-unpause-lambda-cleanup-pipeline: ## unpause the lambda-cleanup pipeline
+unpause-pdm-emr-services-pipeline: ## unpause the pdm-emr-services pipeline
 	fly --target utility unpause-pipeline --pipeline pdm-emr-services
 
 .PHONY: unpause-lambda-cleanup-pipeline
