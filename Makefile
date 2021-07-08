@@ -43,31 +43,31 @@ update-all-pipelines: ## Update all the pipelines
 	aviator -f aviator-ami-cleanup.yml
 	aviator -f aviator-hbase-data-ingestion.yml
 	aviator -f aviator-terraform-taint.yml
-	aviator -f aviator-mongo-latest-emr-services.yml
-	aviator -f aviator-adg-emr-services.yml
-	aviator -f aviator-clive-emr-services.yml
-	aviator -f aviator-pdm-emr-services.yml
-	aviator -f aviator-kickstart-adg-emr-services.yml
+	aviator -f aviator-mongo-latest-emr-admin.yml
+	aviator -f aviator-adg-emr-admin.yml
+	aviator -f aviator-clive-emr-admin.yml
+	aviator -f aviator-pdm-emr-admin.yml
+	aviator -f aviator-kickstart-adg-emr-admin.yml
 
-.PHONY: update-kickstart-adg-emr-services-pipeline
-update-kickstart-adg-emr-services-pipeline: ## Update the kickstart-adg-emr-services pipeline
-	aviator -f aviator-kickstart-adg-emr-services.yml
+.PHONY: update-kickstart-adg-emr-admin-pipeline
+update-kickstart-adg-emr-admin-pipeline: ## Update the kickstart-adg-emr-admin pipeline
+	aviator -f aviator-kickstart-adg-emr-admin.yml
 
-.PHONY: update-mongo-latest-emr-services-pipeline
-update-mongo-latest-emr-services-pipeline: ## Update the mongo-latest-emr-services pipeline
-	aviator -f aviator-mongo-latest-emr-services.yml
+.PHONY: update-mongo-latest-emr-admin-pipeline
+update-mongo-latest-emr-admin-pipeline: ## Update the mongo-latest-emr-admin pipeline
+	aviator -f aviator-mongo-latest-emr-admin.yml
 
-.PHONY: update-adg-emr-services-pipeline
-update-adg-emr-services-pipeline: ## Update the adg-emr-services pipeline
-	aviator -f aviator-adg-emr-services.yml
+.PHONY: update-adg-emr-admin-pipeline
+update-adg-emr-admin-pipeline: ## Update the adg-emr-admin pipeline
+	aviator -f aviator-adg-emr-admin.yml
 
-.PHONY: update-clive-emr-services-pipeline
-update-clive-emr-services-pipeline: ## Update the clive-emr-services pipeline
-	aviator -f aviator-clive-emr-services.yml
+.PHONY: update-clive-emr-admin-pipeline
+update-clive-emr-admin-pipeline: ## Update the clive-emr-admin pipeline
+	aviator -f aviator-clive-emr-admin.yml
 
-.PHONY: update-pdm-emr-services-pipeline
-update-pdm-emr-services-pipeline: ## Update the pdm-emr-services pipeline
-	aviator -f aviator-pdm-emr-services.yml
+.PHONY: update-pdm-emr-admin-pipeline
+update-pdm-emr-admin-pipeline: ## Update the pdm-emr-admin pipeline
+	aviator -f aviator-pdm-emr-admin.yml
 
 .PHONY: update-lambda-cleanup-pipeline
 update-lambda-cleanup-pipeline: ## Update the lambda-cleanup pipeline
@@ -109,25 +109,25 @@ update-hbase-data-ingestion-pipeline: ## Update the hbase-data-ingestion pipelin
 update-terraform-taint-pipeline: ## Update the terraform-taint pipeline
 	aviator -f aviator-terraform-taint.yml
 
-.PHONY: pause-kickstart-adg-emr-services-pipeline
-pause-kickstart-adg-emr-services-pipeline: ## pause the kickstart-adg-emr-services pipeline
-	fly --target utility pause-pipeline --pipeline kickstart-adg-emr-services
+.PHONY: pause-kickstart-adg-emr-admin-pipeline
+pause-kickstart-adg-emr-admin-pipeline: ## pause the kickstart-adg-emr-admin pipeline
+	fly --target utility pause-pipeline --pipeline kickstart-adg-emr-admin
 
-.PHONY: pause-mongo-latest-emr-services-pipeline
-pause-mongo-latest-emr-services-pipeline: ## pause the mongo-latest-emr-services pipeline
-	fly --target utility pause-pipeline --pipeline mongo-latest-emr-services
+.PHONY: pause-mongo-latest-emr-admin-pipeline
+pause-mongo-latest-emr-admin-pipeline: ## pause the mongo-latest-emr-admin pipeline
+	fly --target utility pause-pipeline --pipeline mongo-latest-emr-admin
 
-.PHONY: pause-adg-emr-services-pipeline
-pause-adg-emr-services-pipeline: ## pause the adg-emr-services pipeline
-	fly --target utility pause-pipeline --pipeline adg-emr-services
+.PHONY: pause-adg-emr-admin-pipeline
+pause-adg-emr-admin-pipeline: ## pause the adg-emr-admin pipeline
+	fly --target utility pause-pipeline --pipeline adg-emr-admin
 
-.PHONY: pause-clive-emr-services-pipeline
-pause-clive-emr-services-pipeline: ## pause the clive-emr-services pipeline
-	fly --target utility pause-pipeline --pipeline clive-emr-services
+.PHONY: pause-clive-emr-admin-pipeline
+pause-clive-emr-admin-pipeline: ## pause the clive-emr-admin pipeline
+	fly --target utility pause-pipeline --pipeline clive-emr-admin
 
-.PHONY: pause-pdm-emr-services-pipeline
-pause-pdm-emr-services-pipeline: ## pause the pdm-emr-services pipeline
-	fly --target utility pause-pipeline --pipeline pdm-emr-services
+.PHONY: pause-pdm-emr-admin-pipeline
+pause-pdm-emr-admin-pipeline: ## pause the pdm-emr-admin pipeline
+	fly --target utility pause-pipeline --pipeline pdm-emr-admin
 
 .PHONY: pause-lambda-cleanup-pipeline
 pause-lambda-cleanup-pipeline: ## Pause the lambda-cleanup pipeline
@@ -169,25 +169,25 @@ pause-ami-cleanup-pipeline: ## Pause the ami-cleanup pipeline
 pause-terraform-taint-pipeline: ## Pause the terraform-taint pipeline
 	fly --target utility pause-pipeline --pipeline terraform-taint
 	
-.PHONY: unpause-kickstart-adg-emr-services-pipeline
-unpause-kickstart-adg-emr-services-pipeline: ## unpause the kickstart-adg-emr-services pipeline
-	fly --target utility unpause-pipeline --pipeline kickstart-adg-emr-services
+.PHONY: unpause-kickstart-adg-emr-admin-pipeline
+unpause-kickstart-adg-emr-admin-pipeline: ## unpause the kickstart-adg-emr-admin pipeline
+	fly --target utility unpause-pipeline --pipeline kickstart-adg-emr-admin
 
-.PHONY: unpause-mongo-latest-emr-services-pipeline
-unpause-mongo-latest-emr-services-pipeline: ## unpause the mongo-latest-emr-services pipeline
-	fly --target utility unpause-pipeline --pipeline mongo-latest-emr-services
+.PHONY: unpause-mongo-latest-emr-admin-pipeline
+unpause-mongo-latest-emr-admin-pipeline: ## unpause the mongo-latest-emr-admin pipeline
+	fly --target utility unpause-pipeline --pipeline mongo-latest-emr-admin
 
-.PHONY: unpause-adg-emr-services-pipeline
-unpause-adg-emr-services-pipeline: ## unpause the adg-emr-services pipeline
-	fly --target utility unpause-pipeline --pipeline adg-emr-services
+.PHONY: unpause-adg-emr-admin-pipeline
+unpause-adg-emr-admin-pipeline: ## unpause the adg-emr-admin pipeline
+	fly --target utility unpause-pipeline --pipeline adg-emr-admin
 
-.PHONY: unpause-clive-emr-services-pipeline
-unpause-clive-emr-services-pipeline: ## unpause the clive-emr-services pipeline
-	fly --target utility unpause-pipeline --pipeline clive-emr-services
+.PHONY: unpause-clive-emr-admin-pipeline
+unpause-clive-emr-admin-pipeline: ## unpause the clive-emr-admin pipeline
+	fly --target utility unpause-pipeline --pipeline clive-emr-admin
 
-.PHONY: unpause-pdm-emr-services-pipeline
-unpause-pdm-emr-services-pipeline: ## unpause the pdm-emr-services pipeline
-	fly --target utility unpause-pipeline --pipeline pdm-emr-services
+.PHONY: unpause-pdm-emr-admin-pipeline
+unpause-pdm-emr-admin-pipeline: ## unpause the pdm-emr-admin pipeline
+	fly --target utility unpause-pipeline --pipeline pdm-emr-admin
 
 .PHONY: unpause-lambda-cleanup-pipeline
 unpause-lambda-cleanup-pipeline: ## Unpause the lambda-cleanup pipeline

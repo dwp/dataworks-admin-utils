@@ -1,0 +1,23 @@
+spruce:
+  - base: ci/adg-emr-admin/meta-adg-emr-admin.yml
+    prune:
+      - meta
+    merge:
+      - with_in: ci/adg-emr-admin/
+        regexp: ".*yml"
+      - with_in: ci/adg-emr-admin/jobs/
+        regexp: ".*yml"
+      - with_in: ci/adg-emr-admin/jobs/admin/
+        regexp: ".*yml"
+      - with_in: ci/adg-emr-admin/jobs/dev/admin/
+      - with_in: ci/adg-emr-admin/jobs/qa/admin/
+      - with_in: ci/adg-emr-admin/jobs/integration/admin/
+      - with_in: ci/adg-emr-admin/jobs/preprod/admin/
+      - with_in: ci/adg-emr-admin/jobs/production/admin/
+    to: aviator_pipeline_adg_emr_admin.yml
+fly:
+  name: adg-emr-admin
+  target: utility
+  config: aviator_pipeline_adg_emr_admin.yml
+  expose: false
+  check_creds: true

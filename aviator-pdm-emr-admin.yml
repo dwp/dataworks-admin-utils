@@ -1,0 +1,23 @@
+spruce:
+  - base: ci/pdm-emr-admin/meta-pdm-emr-admin.yml
+    prune:
+      - meta
+    merge:
+      - with_in: ci/pdm-emr-admin/
+        regexp: ".*yml"
+      - with_in: ci/pdm-emr-admin/jobs/
+        regexp: ".*yml"
+      - with_in: ci/pdm-emr-admin/jobs/admin/
+        regexp: ".*yml"
+      - with_in: ci/pdm-emr-admin/jobs/dev/admin/
+      - with_in: ci/pdm-emr-admin/jobs/qa/admin/
+      - with_in: ci/pdm-emr-admin/jobs/integration/admin/
+      - with_in: ci/pdm-emr-admin/jobs/preprod/admin/
+      - with_in: ci/pdm-emr-admin/jobs/production/admin/
+    to: aviator_pipeline_pdm_emr_admin.yml
+fly:
+  name: pdm-emr-admin
+  target: utility
+  config: aviator_pipeline_pdm_emr_admin.yml
+  expose: false
+  check_creds: true
