@@ -1,0 +1,24 @@
+groups:
+  - name: admin-start-cluster
+    jobs:
+      - dev-start-cluster
+      - qa-start-cluster
+      - int-start-cluster
+      - preprod-start-cluster
+      - prod-start-cluster
+
+  - name: admin-stop-cluster
+    jobs:
+      - dev-stop-cluster
+      - qa-stop-cluster
+      - int-stop-cluster
+      - preprod-stop-cluster
+      - prod-stop-cluster
+
+  - name: admin-clear-dynamodb-row
+    jobs:
+      - dev-clear-dynamodb-row
+      - qa-clear-dynamodb-row
+      - int-clear-dynamodb-row
+      - preprod-clear-dynamodb-row
+      - prod-clear-dynamodb-row

@@ -1,0 +1,10 @@
+jobs:
+  - name: qa-clear-dynamodb-row
+    plan:
+      - .: (( inject meta-uc-feature-emr-admin.plan.clear-dynamodb-row ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+            AWS_ACC: ((aws_account.qa))
+            CORRELATION_ID: uc-feature_dataset_generation_uc-feature_dataset_generation_qa_425
+            DATA_PRODUCT: uc-feature

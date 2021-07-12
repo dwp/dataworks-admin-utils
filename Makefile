@@ -65,6 +65,10 @@ update-adg-emr-admin-pipeline: ## Update the adg-emr-admin pipeline
 update-clive-emr-admin-pipeline: ## Update the clive-emr-admin pipeline
 	aviator -f aviator-clive-emr-admin.yml
 
+.PHONY: update-uc-feature-emr-admin-pipeline
+update-uc-feature-emr-admin-pipeline: ## Update the uc-feature-emr-admin pipeline
+	aviator -f aviator-uc-feature-emr-admin.yml
+
 .PHONY: update-pdm-emr-admin-pipeline
 update-pdm-emr-admin-pipeline: ## Update the pdm-emr-admin pipeline
 	aviator -f aviator-pdm-emr-admin.yml
