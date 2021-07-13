@@ -48,6 +48,7 @@ update-all-pipelines: ## Update all the pipelines
 	aviator -f aviator-clive-emr-admin.yml
 	aviator -f aviator-pdm-emr-admin.yml
 	aviator -f aviator-kickstart-adg-emr-admin.yml
+	aviator -f aviator-intraday-emr-admin.yml
 
 .PHONY: update-kickstart-adg-emr-admin-pipeline
 update-kickstart-adg-emr-admin-pipeline: ## Update the kickstart-adg-emr-admin pipeline
@@ -68,6 +69,10 @@ update-clive-emr-admin-pipeline: ## Update the clive-emr-admin pipeline
 .PHONY: update-pdm-emr-admin-pipeline
 update-pdm-emr-admin-pipeline: ## Update the pdm-emr-admin pipeline
 	aviator -f aviator-pdm-emr-admin.yml
+
+.PHONY: update-intraday-emr-admin-pipeline
+update-terraform-taint-pipeline: ## Update the intraday-emr-admin pipeline
+	aviator -f aviator-intraday-emr-admin.yml
 
 .PHONY: update-lambda-cleanup-pipeline
 update-lambda-cleanup-pipeline: ## Update the lambda-cleanup pipeline
@@ -129,6 +134,10 @@ pause-clive-emr-admin-pipeline: ## pause the clive-emr-admin pipeline
 pause-pdm-emr-admin-pipeline: ## pause the pdm-emr-admin pipeline
 	fly --target utility pause-pipeline --pipeline pdm-emr-admin
 
+.PHONY: pause-intraday-emr-admin-pipeline
+pause-mongo-latest-emr-admin-pipeline: ## pause the intraday-emr-admin pipeline
+	fly --target utility pause-pipeline --pipeline intraday-emr-admin
+
 .PHONY: pause-lambda-cleanup-pipeline
 pause-lambda-cleanup-pipeline: ## Pause the lambda-cleanup pipeline
 	fly --target utility pause-pipeline --pipeline lambda-cleanup
@@ -188,6 +197,10 @@ unpause-clive-emr-admin-pipeline: ## unpause the clive-emr-admin pipeline
 .PHONY: unpause-pdm-emr-admin-pipeline
 unpause-pdm-emr-admin-pipeline: ## unpause the pdm-emr-admin pipeline
 	fly --target utility unpause-pipeline --pipeline pdm-emr-admin
+
+.PHONY: unpause-intraday-emr-admin-pipeline
+unpause-pdm-emr-admin-pipeline: ## unpause the intraday-emr-admin pipeline
+	fly --target utility unpause-pipeline --pipeline intraday-emr-admin
 
 .PHONY: unpause-lambda-cleanup-pipeline
 unpause-lambda-cleanup-pipeline: ## Unpause the lambda-cleanup pipeline
