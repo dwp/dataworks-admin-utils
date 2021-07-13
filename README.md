@@ -19,6 +19,7 @@ There are multiple admin style pipelines which are released to the CI system:
 0. `kickstart-adg-emr-admin`
 0. `mongo-latest-emr-admin`
 0. `pdm-emr-admin`
+0. `intraday-emr-admin`
 
 ### Installing as a concourse pipeline
 
