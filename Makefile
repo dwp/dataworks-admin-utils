@@ -46,6 +46,7 @@ update-all-pipelines: ## Update all the pipelines
 	aviator -f aviator-mongo-latest-emr-admin.yml
 	aviator -f aviator-adg-emr-admin.yml
 	aviator -f aviator-clive-emr-admin.yml
+	aviator -f aviator-uc-feature-emr-admin.yml
 	aviator -f aviator-pdm-emr-admin.yml
 	aviator -f aviator-kickstart-adg-emr-admin.yml
 
@@ -129,6 +130,10 @@ pause-adg-emr-admin-pipeline: ## pause the adg-emr-admin pipeline
 pause-clive-emr-admin-pipeline: ## pause the clive-emr-admin pipeline
 	fly --target utility pause-pipeline --pipeline clive-emr-admin
 
+.PHONY: pause-uc-feature-emr-admin-pipeline
+pause-uc-feature-emr-admin-pipeline: ## pause the uc-feature-emr-admin pipeline
+	fly --target utility pause-pipeline --pipeline uc-feature-emr-admin
+
 .PHONY: pause-pdm-emr-admin-pipeline
 pause-pdm-emr-admin-pipeline: ## pause the pdm-emr-admin pipeline
 	fly --target utility pause-pipeline --pipeline pdm-emr-admin
@@ -188,6 +193,10 @@ unpause-adg-emr-admin-pipeline: ## unpause the adg-emr-admin pipeline
 .PHONY: unpause-clive-emr-admin-pipeline
 unpause-clive-emr-admin-pipeline: ## unpause the clive-emr-admin pipeline
 	fly --target utility unpause-pipeline --pipeline clive-emr-admin
+
+.PHONY: unpause-uc-feature-emr-admin-pipeline
+unpause-uc-feature-emr-admin-pipeline: ## unpause the uc-feature-emr-admin pipeline
+	fly --target utility unpause-pipeline --pipeline uc-feature-emr-admin
 
 .PHONY: unpause-pdm-emr-admin-pipeline
 unpause-pdm-emr-admin-pipeline: ## unpause the pdm-emr-admin pipeline
