@@ -9,4 +9,4 @@ jobs:
             START_DT: "2021-06-04"
             END_DT: "2021-06-04"
             SKIP_FLAG: "False"
-            SKIP_MODULES: ""
+            SKIP_MODULES: "vacancy, application"
