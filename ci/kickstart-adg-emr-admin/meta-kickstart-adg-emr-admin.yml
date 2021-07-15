@@ -26,7 +26,7 @@ meta-kickstart-adg-emr-admin:
                 "additional_step_args": {
                     "submit-job-vacancy": ["--module_name", "vacancy", "--start_dt", "$START_DT", "--end_dt", "$END_DT", "--load_type", "delta", "--skip_flag", "$SKIP_FLAG", "--skip_modules", "$SKIP_MODULES"],
                     "submit-job-vacancy-incremental": ["--module_name", "vacancy", "--start_dt", "$START_DT", "--end_dt", "$END_DT", "--load_type", "incremental", "--skip_flag", "$SKIP_FLAG", "--skip_modules", "$SKIP_MODULES"],
-                    "submit-job-application": ["--module_name", "application", "--start_dt", "$START_DT", "--end_dt", "$END_DT", "--load_type", "$LOAD_TYPE", "--skip_flag", "$SKIP_FLAG", "--skip_modules", "$SKIP_MODULES"]
+                    "submit-job-application": ["--module_name", "application", "--start_dt", "$START_DT", "--end_dt", "$END_DT", "--load_type", "delta", "--skip_flag", "$SKIP_FLAG", "--skip_modules", "$SKIP_MODULES"]
                     }
               }
               EOF
@@ -58,7 +58,7 @@ meta-kickstart-adg-emr-admin:
               export message_json=$(cat <<EOF
               {
                 "additional_step_args": {
-                    "submit-job-vacancy": ["--module_name", "vacancy", "--start_dt", "$START_DT", "--end_dt", "$END_DT", "--load_type", "$LOAD_TYPE", "--skip_flag", "$SKIP_FLAG", "--skip_modules", "$SKIP_MODULES"]
+                    "submit-job-vacancy": ["--module_name", "vacancy", "--start_dt", "$START_DT", "--end_dt", "$END_DT", "--load_type", "delta", "--skip_flag", "$SKIP_FLAG", "--skip_modules", "$SKIP_MODULES"]
                     }
               }
               EOF
