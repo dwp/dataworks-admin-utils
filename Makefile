@@ -50,6 +50,11 @@ update-all-pipelines: ## Update all the pipelines
 	aviator -f aviator-pdm-emr-admin.yml
 	aviator -f aviator-kickstart-adg-emr-admin.yml
 	aviator -f aviator-intraday-emr-admin.yml
+	aviator -f aviator-ml-dev-emr-admin.yml
+
+.PHONY: update-ml-dev-emr-admin-pipeline
+update-ml-dev-emr-admin-pipeline: ## Update the ml-dev-emr-admin pipeline
+	aviator -f aviator-ml-dev-emr-admin.yml
 
 .PHONY: update-kickstart-adg-emr-admin-pipeline
 update-kickstart-adg-emr-admin-pipeline: ## Update the kickstart-adg-emr-admin pipeline
@@ -119,6 +124,10 @@ update-hbase-data-ingestion-pipeline: ## Update the hbase-data-ingestion pipelin
 update-terraform-taint-pipeline: ## Update the terraform-taint pipeline
 	aviator -f aviator-terraform-taint.yml
 
+.PHONY: pause-ml-dev-emr-admin-pipeline
+pause-ml-dev-emr-admin-pipeline: ## pause the ml-dev-emr-admin pipeline
+	fly --target utility pause-pipeline --pipeline ml-dev-emr-admin
+
 .PHONY: pause-kickstart-adg-emr-admin-pipeline
 pause-kickstart-adg-emr-admin-pipeline: ## pause the kickstart-adg-emr-admin pipeline
 	fly --target utility pause-pipeline --pipeline kickstart-adg-emr-admin
@@ -187,6 +196,10 @@ pause-ami-cleanup-pipeline: ## Pause the ami-cleanup pipeline
 pause-terraform-taint-pipeline: ## Pause the terraform-taint pipeline
 	fly --target utility pause-pipeline --pipeline terraform-taint
 	
+.PHONY: unpause-ml-dev-emr-admin-pipeline
+unpause-ml-dev-emr-admin-pipeline: ## unpause the ml-dev-emr-admin pipeline
+	fly --target utility unpause-pipeline --pipeline ml-dev-emr-admin
+
 .PHONY: unpause-kickstart-adg-emr-admin-pipeline
 unpause-kickstart-adg-emr-admin-pipeline: ## unpause the kickstart-adg-emr-admin pipeline
 	fly --target utility unpause-pipeline --pipeline kickstart-adg-emr-admin
