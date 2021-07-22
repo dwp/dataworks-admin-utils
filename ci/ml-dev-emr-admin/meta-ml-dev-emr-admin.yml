@@ -1,0 +1,57 @@
+meta-ml-dev-emr-admin:
+  plan:
+    start-cluster:
+      task: start-cluster
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              export AWS_DEFAULT_REGION
+              source /assume-role
+              set +x
+
+              jq -n '{
+                 "s3_overrides": null,
+                 "overrides": {"Instances": {"KeepJobFlowAliveWhenNoSteps": true}, "Steps": []},
+                 "extend": null,
+                 "additional_step_args": null,
+               }' > payload.json
+
+              cat payload.json
+              aws lambda invoke --function-name aws_machine_learning_dev_cluster_emr_launcher --invocation-type RequestResponse --payload file://payload.json --cli-connect-timeout 600 --cli-read-timeout 600 output.json
+
+    stop-cluster:
+      task: stop-cluster
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              export AWS_DEFAULT_REGION
+              source /assume-role
+              set +x
+              for CLUSTER_ID in $(aws emr list-clusters --active | jq -r '.Clusters[] | select(.Name | test("aws-machine-learning-dev-cluster")) | .Id');
+              do
+                aws emr terminate-clusters --cluster-ids $CLUSTER_ID
+              done

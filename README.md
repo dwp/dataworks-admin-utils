@@ -21,11 +21,12 @@ There are multiple admin style pipelines which are released to the CI system:
 0. `mongo-latest-emr-admin`
 0. `pdm-emr-admin`
 0. `intraday-emr-admin`
+0. `ml-dev-emr-admin`
 
 ### Installing as a concourse pipeline
 
 1. Check out this repo and run `make bootstrap` in the root folder
-2. Log into Concourse with `make concourse-login`
+2. Log into Concourse with `make concourse-login` or use login to utility with `make utility-login`
 3. Create / update the pipelines with the relevant pipeline `make update-xxx command` - see pipeline information below
 4. Browse to the concourse UI for your pipeline and run the job for the environment of your choice
 
