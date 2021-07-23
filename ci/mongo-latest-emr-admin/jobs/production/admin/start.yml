@@ -9,3 +9,4 @@ jobs:
             S3_PREFIX: test
             CORRELATION_ID: test
             EXPORT_DATE: "2021-04-01"
+            SNAPSHOT_TYPE: incremental
