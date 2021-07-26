@@ -14,3 +14,11 @@ groups:
       - integration-stop-cluster
       - preprod-stop-cluster
       - production-stop-cluster
+
+  - name: remove-metadata
+    jobs:
+      - dev-remove-metadata
+      - qa-remove-metadata
+      - integration-remove-metadata
+      - preprod-remove-metadata
+      - production-remove-metadata
