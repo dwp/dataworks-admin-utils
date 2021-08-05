@@ -14,6 +14,11 @@ groups:
   - preprod-reprocess-incremental-snapshots
   - production-reprocess-incremental-snapshots
 
+- name: send-drift-testing-incremental-snapshots
+  jobs:
+  - preprod-reprocess-incremental-snapshots
+  - production-reprocess-drift-testing-incremental-snapshots
+
 - name: nifi-heartbeat
   jobs:
     - production-nifi-heartbeat
