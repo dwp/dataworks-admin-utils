@@ -1,5 +1,5 @@
 jobs:
-  - name: production-generate-incremental-snapshots
+  - name: production-generate-drift-testing-incremental-snapshots
     max_in_flight: 1
     plan:
       - put: meta
