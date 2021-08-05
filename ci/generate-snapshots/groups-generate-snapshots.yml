@@ -15,6 +15,10 @@ groups:
   - preprod-generate-incremental-snapshots
   - production-generate-incremental-snapshots
 
+- name: generate-drift-testing-incremental-snapshots
+  jobs:
+  - production-generate-drift-testing-incremental-snapshots
+
 - name: update-pipeline
   jobs:
     - update-pipeline
