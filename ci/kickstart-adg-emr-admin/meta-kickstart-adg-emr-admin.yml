@@ -1,6 +1,6 @@
 meta-kickstart-adg-emr-admin:
   plan:
-    start-cluster:
+    start-cluster-without-payment:
       task: start-cluster
       config:
         platform: linux
@@ -34,7 +34,7 @@ meta-kickstart-adg-emr-admin:
               echo $message_json
               aws sns publish --topic-arn "$topic_arn" --message "$message_json"
 
-    start-cluster-without-application:
+    start-cluster-with-payment:
       task: start-cluster
       config:
         platform: linux
@@ -58,8 +58,11 @@ meta-kickstart-adg-emr-admin:
               export message_json=$(cat <<EOF
               {
                 "additional_step_args": {
-                    "submit-job-vacancy": ["--module_name", "vacancy", "--start_dt", "$START_DT", "--end_dt", "$END_DT", "--load_type", "delta", "--skip_flag", "$SKIP_FLAG", "--skip_modules", "$SKIP_MODULES"]
-                    }
+                    "submit-job-vacancy": ["--module_name", "vacancy", "--start_dt", "$START_DT", "--end_dt", "$END_DT", "--load_type", "delta", "--skip_flag", "$SKIP_FLAG", "--skip_modules", "$SKIP_MODULES"],
+                    "submit-job-vacancy-incremental": ["--module_name", "vacancy", "--start_dt", "$START_DT", "--end_dt", "$END_DT", "--load_type", "incremental", "--skip_flag", "$SKIP_FLAG", "--skip_modules", "$SKIP_MODULES"],
+                    "submit-job-application": ["--module_name", "application", "--start_dt", "$START_DT", "--end_dt", "$END_DT", "--load_type", "delta", "--skip_flag", "$SKIP_FLAG", "--skip_modules", "$SKIP_MODULES"]
+                    "submit-job-payment": ["--module_name", "payment", "--start_dt", "$START_DT", "--end_dt", "$END_DT", "--load_type", "delta", "--skip_flag", "$SKIP_FLAG", "--skip_modules", "$SKIP_MODULES"]
+                }
               }
               EOF
               )
