@@ -31,6 +31,28 @@ meta-intraday-emr-admin:
               cat payload.json
               aws lambda invoke --function-name intraday-emr-launcher --invocation-type RequestResponse --payload file://payload.json --cli-connect-timeout 600 --cli-read-timeout 600 output.json
 
+    trigger-cluster:
+      task: trigger-cluster
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              export AWS_DEFAULT_REGION
+              source /assume-role
+              set +x
+              aws lambda invoke --function-name "intraday_cron_launcher" --invocation-type RequestResponse output.json
+
     stop-cluster:
       task: stop-cluster
       config:

@@ -22,3 +22,11 @@ groups:
       - integration-remove-metadata
       - preprod-remove-metadata
       - production-remove-metadata
+
+  - name: trigger-cluster
+    jobs:
+      - dev-trigger-cluster
+      - qa-trigger-cluster
+      - integration-trigger-cluster
+      - preprod-trigger-cluster
+      - production-trigger-cluster
