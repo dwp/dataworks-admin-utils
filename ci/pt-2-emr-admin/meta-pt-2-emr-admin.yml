@@ -35,7 +35,7 @@ meta-pd-2-emr-admin:
               )
               echo $message_json
 
-              aws lambda invoke --function-name $EMR_LAUNCH_LAMBDA --payload $message_json
+              aws lambda invoke --function-name $EMR_LAUNCH_LAMBDA --payload "$message_json" response.json
 
     stop-cluster:
       task: stop-cluster
