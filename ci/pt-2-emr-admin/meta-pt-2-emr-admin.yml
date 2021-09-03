@@ -1,0 +1,98 @@
+meta-pd-2-emr-admin:
+  plan:
+    start-cluster:
+      task: start-cluster
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+          EMR_LAUNCH_LAMBDA: "aws_analytical_env_emr_launcher"
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              export AWS_DEFAULT_REGION
+              source /assume-role
+              set +x
+
+              export message_json=$(cat <<EOF
+              {
+                "overrides": {
+                  "Name": "external-batch-analytical-env"
+                },
+                "s3_overrides": {
+                  "emr_launcher_config_s3_folder": "emr/payment-timelines-cluster-config"
+                }
+              }
+              EOF
+              )
+              echo $message_json
+
+              aws lambda invoke --function-name $EMR_LAUNCH_LAMBDA --payload "$message_json" response.json
+
+    stop-cluster:
+      task: stop-cluster
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              export AWS_DEFAULT_REGION
+              source /assume-role
+              set +x
+
+              for CLUSTER_ID in $(aws emr list-clusters --active | jq -r '.Clusters[] | select(.Name | test("external-batch-analytical-env")) | .Id');
+              do
+              aws emr terminate-clusters --cluster-ids $CLUSTER_ID
+              done
+
+    clear-dynamodb-row:
+      task: clear-dynamodb-row
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              export AWS_DEFAULT_REGION
+              source /assume-role
+              set +x
+
+              export message_json=$(cat <<EOF
+              {
+                "Correlation_Id": {"S": "$CORRELATION_ID"},
+                "DataProduct": {"S": "$DATA_PRODUCT"}
+              }
+              EOF
+              )
+              echo $message_json
+
+              aws dynamodb delete-item \
+              --table-name data_pipeline_metadata \
+              --key "$message_json"
