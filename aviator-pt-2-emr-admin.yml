@@ -23,7 +23,7 @@ spruce:
     to: aviator_pipeline_pt_2_emr_admin.yml
 fly:
   name: pt-2-emr-admin
-  target: aws-concourse
+  target: utility
   config: aviator_pipeline_pt_2_emr_admin.yml
   expose: false
   check_creds: true
