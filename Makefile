@@ -51,6 +51,7 @@ update-all-pipelines: ## Update all the pipelines
 	aviator -f aviator-kickstart-adg-emr-admin.yml
 	aviator -f aviator-intraday-emr-admin.yml
 	aviator -f aviator-ml-dev-emr-admin.yml
+	aviator -f aviator-cyi-emr-admin.yml
 
 .PHONY: update-ml-dev-emr-admin-pipeline
 update-ml-dev-emr-admin-pipeline: ## Update the ml-dev-emr-admin pipeline
@@ -83,6 +84,10 @@ update-pdm-emr-admin-pipeline: ## Update the pdm-emr-admin pipeline
 .PHONY: update-intraday-emr-admin-pipeline
 update-intraday-pipeline: ## Update the intraday-emr-admin pipeline
 	aviator -f aviator-intraday-emr-admin.yml
+
+.PHONY: update-cyi-emr-admin-pipeline
+update-cyi-emr-admin-pipeline: ## Update the cyi-emr-admin pipeline
+	aviator -f aviator-cyi-emr-admin.yml
 
 .PHONY: update-lambda-cleanup-pipeline
 update-lambda-cleanup-pipeline: ## Update the lambda-cleanup pipeline
@@ -156,6 +161,10 @@ pause-pdm-emr-admin-pipeline: ## pause the pdm-emr-admin pipeline
 pause-intraday-emr-admin-pipeline: ## pause the intraday-emr-admin pipeline
 	fly --target utility pause-pipeline --pipeline intraday-emr-admin
 
+.PHONY: pause-cyi-emr-admin-pipeline
+pause-cyi-emr-admin-pipeline: ## pause the cyi-emr-admin pipeline
+	fly --target utility pause-pipeline --pipeline cyi-emr-admin
+
 .PHONY: pause-lambda-cleanup-pipeline
 pause-lambda-cleanup-pipeline: ## Pause the lambda-cleanup pipeline
 	fly --target utility pause-pipeline --pipeline lambda-cleanup
@@ -227,6 +236,10 @@ unpause-pdm-emr-admin-pipeline: ## unpause the pdm-emr-admin pipeline
 .PHONY: unpause-intraday-emr-admin-pipeline
 unpause-intraday-emr-admin-pipeline: ## unpause the intraday-emr-admin pipeline
 	fly --target utility unpause-pipeline --pipeline intraday-emr-admin
+
+.PHONY: unpause-cyi-emr-admin-pipeline
+unpause-cyi-emr-admin-pipeline: ## unpause the cyi-emr-admin pipeline
+	fly --target utility unpause-pipeline --pipeline cyi-emr-admin
 
 .PHONY: unpause-lambda-cleanup-pipeline
 unpause-lambda-cleanup-pipeline: ## Unpause the lambda-cleanup pipeline
