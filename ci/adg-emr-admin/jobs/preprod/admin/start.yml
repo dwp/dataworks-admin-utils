@@ -10,4 +10,3 @@ jobs:
             EXPORT_DATE: "2021-07-05"
             CORRELATION_ID: cbbe991c-4d57-5fc9-9258-c0401c39a1ec
             SNAPSHOT_TYPE: incremental
-            SKIP_PDM_TRIGGER: "true"
