@@ -6,6 +6,6 @@ jobs:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
             AWS_ACC: ((aws_account.production))
-            CORRELATION_ID: bbf37fae-4ddb-5860-9561-262027b37ca7
+            CORRELATION_ID: test
             DATA_PRODUCT: MONGO_LATEST
 
