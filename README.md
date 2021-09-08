@@ -22,6 +22,7 @@ There are multiple admin style pipelines which are released to the CI system:
 0. `pdm-emr-admin`
 0. `intraday-emr-admin`
 0. `ml-dev-emr-admin`
+0. `cyi-emr-admin`
 
 ### Installing as a concourse pipeline
 
