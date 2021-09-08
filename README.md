@@ -113,9 +113,10 @@ The following overrides can be passed through as config params from the environm
 * `GENERATE_SNAPSHOTS_REPROCESS_FILES_OVERRIDE` -> this flag sets whether when Snapshot Sender sends a file, it will error if it already exists. There are specific jobs to set this so should not be changed on standard ones.
 * `GENERATE_SNAPSHOTS_CORRELATION_ID_OVERRIDE` -> override the correlation id which is useful for re-running new nightly generate and send topics
 * `GENERATE_SNAPSHOTS_EXPORT_DATE_OVERRIDE` -> Used to specify the location for the snapshots so if re-sending a day that is not today then set this to the relevant day in the format `YYYY-MM-DD`
-* `GENERATE_SNAPSHOTS_TRIGGER_ADG_OVERRIDE` -> True to trigger ADG after HTME has finished - default is `false`
-* `GENERATE_SNAPSHOTS_CLEAR_S3_SNAPSHOTS` -> True to delete any existing snapshots for the given export date before HTME runs (default is `false`)
-* `GENERATE_SNAPSHOTS_CLEAR_S3_MANIFESTS` -> True to delete any existing manifests for the given export date before HTME runs (default is `false`)
+* `GENERATE_SNAPSHOTS_TRIGGER_ADG_OVERRIDE` -> `true` to trigger ADG after HTME has finished (default is `false`)
+* `GENERATE_SNAPSHOTS_SEND_TO_RIS_OVERRIDE` -> `true` to ensure files are attempted to be sent to RIS for the topics list for RIS for that environmen - note that this is only applicable when using `incremental` snapshots (default is `false`)
+* `GENERATE_SNAPSHOTS_CLEAR_S3_SNAPSHOTS` -> `true` to delete any existing snapshots for the given export date before HTME runs (default is `false`)
+* `GENERATE_SNAPSHOTS_CLEAR_S3_MANIFESTS` -> `true` to delete any existing manifests for the given export date before HTME runs (default is `false`)
 
 ### Pipeline: send-snapshots
 
