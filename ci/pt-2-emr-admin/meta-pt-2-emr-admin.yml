@@ -69,6 +69,7 @@ meta-pt-2-emr-admin:
                 set_cluster_id
                 if [ -n "$ACTIVE_CLUSTER_ID" ]; then
                   add_step_to_cluster
+                  break
                 fi
                 sleep 10
               done
