@@ -22,20 +22,57 @@ meta-pt-2-emr-admin:
               source /assume-role
               set +x
 
-              export message_json=$(cat <<EOF
-              {
-                "overrides": {
-                  "Name": "external-batch-analytical-env"
-                },
-                "s3_overrides": {
-                  "emr_launcher_config_s3_folder": "emr/payment-timelines-cluster-config"
-                }
+              add_step_to_cluster() {
+                echo "Adding step to cluster with id of $ACTIVE_CLUSTER_ID"
+                STEP_ID=$(aws emr add-steps --cluster-id "$ACTIVE_CLUSTER_ID" --steps Type=CUSTOM_JAR,Name=pt-2,Jar=s3://eu-west-2.elasticmapreduce/libs/script-runner/script-runner.jar,Args=/opt/emr/repos/aws-payment-timelines/scripts/build_pt.sh,uc_payment_timelines,2 | jq -r '.StepIds[0]')
+                echo "Added step with id of $STEP_ID"
               }
-              EOF
-              )
-              echo $message_json
 
-              aws lambda invoke --function-name $EMR_LAUNCH_LAMBDA --payload "$message_json" response.json
+              set_cluster_id() {
+                for cluster_id in $(aws emr list-clusters --cluster-states STARTING BOOTSTRAPPING RUNNING WAITING | jq -r '.Clusters[] | select(.Name | test("external-batch-analytical-env")) | .Id');
+                do
+                  export ACTIVE_CLUSTER_ID="$cluster_id"
+                  break
+                done
+              }
+
+              start_cluster() {
+                message_json=$(cat <<EOF
+                {
+                  "overrides": {
+                    "Name": "external-batch-analytical-env"
+                  },
+                  "s3_overrides": {
+                    "emr_launcher_config_s3_folder": "emr/payment-timelines-cluster-config"
+                  }
+                }
+              EOF
+                )
+                echo "$message_json"
+
+                aws lambda invoke --function-name "$EMR_LAUNCH_LAMBDA" --payload "$message_json" response.json
+              }
+
+              echo "Checking for existing cluster"
+              set_cluster_id
+
+              if [ -n "$ACTIVE_CLUSTER_ID" ]; then
+                add_step_to_cluster
+                exit 0
+              fi
+
+              echo "No active cluster, so calling lambda to start one"
+              start_cluster
+
+              while true; do
+                echo "Waiting for cluster to start"
+                set_cluster_id
+                if [ -n "$ACTIVE_CLUSTER_ID" ]; then
+                  add_step_to_cluster
+                  break
+                fi
+                sleep 10
+              done
 
     stop-cluster:
       task: stop-cluster
@@ -84,7 +121,7 @@ meta-pt-2-emr-admin:
               source /assume-role
               set +x
 
-              export message_json=$(cat <<EOF
+              message_json=$(cat <<EOF
               {
                 "Correlation_Id": {"S": "$CORRELATION_ID"},
                 "DataProduct": {"S": "$DATA_PRODUCT"}

@@ -52,6 +52,7 @@ update-all-pipelines: ## Update all the pipelines
 	aviator -f aviator-intraday-emr-admin.yml
 	aviator -f aviator-ml-dev-emr-admin.yml
 	aviator -f aviator-cyi-emr-admin.yml
+	aviator -f aviator-pt-2-emr-admin.yml
 
 .PHONY: update-ml-dev-emr-admin-pipeline
 update-ml-dev-emr-admin-pipeline: ## Update the ml-dev-emr-admin pipeline
@@ -80,6 +81,10 @@ update-uc-feature-emr-admin-pipeline: ## Update the uc-feature-emr-admin pipelin
 .PHONY: update-pdm-emr-admin-pipeline
 update-pdm-emr-admin-pipeline: ## Update the pdm-emr-admin pipeline
 	aviator -f aviator-pdm-emr-admin.yml
+
+.PHONY: update-pt2-emr-admin-pipeline
+update-pt2-emr-admin-pipeline: ## Update the pt2-emr-admin pipeline
+	aviator -f aviator-pt-2-emr-admin.yml
 
 .PHONY: update-intraday-emr-admin-pipeline
 update-intraday-pipeline: ## Update the intraday-emr-admin pipeline
