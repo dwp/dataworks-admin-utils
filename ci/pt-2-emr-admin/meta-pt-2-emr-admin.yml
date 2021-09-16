@@ -1,4 +1,4 @@
-meta-pd-2-emr-admin:
+meta-pt-2-emr-admin:
   plan:
     start-cluster:
       task: start-cluster
