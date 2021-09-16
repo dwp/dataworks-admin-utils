@@ -15,6 +15,8 @@ spruce:
         regexp: ".*yml"
       - with_in: ci/shared/
         regexp: "meta.yml"
+      - with_in: ci/shared/
+        regexp: "resourcetypes.yml"
       - with_in: ci/shared/update-pipeline/
         regexp: "update-pipeline-resources.yml"
       - with_in: ci/shared/update-pipeline/

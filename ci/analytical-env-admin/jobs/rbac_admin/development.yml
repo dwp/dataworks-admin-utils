@@ -7,7 +7,7 @@ jobs:
         trigger: false
       - get: emr-al2-ami
         trigger: false
-      - .: (( inject meta.plan.terraform-bootstrap ))
+      - .: (( inject meta-analytical-env-admin.plan.terraform-bootstrap ))
         params:
           DEPLOY_PATH: app
       - .: (( inject meta-analytical-env-admin.plan.terraform-output-app))
@@ -25,7 +25,7 @@ jobs:
         trigger: false
       - get: emr-al2-ami
         trigger: false
-      - .: (( inject meta.plan.terraform-bootstrap ))
+      - .: (( inject meta-analytical-env-admin.plan.terraform-bootstrap ))
         params:
           DEPLOY_PATH: app
       - .: (( inject meta-analytical-env-admin.plan.terraform-output-app))
@@ -43,7 +43,7 @@ jobs:
         trigger: false
       - get: emr-al2-ami
         trigger: false
-      - .: (( inject meta.plan.terraform-bootstrap ))
+      - .: (( inject meta-analytical-env-admin.plan.terraform-bootstrap ))
         params:
           DEPLOY_PATH: app
       - .: (( inject meta-analytical-env-admin.plan.terraform-output-app))
@@ -63,7 +63,7 @@ jobs:
         trigger: false
       - get: utc-11pm-trigger
         trigger: true
-      - .: (( inject meta.plan.terraform-bootstrap ))
+      - .: (( inject meta-analytical-env-admin.plan.terraform-bootstrap ))
         params:
           DEPLOY_PATH: app
       - .: (( inject meta-analytical-env-admin.plan.terraform-output-app))
@@ -85,7 +85,7 @@ jobs:
           - sync-cognito-users-to-rds-development
       - get: emr-al2-ami
         trigger: false
-      - .: (( inject meta.plan.terraform-bootstrap ))
+      - .: (( inject meta-analytical-env-admin.plan.terraform-bootstrap ))
         params:
           DEPLOY_PATH: app
       - .: (( inject meta-analytical-env-admin.plan.terraform-output-app))
