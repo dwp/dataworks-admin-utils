@@ -53,6 +53,7 @@ update-all-pipelines: ## Update all the pipelines
 	aviator -f aviator-ml-dev-emr-admin.yml
 	aviator -f aviator-cyi-emr-admin.yml
 	aviator -f aviator-pt-2-emr-admin.yml
+	aviator -f aviator-analytical-env-admin.yml
 
 .PHONY: update-ml-dev-emr-admin-pipeline
 update-ml-dev-emr-admin-pipeline: ## Update the ml-dev-emr-admin pipeline
@@ -93,6 +94,10 @@ update-intraday-pipeline: ## Update the intraday-emr-admin pipeline
 .PHONY: update-cyi-emr-admin-pipeline
 update-cyi-emr-admin-pipeline: ## Update the cyi-emr-admin pipeline
 	aviator -f aviator-cyi-emr-admin.yml
+
+.PHONY: update-analytical-env-admin-pipeline
+update-analytical-env-admin-pipeline: ## Update the analytical-env-admin pipeline
+	aviator -f aviator-analytical-env-admin.yml
 
 .PHONY: update-lambda-cleanup-pipeline
 update-lambda-cleanup-pipeline: ## Update the lambda-cleanup pipeline
