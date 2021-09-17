@@ -133,7 +133,6 @@ meta-analytical-env-admin:
               terraform workspace show
               terraform init
               export TF_VAR_emr_al2_ami_id=$(cat ../../../../emr-al2-ami/id)
-              export TF_VAR_aws_analytical_env_emr_launcher_zip="{base_path = \"../../../../emr-launcher-release\", version = \"$(cat ../../../../emr-launcher-release/version)\"}"
               terraform output --json > ../../../../terraform-output-app/outputs.json
           dir: aws-analytical-env/terraform/deploy/app
         inputs:

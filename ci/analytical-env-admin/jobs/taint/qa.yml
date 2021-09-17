@@ -13,7 +13,7 @@ jobs:
         trigger: false
       - get: hive-custom-auth-release
         trigger: true
-      - .: (( inject meta.plan.terraform-bootstrap ))
+      - .: (( inject meta-analytical-env-admin.plan.terraform-bootstrap ))
         params:
           DEPLOY_PATH: app
 
