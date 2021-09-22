@@ -1,7 +1,7 @@
 jobs:
   - name: start-cluster-production
     plan:
-      - .: (( inject meta-kickstart-adg-emr-admin.plan.start-cluster-without-payment))
+      - .: (( inject meta-kickstart-adg-emr-admin.plan.start-cluster-with-payment))
         config:
           params:
             AWS_ACC: ((aws_account.production))
