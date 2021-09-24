@@ -87,6 +87,7 @@ meta-hbase-data-ingestion:
               "../../../meta"
         inputs:
           - name: dataworks-behavioural-framework
+          - name: terraform-output-ingest
           - name: meta
 
     clear-manifest:
