@@ -7,6 +7,9 @@ jobs:
           resource: meta-preprod
       - get: dataworks-behavioural-framework
         trigger: false
+      - .: (( inject meta.plan.terraform-output-ingest ))
+        params:
+          TF_WORKSPACE: "preprod"
       - .: (( inject meta-hbase-data-ingestion.plan.run-data-load ))
         config:
           params:
