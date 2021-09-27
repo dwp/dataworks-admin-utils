@@ -16,3 +16,4 @@ jobs:
             AWS_ACC: ((aws_account.development))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
             ACTION_TAG: "@admin-corporate-data-load"
+            CORPORATE_DATA_INGESTION_USE_SPLIT_INPUTS_OVERRIDE: "true"
