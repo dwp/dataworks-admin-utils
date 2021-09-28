@@ -73,12 +73,17 @@ meta-intraday-emr-admin:
               export AWS_DEFAULT_REGION
               source /assume-role
               set +x
-              for CLUSTER_ID in $(aws emr list-clusters --active | jq -r '.Clusters[] | select(.Name | startswith("intraday-incremental")).Id');
-              do
-                echo "Terminating cluster $CLUSTER_ID"
-                aws emr terminate-clusters --cluster-ids $CLUSTER_ID
-              done
-
+              if [ -z "$CLUSTER_ID" ]; then
+                echo "Terminating all clusters"
+                for CLUSTER_ID in $(aws emr list-clusters --active | jq -r '.Clusters[] | select(.Name | startswith("intraday-incremental")).Id');
+                do
+                  echo "Terminating cluster $CLUSTER_ID"
+                  aws emr terminate-clusters --cluster-ids "$CLUSTER_ID"
+                done
+              else
+                echo "Terminating single cluster: $CLUSTER_ID"
+                aws emr terminate-clusters --cluster-ids "$CLUSTER_ID"
+              fi
     remove-metadata:
       task: remove-metadata
       config:
