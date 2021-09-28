@@ -1,0 +1,5 @@
+groups:
+  - name: admin-deploy-consumer
+    jobs:
+      - dev-deploy-msk-kafka-consumer
+

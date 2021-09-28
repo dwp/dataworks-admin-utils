@@ -1,0 +1,12 @@
+jobs:
+  - name: dev-deploy-msk-kafka-consumer
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: dataworks-ml-streams-consumer
+            trigger: true
+      - .: (( inject meta-msk-kafka-appl-admin.plan.deploy-kafka-consumer-app ))
+        config:
+          params:
+            AWS_ACC: ((aws_account.development))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
