@@ -54,6 +54,7 @@ update-all-pipelines: ## Update all the pipelines
 	aviator -f aviator-cyi-emr-admin.yml
 	aviator -f aviator-pt-2-emr-admin.yml
 	aviator -f aviator-analytical-env-admin.yml
+	aviator -f aviator-msk-kafka-appl-admin.yml
 
 .PHONY: update-ml-dev-emr-admin-pipeline
 update-ml-dev-emr-admin-pipeline: ## Update the ml-dev-emr-admin pipeline
@@ -139,6 +140,10 @@ update-hbase-data-ingestion-pipeline: ## Update the hbase-data-ingestion pipelin
 update-terraform-taint-pipeline: ## Update the terraform-taint pipeline
 	aviator -f aviator-terraform-taint.yml
 
+.PHONY: update-msk-kafka-appl-admin-pipeline
+update-terraform-taint-pipeline: ## Update the msk-kafka-appl-admin pipeline
+	aviator -f aviator-msk-kafka-appl-admin.yml
+
 .PHONY: pause-ml-dev-emr-admin-pipeline
 pause-ml-dev-emr-admin-pipeline: ## pause the ml-dev-emr-admin pipeline
 	fly --target utility pause-pipeline --pipeline ml-dev-emr-admin
@@ -214,7 +219,11 @@ pause-ami-cleanup-pipeline: ## Pause the ami-cleanup pipeline
 .PHONY: pause-terraform-taint-pipeline
 pause-terraform-taint-pipeline: ## Pause the terraform-taint pipeline
 	fly --target utility pause-pipeline --pipeline terraform-taint
-	
+
+.PHONY: pause-msk-kafka-appl-admin-pipeline
+pause-terraform-taint-pipeline: ## Pause the msk-kafka-appl-admin pipeline
+	fly --target utility pause-pipeline --pipeline msk-kafka-appl-admin
+
 .PHONY: unpause-ml-dev-emr-admin-pipeline
 unpause-ml-dev-emr-admin-pipeline: ## unpause the ml-dev-emr-admin pipeline
 	fly --target utility unpause-pipeline --pipeline ml-dev-emr-admin
@@ -290,3 +299,7 @@ unpause-ami-cleanup-pipeline: ## Unpause the ami-cleanup pipeline
 .PHONY: unpause-terraform-taint-pipeline
 unpause-terraform-taint-pipeline: ## Unpause the terraform-taint pipeline
 	fly --target utility unpause-pipeline --pipeline terraform-taint
+
+.PHONY: unpause-msk-kafka-appl-admin-pipeline
+pause-terraform-taint-pipeline: ## Unpause the msk-kafka-appl-admin pipeline
+	fly --target utility unpause-pipeline --pipeline msk-kafka-appl-admin
