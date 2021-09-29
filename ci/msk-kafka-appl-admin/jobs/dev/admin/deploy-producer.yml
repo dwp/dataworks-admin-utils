@@ -1,11 +1,11 @@
 jobs:
-  - name: dev-deploy-msk-kafka-consumer-app
+  - name: dev-deploy-msk-kafka-producer-app
     max_in_flight: 1
     plan:
       - in_parallel:
-          - get: dataworks-ml-streams-consumer
+          - get: dataworks-ml-streams-producer
             trigger: true
-      - .: (( inject meta-msk-kafka-appl-admin.plan.deploy-kafka-consumer-app ))
+      - .: (( inject meta-msk-kafka-appl-admin.plan.deploy-kafka-producer-app ))
         config:
           params:
             AWS_ACC: ((aws_account.development))
