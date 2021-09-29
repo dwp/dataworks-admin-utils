@@ -9,3 +9,14 @@ resources:
       password: ((dataworks-secrets.enterprise_github_pat))
     webhook_token: ((dataworks.concourse_github_webhook_token))
     check_every: 720h
+
+  - name: dataworks-ml-streams-producer
+    type: git
+    source:
+      branch: master
+      uri: https://((dataworks.enterprise_github_url))/dip/dataworks-ml-streams-kafka-producer.git
+      api_endpoint: https://((dataworks.enterprise_github_url))/api/v3/
+      username: ((dataworks.enterprise_github_username))
+      password: ((dataworks-secrets.enterprise_github_pat))
+    webhook_token: ((dataworks.concourse_github_webhook_token))
+    check_every: 720h

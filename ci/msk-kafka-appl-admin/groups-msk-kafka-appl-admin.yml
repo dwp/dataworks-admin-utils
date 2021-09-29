@@ -1,5 +1,10 @@
 groups:
-  - name: admin-deploy-consumer
+  - name: admin-deploy-consumer-app
     jobs:
-      - dev-deploy-msk-kafka-consumer
+      - dev-deploy-msk-kafka-consumer-app
+      - qa-deploy-msk-kafka-consumer-app
 
+  - name: admin-deploy-producer-app
+    jobs:
+      - dev-deploy-msk-kafka-producer-app
+      - qa-deploy-msk-kafka-producer-app
