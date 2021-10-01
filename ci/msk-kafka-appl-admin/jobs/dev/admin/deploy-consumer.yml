@@ -4,7 +4,7 @@ jobs:
     plan:
       - in_parallel:
           - get: dataworks-ml-streams-consumer
-            trigger: true
+            trigger: false
       - .: (( inject meta-msk-kafka-appl-admin.plan.deploy-kafka-consumer-app ))
         config:
           params:

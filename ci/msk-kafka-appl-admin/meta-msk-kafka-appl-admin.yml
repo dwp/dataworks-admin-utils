@@ -44,3 +44,91 @@ meta-msk-kafka-appl-admin:
               python3 execute_cmd.py dataworks-kafka-producer "sh /home/ec2-user/kafka/utils/manual_redeploy.sh"
         inputs:
           - name: dataworks-ml-streams-producer
+    start-kafka-consumer-app:
+      task: start-kafka-consumer-app
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_python_boto_behave_repository))
+            tag: ((dataworks.docker_python_boto_behave_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+          ASSUME_DURATION: 3600
+        run:
+          path: sh
+          dir: dataworks-ml-streams-consumer
+          args:
+            - -exc
+            - |
+              source /assume-role
+              python3 execute_cmd.py dataworks-kafka-consumer "sh /home/ec2-user/kafka/run_app.sh"
+        inputs:
+          - name: dataworks-ml-streams-consumer
+    start-kafka-producer-app:
+      task: start-kafka-producer-app
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_python_boto_behave_repository))
+            tag: ((dataworks.docker_python_boto_behave_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+          ASSUME_DURATION: 3600
+        run:
+          path: sh
+          dir: dataworks-ml-streams-producer
+          args:
+            - -exc
+            - |
+              source /assume-role
+              python3 execute_cmd.py dataworks-kafka-producer "sh /home/ec2-user/kafka/run_app.sh"
+        inputs:
+          - name: dataworks-ml-streams-producer
+    stop-kafka-consumer-app:
+      task: stop-kafka-consumer-app
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_python_boto_behave_repository))
+            tag: ((dataworks.docker_python_boto_behave_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+          ASSUME_DURATION: 3600
+        run:
+          path: sh
+          dir: dataworks-ml-streams-consumer
+          args:
+            - -exc
+            - |
+              source /assume-role
+              python3 execute_cmd.py dataworks-kafka-consumer "sh /home/ec2-user/kafka/utils/stop_app.sh"
+        inputs:
+          - name: dataworks-ml-streams-consumer
+    stop-kafka-producer-app:
+      task: stop-kafka-producer-app
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_python_boto_behave_repository))
+            tag: ((dataworks.docker_python_boto_behave_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+          ASSUME_DURATION: 3600
+        run:
+          path: sh
+          dir: dataworks-ml-streams-producer
+          args:
+            - -exc
+            - |
+              source /assume-role
+              python3 execute_cmd.py dataworks-kafka-producer "sh /home/ec2-user/kafka/utils/stop_app.sh"
+        inputs:
+          - name: dataworks-ml-streams-producer
