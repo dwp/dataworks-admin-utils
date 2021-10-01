@@ -8,3 +8,23 @@ groups:
     jobs:
       - dev-deploy-msk-kafka-producer-app
       - qa-deploy-msk-kafka-producer-app
+
+  - name: admin-start-consumer-app
+    jobs:
+      - dev-start-msk-kafka-consumer-app
+      - qa-start-msk-kafka-consumer-app
+
+  - name: admin-start-producer-app
+    jobs:
+      - dev-start-msk-kafka-producer-app
+      - qa-start-msk-kafka-producer-app
+
+  - name: admin-stop-consumer-app
+    jobs:
+      - dev-stop-msk-kafka-consumer-app
+      - qa-stop-msk-kafka-consumer-app
+
+  - name: admin-stop-producer-app
+    jobs:
+      - dev-stop-msk-kafka-producer-app
+      - qa-stop-msk-kafka-producer-app

@@ -1,11 +1,11 @@
 jobs:
-  - name: qa-deploy-msk-kafka-producer-app
+  - name: qa-start-msk-kafka-producer-app
     max_in_flight: 1
     plan:
       - in_parallel:
           - get: dataworks-ml-streams-producer
             trigger: false
-      - .: (( inject meta-msk-kafka-appl-admin.plan.deploy-kafka-producer-app ))
+      - .: (( inject meta-msk-kafka-appl-admin.plan.start-kafka-producer-app ))
         config:
           params:
             AWS_ACC: ((aws_account.qa))
