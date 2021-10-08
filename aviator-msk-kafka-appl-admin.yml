@@ -7,6 +7,7 @@ spruce:
       - with_in: ci/msk-kafka-appl-admin/jobs/
       - with_in: ci/msk-kafka-appl-admin/jobs/dev/admin/
       - with_in: ci/msk-kafka-appl-admin/jobs/qa/admin/
+      - with_in: ci/msk-kafka-appl-admin/jobs/integration/admin/
       - with_in: ci/shared/
         regexp: "meta.yml"
       - with_in: ci/shared/update-pipeline/
