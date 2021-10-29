@@ -146,7 +146,7 @@ meta-msk-kafka-appl-admin:
           NUMBER_OF_TOPICS_TO_USE: "3"
           E2E_TEST_TIMEOUT: 300
           E2E_FEATURE_TAG_FILTER: "@dataworks-kafka-producer-perf-test-peak"
-          ASSUME_DURATION: 3600
+          ASSUME_DURATION: 36000
         run:
           path: sh
           dir: dataworks-behavioural-framework
@@ -175,7 +175,7 @@ meta-msk-kafka-appl-admin:
           NUMBER_OF_TOPICS_TO_USE: "3"
           E2E_TEST_TIMEOUT: 300
           E2E_FEATURE_TAG_FILTER: "@dataworks-kafka-producer-perf-test-soak"
-          ASSUME_DURATION: 3600
+          ASSUME_DURATION: 36000
         run:
           path: sh
           dir: dataworks-behavioural-framework
