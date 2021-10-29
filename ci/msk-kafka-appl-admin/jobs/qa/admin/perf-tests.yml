@@ -1,0 +1,33 @@
+jobs:
+  - name: qa-run-perf-test-peak-kafka-producer-app
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - put: meta
+            resource: meta-qa
+          - get: dataworks-behavioural-framework
+            trigger: false
+          - get: dataworks-ml-streams-producer
+            trigger: false
+      - .: (( inject meta-msk-kafka-appl-admin.plan.perf-test-peak-kafka-producer-app ))
+        config:
+          params:
+            TF_WORKSPACE: default
+            AWS_ACC: ((aws_account.qa))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
+  - name: qa-run-perf-test-soak-kafka-producer-app
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - put: meta
+            resource: meta-qa
+          - get: dataworks-behavioural-framework
+            trigger: false
+          - get: dataworks-ml-streams-producer
+            trigger: false
+      - .: (( inject meta-msk-kafka-appl-admin.plan.perf-test-soak-kafka-producer-app ))
+        config:
+          params:
+            TF_WORKSPACE: default
+            AWS_ACC: ((aws_account.qa))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci

@@ -35,3 +35,13 @@ groups:
       - qa-stop-msk-kafka-producer-app
       - integration-stop-msk-kafka-producer-app
       - pre-prod-stop-msk-kafka-producer-app
+  - name: run-perf-test-peak
+    jobs:
+      - dev-run-perf-test-peak-kafka-producer-app
+      - qa-run-perf-test-peak-kafka-producer-app
+      - integration-run-perf-test-peak-kafka-producer-app
+  - name: run-perf-test-soak
+    jobs:
+      - dev-run-perf-test-soak-kafka-producer-app
+      - qa-run-perf-test-soak-kafka-producer-app
+      - integration-run-perf-test-soak-kafka-producer-app
