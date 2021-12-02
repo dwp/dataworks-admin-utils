@@ -55,6 +55,13 @@ resources:
       start: 23:00
       stop: 23:05
 
+  - name: utc-3am-trigger
+    type: time
+    source:
+      location: UTC
+      start: 03:00
+      stop: 04:05
+
   - name: every-2h
     type: time
     icon: clock-outline
