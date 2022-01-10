@@ -6,7 +6,7 @@ jobs:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
             AWS_ACC: ((aws_account.production))
-            S3_PREFIX: businessdata/mongo/ucdata/2021-10-13/incremental
-            CORRELATION_ID: a444afdd-d8ba-5944-8081-f63dffe938fc
-            EXPORT_DATE: "2021-10-13"
+            S3_PREFIX: businessdata/mongo/ucdata/2022-01-10/incremental
+            CORRELATION_ID: 465b4688-e479-5b0f-9a3d-1cdd98af484d
+            EXPORT_DATE: "2022-01-10"
             SNAPSHOT_TYPE: incremental
