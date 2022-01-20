@@ -61,7 +61,7 @@ jobs:
         trigger: false
       - get: emr-al2-ami
         trigger: false
-      - get: utc-11pm-trigger
+      - get: utc-3am-trigger
         trigger: true
       - .: (( inject meta-analytical-env-admin.plan.terraform-bootstrap ))
         params:
