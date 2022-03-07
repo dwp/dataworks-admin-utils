@@ -68,7 +68,7 @@ jobs:
     plan:
       - get: aws-analytical-env
         trigger: false
-      - get: utc-11pm-trigger
+      - get: utc-3am-trigger
         trigger: true
       - get: emr-al2-ami
         trigger: false

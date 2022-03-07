@@ -24,10 +24,26 @@ meta-adg-emr-admin:
 
               export message_json=$(cat <<EOF
               {
-                "correlation_id": "$CORRELATION_ID",
-                "s3_prefix": "$S3_PREFIX",
-                "snapshot_type": "$SNAPSHOT_TYPE",
-                "export_date": "$EXPORT_DATE"
+                "additional_step_args": {
+                        "submit-job": [
+                          "--correlation_id", "$CORRELATION_ID",
+                          "--s3_prefix", "$S3_PREFIX",
+                          "--snapshot_type", "$SNAPSHOT_TYPE",
+                          "--export_date", "$EXPORT_DATE"
+                        ],
+                        "courtesy-flush": [
+                          "--correlation_id", "$CORRELATION_ID",
+                          "--s3_prefix", "$S3_PREFIX",
+                          "--snapshot_type", "$SNAPSHOT_TYPE",
+                          "--export_date", "$EXPORT_DATE"
+                        ],
+                        "send_notification": [
+                          "--correlation_id", "$CORRELATION_ID",
+                          "--s3_prefix", "$S3_PREFIX",
+                          "--snapshot_type", "$SNAPSHOT_TYPE",
+                          "--export_date", "$EXPORT_DATE"
+                        ]
+                    }
               }
               EOF
               )

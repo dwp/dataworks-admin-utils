@@ -7,7 +7,7 @@ meta-analytical-env-admin:
           type: docker-image
           source:
             repository: ((dataworks.terraform_repository))
-            tag: ((dataworks.terraform_13_version))
+            tag: ((dataworks.terraform_14_version))
         params:
           TF_INPUT: false
           TF_CLI_ARGS_apply: -lock-timeout=300s
@@ -159,6 +159,65 @@ meta-analytical-env-admin:
         inputs:
           - name: aws-analytical-env
           - name: terraform-config
+
+    aws-destroy-emr-cluster:
+      task: aws-destroy-emr-cluster
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_ROLE_ARN: UNSET
+          AWS_REGION: ((dataworks.aws_region))
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -ec
+            - |
+              source /assume-role
+
+              function cluster_status {
+                local cluster_id=$1
+                aws --output json --region="$AWS_REGION" \
+                  emr describe-cluster --cluster-id $cluster_id | jq -r '.Cluster.Status.State'
+              }
+
+              cluster_id=$(aws --output json --region="$AWS_REGION" \
+                                emr list-clusters --active --query "Clusters[?Name=='$CLUSTER_NAME'].[Id][0][0]" | tr -d '"')
+
+              if [[ $cluster_id != "null" ]]; then
+                echo destroying: $CLUSTER_NAME - $cluster_id
+                # Terminate using AWS CLI because targetted destroys can cause
+                # issues with TF (orphaned resources, etc.)
+                aws --region="$AWS_REGION" emr terminate-clusters --cluster-ids $cluster_id
+
+                i=0
+                while [[ $i -le 360 ]]; do
+                  status=$(cluster_status $cluster_id)
+                  if [ "$status" == "TERMINATED" ]; then
+                    echo status: \'$status\', cluster terminated exiting normally.
+                    exit 0
+                  fi
+
+                  if [ "$status" == "TERMINATED_WITH_ERRORS" ]; then
+                    echo status: \'$status\', cluster terminated with errors exiting normally.
+                    exit 0
+                  fi
+
+                  i=$((i+1))
+                  echo status: \'$status\', sleeping for 10 seconds.
+                  sleep 10
+                done
+
+                echo Monitoring of the destruction has timed out, progressing anyway
+              else
+                echo No cluster with name: $CLUSTER_NAME exists, therefore not destroying. Continuing...
+              fi
 
     rotate-mysql-master-password:
       task: rotate-mysql-master-password

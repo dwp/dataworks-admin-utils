@@ -22,11 +22,27 @@ meta-pdm-emr-admin:
               set +x
 
               jq -n --arg correlation_id "$CORRELATION_ID" --arg s3_prefix "$S3_PREFIX" --arg snapshot_type "$SNAPSHOT_TYPE" --arg export_date "$EXPORT_DATE" '{
-                 "correlation_id": $correlation_id,
-                 "s3_prefix": $s3_prefix,
-                 "snapshot_type": $snapshot_type,
-                 "export_date": $export_date
-               }' > payload.json
+                "additional_step_args": {
+                  "courtesy-flush": [
+                    "--correlation_id", $correlation_id,
+                    "--s3_prefix", $s3_prefix,
+                    "--snapshot_type", $snapshot_type,
+                    "--export_date", $export_date
+                  ],
+                  "create-hive-dynamo-table": [
+                    "--correlation_id", $correlation_id,
+                    "--s3_prefix", $s3_prefix,
+                    "--snapshot_type", $snapshot_type,
+                    "--export_date", $export_date
+                  ],
+                  "source": [
+                    "--correlation_id", $correlation_id,
+                    "--s3_prefix", $s3_prefix,
+                    "--snapshot_type", $snapshot_type,
+                    "--export_date", $export_date
+                  ]
+                }
+              }' > payload.json
 
               cat payload.json
               aws lambda invoke --function-name pdm_emr_launcher --invocation-type RequestResponse --payload file://payload.json --cli-connect-timeout 600 --cli-read-timeout 600 output.json
