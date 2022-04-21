@@ -80,11 +80,11 @@ groups:
 
   - name: admin-all-batch-clusters
     jobs:
-      - dev-cleanup
-      - qa-cleanup
-      - int-cleanup
-      - preprod-cleanup
-      - production-cleanup
+      - dev-security-config-cleanup
+      - qa-security-config-cleanup
+      - int-security-config-cleanup
+      - preprod-security-config-cleanup
+      - production-security-config-cleanup
 
       - dev-stop-waiting
       - qa-stop-waiting

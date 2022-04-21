@@ -581,11 +581,15 @@ meta-analytical-env-admin:
               source /assume-role
               set +e
               set +x
-
-              for NAME in $(aws emr list-security-configurations | jq -r '.SecurityConfigurations[].Name | match(".*_20\\d{12}$").string');
+              SAFE_DATE=$(date +%Y%m%d -d @$(($(date +%s)-172800)))
+              echo "SAFE_DATE: $SAFE_DATE"
+              for NAME in $(aws emr list-security-configurations | jq -r '.SecurityConfigurations[].Name | match(".*emrfs_20\\d{12}$").string');
               do
-                echo "Deleting configuration with name of ${NAME}"
-                aws emr delete-security-configuration --name ${NAME}
+                CONFIG_DATE=${NAME:16:8}
+                if [ $CONFIG_DATE -lt $SAFE_DATE ]; then
+                  echo "Deleting configuration with name of ${NAME}"
+                  aws emr delete-security-configuration --name ${NAME}
+                fi
               done
               return 0
 
