@@ -616,6 +616,6 @@ meta-analytical-env-admin:
               set +e
               set +x
 
-              sc_count=$(aws emr list-security-configurations --query 'length(SecurityConfigurations[])' --profile dataworks-production)
+              sc_count=$(aws emr list-security-configurations --query 'length(SecurityConfigurations[])')
               echo "Number of EMR Security Configurations ${sc_count}"
               return 0
