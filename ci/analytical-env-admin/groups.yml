@@ -92,6 +92,12 @@ groups:
       - preprod-stop-waiting
       - prod-stop-waiting
 
+      - dev-monitor-security-config
+      - qa-monitor-security-config
+      - int-monitor-security-config
+      - preprod-monitor-security-config
+      - production-monitor-security-config      
+
   - name: admin-analytical-cluster
     jobs:
       - dev-stop-cluster

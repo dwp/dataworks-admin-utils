@@ -1,0 +1,9 @@
+jobs:
+    - name: production-security-config-monitor
+      plan:
+        - .: (( inject meta-analytical-env-admin.plan.monitor-security-configs ))
+          task: monitor-security-configs
+          config:
+            params:
+              AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
+  
