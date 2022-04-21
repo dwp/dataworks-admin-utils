@@ -1,6 +1,8 @@
 jobs:
-  - name: int-cleanup
+  - name: int-security-config-cleanup
     plan:
+      - get: utc-midnight-trigger
+        trigger: true
       - .: (( inject meta-analytical-env-admin.plan.clean-security-configs ))
         task: clean-security-configs
         config:
