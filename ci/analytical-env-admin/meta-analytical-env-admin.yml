@@ -592,3 +592,35 @@ meta-analytical-env-admin:
                 fi
               done
               return 0
+
+    monitor-security-configs:
+      task: monitor-security-configs
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_ROLE_ARN: arn:aws:iam::((aws_account.management)):role/ci
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              export AWS_DEFAULT_REGION
+              source /assume-role
+              set +e
+              set +x
+
+              sc_count=$(aws emr list-security-configurations --query 'length(SecurityConfigurations[])')
+              echo "Number of EMR Security Configurations ${sc_count}"
+              
+              # The maximum number of EMR security configurations you can have is 600. 540 = 90%
+              if [ ${sc_count} -gt 540 ]; then
+                echo "The number of EMR Security Configurations reaching to maximum quota and need cleaning up!"
+                aws sns publish --topic-arn "arn:aws:sns:eu-west-2:$AWS_ACC:Monitoring" --message '{"notification_type": "Error", "severity": "Medium", "title_text": "EMR Security Configurations above 90% Maximum Threshold"}'
+              fi
