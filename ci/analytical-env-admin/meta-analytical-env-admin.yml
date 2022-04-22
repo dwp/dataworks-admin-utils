@@ -618,4 +618,9 @@ meta-analytical-env-admin:
 
               sc_count=$(aws emr list-security-configurations --query 'length(SecurityConfigurations[])')
               echo "Number of EMR Security Configurations ${sc_count}"
-              return 0
+              
+              # The maximum number of EMR security configurations you can have is 600. 540 = 90%
+              if [ ${sc_count} -gt 540 ]; then
+                echo "The number of EMR Security Configurations reaching to maximum quota and need cleaning up!"
+                aws sns publish --topic-arn "arn:aws:sns:eu-west-2:$AWS_ACC:Monitoring" --message '{"notification_type": "Error", "severity": "Medium", "title_text": "EMR Security Configurations above 90% Maximum Threshold"}'
+              fi
