@@ -70,8 +70,8 @@ jobs:
         trigger: false
       - get: emr-al2-ami
         trigger: false
-      - get: utc-3am-trigger
-        trigger: true
+      # - get: utc-3am-trigger
+      #   trigger: true
       - .: (( inject meta-analytical-env-admin.plan.terraform-bootstrap ))
         params:
           DEPLOY_PATH: app
@@ -91,10 +91,10 @@ jobs:
     plan:
       - get: aws-analytical-env
         trigger: false
-      - get: utc-3am-trigger
-        trigger: true
-        passed:
-          - sync-cognito-users-to-rds-integration
+      # - get: utc-3am-trigger
+      #   trigger: true
+      #   passed:
+      #     - sync-cognito-users-to-rds-integration
       - get: emr-al2-ami
         trigger: false
       - .: (( inject meta-analytical-env-admin.plan.terraform-bootstrap ))
