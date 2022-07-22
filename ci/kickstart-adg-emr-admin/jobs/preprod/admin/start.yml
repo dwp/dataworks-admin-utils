@@ -6,7 +6,7 @@ jobs:
           params:
             AWS_ACC: ((aws_account.preprod))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
-            START_DT: "2021-03-24"
-            END_DT: "2021-03-24"
-            SKIP_FLAG: "False"
-            SKIP_MODULES: "vacancy, application"
+            START_DT: "2022-07-05"
+            END_DT: "2022-07-05"
+            SKIP_FLAG: "true"
+            SKIP_MODULES: "vacancy, payment"
