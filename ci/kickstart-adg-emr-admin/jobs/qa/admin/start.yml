@@ -8,5 +8,5 @@ jobs:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
             START_DT: "2021-03-24"
             END_DT: "2021-03-24"
-            SKIP_FLAG: "True"
+            SKIP_FLAG: "False"
             SKIP_MODULES: "vacancy, application"
