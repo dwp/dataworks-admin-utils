@@ -1,7 +1,7 @@
 jobs:
   - name: stop-cluster-preprod
     plan:
-      - .: (( inject meta-ch-emr-admin.plan.stop-cluster ))
+      - .: (( inject meta-dataworks-aws-ch-emr-admin.plan.stop-cluster ))
         config:
           params:
             AWS_ACC: ((aws_account.preprod))

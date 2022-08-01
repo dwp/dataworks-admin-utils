@@ -7,5 +7,5 @@ jobs:
       - .: (( inject meta.plan.update-pipeline ))
         config:
           params:
-            aviator_filename: aviator-ch-emr-admin.yml
+            aviator_filename: aviator-dataworks-aws-ch-emr-admin.yml
 
