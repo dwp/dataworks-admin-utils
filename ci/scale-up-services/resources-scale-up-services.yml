@@ -1,9 +1,9 @@
 resources:
-- name: dataworks-admin-utils-scale-up-services
+- name: dataworks-admin_emr-utils-scale-up-services
   type: git
   source:
     branch: master
-    uri: https://github.com/dwp/dataworks-admin-utils.git
+    uri: https://github.com/dwp/dataworks-admin_emr-utils.git
     paths:
       - ci/scale-up-services/*
       - ci/shared/*

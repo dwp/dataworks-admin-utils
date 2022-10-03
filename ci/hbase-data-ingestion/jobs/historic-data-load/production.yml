@@ -12,7 +12,7 @@ jobs:
           params:
             AWS_ACC: ((aws_account.production))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
-            ACTION_TAG: "@admin-historic-data-load"
+            ACTION_TAG: "@admin_emr-historic-data-load"
             DATA_LOAD_TOPICS: "ALL"
             DATA_LOAD_METADATA_STORE_TABLE: "ucfs"
             DATA_LOAD_S3_SUFFIX: "adb/2020-08-11,calcdb/2020-08-11,cdb/2020-08-11,claimdb/2020-08-12,pdb/2020-08-11,sdb/2020-08-11"

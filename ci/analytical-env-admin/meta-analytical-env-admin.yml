@@ -46,7 +46,7 @@ meta-analytical-env-admin:
 
     terraform-apply:
       task: terraform-apply
-      .: (( inject meta-analytical-env-admin.plan.terraform-common-config ))
+      .: (( inject meta-analytical-env-admin_emr.plan.terraform-common-config ))
       config:
         run:
           path: sh
@@ -77,7 +77,7 @@ meta-analytical-env-admin:
 
     terraform-plan:
       task: terraform-plan
-      .: (( inject meta-analytical-env-admin.plan.terraform-common-config ))
+      .: (( inject meta-analytical-env-admin_emr.plan.terraform-common-config ))
       config:
         run:
           path: sh
@@ -107,7 +107,7 @@ meta-analytical-env-admin:
 
     terraform-output-app:
       task: terraform-output-app
-      .: (( inject meta-analytical-env-admin.plan.terraform-common-config ))
+      .: (( inject meta-analytical-env-admin_emr.plan.terraform-common-config ))
       config:
         run:
           path: sh
@@ -130,7 +130,7 @@ meta-analytical-env-admin:
 
     terraform-taint:
       task: terraform-taint
-      .: (( inject meta-analytical-env-admin.plan.terraform-common-config ))
+      .: (( inject meta-analytical-env-admin_emr.plan.terraform-common-config ))
       config:
         run:
           path: sh

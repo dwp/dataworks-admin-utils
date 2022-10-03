@@ -7,14 +7,14 @@ jobs:
         trigger: false
       - get: emr-al2-ami
         trigger: false
-      - .: (( inject meta-analytical-env-admin.plan.terraform-bootstrap ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.terraform-bootstrap ))
         params:
           DEPLOY_PATH: app
-      - .: (( inject meta-analytical-env-admin.plan.terraform-output-app))
+      - .: (( inject meta-analytical-env-admin_emr.plan.terraform-output-app))
         config:
           params:
             TF_WORKSPACE: 'production'
-      - .: (( inject meta-analytical-env-admin.plan.rotate-mysql-master-password ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.rotate-mysql-master-password ))
         config:
           params:
             AWS_ACC: ((aws_account.production))
@@ -28,14 +28,14 @@ jobs:
         trigger: false
       - get: emr-al2-ami
         trigger: false
-      - .: (( inject meta-analytical-env-admin.plan.terraform-bootstrap ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.terraform-bootstrap ))
         params:
           DEPLOY_PATH: app
-      - .: (( inject meta-analytical-env-admin.plan.terraform-output-app))
+      - .: (( inject meta-analytical-env-admin_emr.plan.terraform-output-app))
         config:
           params:
             TF_WORKSPACE: 'production'
-      - .: (( inject meta-analytical-env-admin.plan.rotate-mysql-client-password ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.rotate-mysql-client-password ))
         config:
           params:
             AWS_ACC: ((aws_account.production))
@@ -49,14 +49,14 @@ jobs:
         trigger: false
       - get: emr-al2-ami
         trigger: false
-      - .: (( inject meta-analytical-env-admin.plan.terraform-bootstrap ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.terraform-bootstrap ))
         params:
           DEPLOY_PATH: app
-      - .: (( inject meta-analytical-env-admin.plan.terraform-output-app))
+      - .: (( inject meta-analytical-env-admin_emr.plan.terraform-output-app))
         config:
           params:
             TF_WORKSPACE: 'production'
-      - .: (( inject meta-analytical-env-admin.plan.initialise-rbac-db ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.initialise-rbac-db ))
         config:
           params:
             AWS_ACC: ((aws_account.production))
@@ -72,14 +72,14 @@ jobs:
         trigger: true
       - get: emr-al2-ami
         trigger: false
-      - .: (( inject meta-analytical-env-admin.plan.terraform-bootstrap ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.terraform-bootstrap ))
         params:
           DEPLOY_PATH: app
-      - .: (( inject meta-analytical-env-admin.plan.terraform-output-app))
+      - .: (( inject meta-analytical-env-admin_emr.plan.terraform-output-app))
         config:
           params:
             TF_WORKSPACE: 'production'
-      - .: (( inject meta-analytical-env-admin.plan.sync_rbac_db_from_cognito ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.sync_rbac_db_from_cognito ))
         config:
           params:
             AWS_ACC: ((aws_account.production))
@@ -97,14 +97,14 @@ jobs:
           - sync-cognito-users-to-rds-production
       - get: emr-al2-ami
         trigger: false
-      - .: (( inject meta-analytical-env-admin.plan.terraform-bootstrap ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.terraform-bootstrap ))
         params:
           DEPLOY_PATH: app
-      - .: (( inject meta-analytical-env-admin.plan.terraform-output-app))
+      - .: (( inject meta-analytical-env-admin_emr.plan.terraform-output-app))
         config:
           params:
             TF_WORKSPACE: 'production'
-      - .: (( inject meta-analytical-env-admin.plan.create_roles_and_policies_for_emr_users ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.create_roles_and_policies_for_emr_users ))
         config:
           params:
             AWS_ACC: ((aws_account.production))

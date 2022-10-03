@@ -15,4 +15,4 @@ jobs:
           params:
             AWS_ACC: ((aws_account.development))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
-            ACTION_TAG: "@admin-historic-data-import"
+            ACTION_TAG: "@admin_emr-historic-data-import"

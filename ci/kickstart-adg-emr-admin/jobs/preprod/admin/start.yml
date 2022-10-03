@@ -1,12 +1,12 @@
 jobs:
   - name: start-cluster-preprod
     plan:
-      - .: (( inject meta-kickstart-adg-emr-admin.plan.start-cluster-with-payment ))
+      - .: (( inject meta-kickstart-adg-emr-admin_emr.plan.start-cluster-with-payment ))
         config:
           params:
             AWS_ACC: ((aws_account.preprod))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
-            START_DT: "2021-03-24"
-            END_DT: "2021-03-24"
-            SKIP_FLAG: "False"
-            SKIP_MODULES: "vacancy, application"
+            START_DT: "2022-09-21"
+            END_DT: "2022-09-21"
+            SKIP_FLAG: "True"
+            SKIP_MODULES: "vacancy, payment"

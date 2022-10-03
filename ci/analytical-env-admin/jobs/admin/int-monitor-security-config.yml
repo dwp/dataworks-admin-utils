@@ -3,7 +3,7 @@ jobs:
       plan:
         - get: utc-9am-trigger
           trigger: true
-        - .: (( inject meta-analytical-env-admin.plan.monitor-security-configs ))
+        - .: (( inject meta-analytical-env-admin_emr.plan.monitor-security-configs ))
           task: monitor-security-configs
           config:
             params:

@@ -1,5 +1,5 @@
 groups:
-  - name: admin-start-cluster
+  - name: admin_emr-start-cluster
     jobs:
       - dev-start-cluster
       - qa-start-cluster
@@ -7,7 +7,7 @@ groups:
       - preprod-start-cluster
       - prod-start-cluster
 
-  - name: admin-stop-cluster
+  - name: admin_emr-stop-cluster
     jobs:
       - dev-stop-cluster
       - qa-stop-cluster
@@ -15,7 +15,7 @@ groups:
       - preprod-stop-cluster
       - prod-stop-cluster
 
-  - name: admin-clear-dynamodb-row
+  - name: admin_emr-clear-dynamodb-row
     jobs:
       - dev-clear-dynamodb-row
       - qa-clear-dynamodb-row

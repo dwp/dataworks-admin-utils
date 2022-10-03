@@ -1,14 +1,14 @@
 spruce:
-  - base: ci/msk-kafka-appl-admin/meta-msk-kafka-appl-admin.yml
+  - base: ci/msk-kafka-appl-admin_emr/meta-msk-kafka-appl-admin_emr.yml
     prune:
       - meta
     merge:
-      - with_in: ci/msk-kafka-appl-admin/
-      - with_in: ci/msk-kafka-appl-admin/jobs/
-      - with_in: ci/msk-kafka-appl-admin/jobs/dev/admin/
-      - with_in: ci/msk-kafka-appl-admin/jobs/qa/admin/
-      - with_in: ci/msk-kafka-appl-admin/jobs/integration/admin/
-      - with_in: ci/msk-kafka-appl-admin/jobs/preprod/admin/
+      - with_in: ci/msk-kafka-appl-admin_emr/
+      - with_in: ci/msk-kafka-appl-admin_emr/jobs/
+      - with_in: ci/msk-kafka-appl-admin_emr/jobs/dev/admin_emr/
+      - with_in: ci/msk-kafka-appl-admin_emr/jobs/qa/admin_emr/
+      - with_in: ci/msk-kafka-appl-admin_emr/jobs/integration/admin_emr/
+      - with_in: ci/msk-kafka-appl-admin_emr/jobs/preprod/admin_emr/
       - with_in: ci/shared/
         regexp: "meta.yml"
       - with_in: ci/shared/update-pipeline/
@@ -17,7 +17,7 @@ spruce:
         regexp: "update-pipeline-groups.yml"
     to: aviator_pipeline_msk_kafka_appl_admin.yml
 fly:
-  name: msk-kafka-appl-admin
+  name: msk-kafka-appl-admin_emr
   target: utility
   config: aviator_pipeline_msk_kafka_appl_admin.yml
   expose: true

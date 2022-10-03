@@ -3,7 +3,7 @@ jobs:
     plan:
       - get: aws-analytical-env
         trigger: false
-      - .: (( inject meta-analytical-env-admin.plan.stop-batch-cluster ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.stop-batch-cluster ))
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
@@ -12,7 +12,7 @@ jobs:
     plan:
       - get: aws-analytical-env
         trigger: false
-      - .: (( inject meta-analytical-env-admin.plan.stop-user-batch-cluster ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.stop-user-batch-cluster ))
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
@@ -21,7 +21,7 @@ jobs:
     plan:
       - get: aws-analytical-env
         trigger: false
-      - .: (( inject meta-analytical-env-admin.plan.stop-external-batch-cluster ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.stop-external-batch-cluster ))
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
@@ -30,7 +30,7 @@ jobs:
     plan:
       - get: aws-analytical-env
         trigger: false
-      - .: (( inject meta-analytical-env-admin.plan.stop-uc-lab-batch-cluster ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.stop-uc-lab-batch-cluster ))
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
@@ -39,7 +39,7 @@ jobs:
     plan:
       - get: every-2h
         trigger: true
-      - .: (( inject meta-analytical-env-admin.plan.stop-waiting-cluster ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.stop-waiting-cluster ))
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci

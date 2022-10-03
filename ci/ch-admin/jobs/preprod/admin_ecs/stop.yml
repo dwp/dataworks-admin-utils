@@ -1,0 +1,8 @@
+jobs:
+  - name: stop-task-preprod
+    plan:
+      - .: (( inject meta-ch-admin.plan.stop-task))
+        config:
+          params:
+            AWS_ACC: ((aws_account.preprod))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci

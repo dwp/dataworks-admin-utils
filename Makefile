@@ -145,9 +145,9 @@ update-terraform-taint-pipeline: ## Update the terraform-taint pipeline
 update-msk-kafka-appl-admin-pipeline: ## Update the msk-kafka-appl-admin pipeline
 	aviator -f aviator-msk-kafka-appl-admin.yml
 
-.PHONY: update-dataworks-aws-ch-emr-admin-pipeline
-update-dataworks-aws-ch-emr-admin-pipeline: ## Update the dataworks-aws-ch-emr-admin pipeline
-	aviator -f aviator-dataworks-aws-ch-emr-admin.yml
+.PHONY: update-ch-admin-pipeline
+update-ch-admin-pipeline: ## Update the ch-admin pipeline
+	aviator -f aviator-ch-admin.yml
 
 .PHONY: update-corporate-data-ingestion-emr-admin-pipeline
 update-corporate-data-ingestion-emr-admin-pipeline: ## Update the msk-kafka-appl-admin pipeline

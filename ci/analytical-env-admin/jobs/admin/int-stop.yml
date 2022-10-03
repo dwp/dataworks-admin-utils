@@ -3,7 +3,7 @@ jobs:
     plan:
       - get: aws-analytical-env
         trigger: false
-      - .: (( inject meta-analytical-env-admin.plan.stop-cluster ))
+      - .: (( inject meta-analytical-env-admin_emr.plan.stop-cluster ))
         task: stop-clusters
         config:
           params:

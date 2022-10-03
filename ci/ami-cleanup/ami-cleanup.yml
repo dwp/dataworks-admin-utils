@@ -1,7 +1,7 @@
 jobs:
   - name: ami-cleanup-mgmtdev-dryrun
     plan:
-      - get: dataworks-admin-utils
+      - get: dataworks-admin_emr-utils
       - .: (( inject meta.plan.ami-cleanup-mgmt-dev ))
         config:
           params:
@@ -9,7 +9,7 @@ jobs:
 
   - name: ami-cleanup-mgmtdev
     plan:
-      - get: dataworks-admin-utils
+      - get: dataworks-admin_emr-utils
         passed:
           - ami-cleanup-mgmtdev-dryrun
       - .: (( inject meta.plan.ami-cleanup-mgmt-dev ))
@@ -20,7 +20,7 @@ jobs:
 
   - name: ami-cleanup-mgmt-dryrun
     plan:
-      - get: dataworks-admin-utils
+      - get: dataworks-admin_emr-utils
       - .: (( inject meta.plan.ami-cleanup-mgmt ))
         config:
           params:
@@ -29,7 +29,7 @@ jobs:
 
   - name: ami-cleanup-mgmt
     plan:
-      - get: dataworks-admin-utils
+      - get: dataworks-admin_emr-utils
         passed:
           - ami-cleanup-mgmt-dryrun
       - .: (( inject meta.plan.ami-cleanup-mgmt ))

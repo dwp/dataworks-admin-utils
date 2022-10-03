@@ -1,7 +1,7 @@
 jobs:
   - name: prod-stop-incremental-clusters
     plan:
-      - .: (( inject meta-adg-emr-admin.plan.stop-cluster ))
+      - .: (( inject meta-adg-emr-admin_emr.plan.stop-cluster ))
         task: stop-incremental-clusters
         config:
           params:

@@ -1,17 +1,17 @@
 resources:
-  - name: dataworks-admin-utils
+  - name: dataworks-admin_emr-utils
     type: git
     source:
       branch: master
-      uri: https://github.com/dwp/dataworks-admin-utils.git
+      uri: https://github.com/dwp/dataworks-admin_emr-utils.git
     webhook_token: ((dataworks.concourse_github_webhook_token))
     check_every: 1h
 
-  - name: dataworks-admin-utils-ami-cleanup
+  - name: dataworks-admin_emr-utils-ami-cleanup
     type: git
     source:
       branch: master
-      uri: https://github.com/dwp/dataworks-admin-utils.git
+      uri: https://github.com/dwp/dataworks-admin_emr-utils.git
       paths:
         - ci/ami-cleanup/*
         - ci/vars.yml

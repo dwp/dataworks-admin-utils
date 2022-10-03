@@ -5,11 +5,11 @@ resources:
 - name: meta-preprod
   type: meta
 
-- name: dataworks-admin-utils-scale-down-services
+- name: dataworks-admin_emr-utils-scale-down-services
   type: git
   source:
     branch: master
-    uri: https://github.com/dwp/dataworks-admin-utils.git
+    uri: https://github.com/dwp/dataworks-admin_emr-utils.git
     paths:
       - ci/scale-down-services/*
       - ci/shared/*

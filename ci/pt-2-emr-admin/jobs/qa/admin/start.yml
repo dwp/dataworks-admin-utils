@@ -1,7 +1,7 @@
 jobs:
   - name: qa-start-cluster
     plan:
-      - .: (( inject meta-pt-2-emr-admin.plan.start-cluster ))
+      - .: (( inject meta-pt-2-emr-admin_emr.plan.start-cluster ))
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci

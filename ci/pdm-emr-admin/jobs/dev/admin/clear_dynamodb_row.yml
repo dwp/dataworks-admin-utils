@@ -1,7 +1,7 @@
 jobs:
   - name: dev-clear-dynamodb-row
     plan:
-      - .: (( inject meta-pdm-emr-admin.plan.clear-dynamodb-row ))
+      - .: (( inject meta-pdm-emr-admin_emr.plan.clear-dynamodb-row ))
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci

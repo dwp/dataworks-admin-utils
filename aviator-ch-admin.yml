@@ -1,0 +1,34 @@
+spruce:
+  - base: ci/ch-admin/meta-ch-admin.yml
+    prune:
+      - meta
+    merge:
+      - with_in: ci/ch-admin/
+        regexp: ".*yml"
+      - with_in: ci/ch-admin/jobs/
+        regexp: ".*yml"
+      - with_in: ci/ch-admin/jobs/admin_emr/
+        regexp: ".*yml"
+      - with_in: ci/shared/
+        regexp: "meta.yml"
+      - with_in: ci/shared/update-pipeline/
+        regexp: "update-pipeline-resources.yml"
+      - with_in: ci/shared/update-pipeline/
+        regexp: "update-pipeline-groups.yml"
+      - with_in: ci/ch-admin/jobs/dev/admin_emr/
+      - with_in: ci/ch-admin/jobs/qa/admin_emr/
+      - with_in: ci/ch-admin/jobs/integration/admin_emr/
+      - with_in: ci/ch-admin/jobs/preprod/admin_emr/
+      - with_in: ci/ch-admin/jobs/production/admin_emr/
+      - with_in: ci/ch-admin/jobs/dev/admin_ecs/
+      - with_in: ci/ch-admin/jobs/qa/admin_ecs/
+      - with_in: ci/ch-admin/jobs/integration/admin_ecs/
+      - with_in: ci/ch-admin/jobs/preprod/admin_ecs/
+      - with_in: ci/ch-admin/jobs/production/admin_ecs/
+    to: aviator_pipeline_ch_admin.yml
+fly:
+  name: ch-admin
+  target: utility
+  config: aviator_ch_admin.yml
+  expose: false
+  check_creds: true

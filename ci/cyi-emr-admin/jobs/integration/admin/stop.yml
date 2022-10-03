@@ -1,7 +1,7 @@
 jobs:
   - name: int-stop-cluster
     plan:
-      - .: (( inject meta-cyi-emr-admin.plan.stop-cluster ))
+      - .: (( inject meta-cyi-emr-admin_emr.plan.stop-cluster ))
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci

@@ -11,7 +11,7 @@ meta:
             version: ((dataworks.docker_awscli_version))
             tag: ((dataworks.docker_awscli_version))
         inputs:
-          - name: dataworks-admin-utils
+          - name: dataworks-admin_emr-utils
         params:
           DRY_RUN: true
           AMI_PREFIXES: unset

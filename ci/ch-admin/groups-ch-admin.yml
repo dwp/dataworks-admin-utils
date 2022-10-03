@@ -1,0 +1,29 @@
+groups:
+  - name: start-emr-cluster
+    jobs:
+      - start-emr-cluster-development
+      - start-emr-cluster-qa
+      - start-emr-cluster-integration
+      - start-emr-cluster-preprod
+      - start-emr-cluster-production
+  - name: stop-emr-cluster
+    jobs:
+      - stop-emr-cluster-development
+      - stop-emr-cluster-qa
+      - stop-emr-cluster-integration
+      - stop-emr-cluster-preprod
+      - stop-emr-cluster-production
+  - name: start-task
+    jobs:
+      - start-task-development
+      - start-task-qa
+      - start-task-integration
+      - start-task-preprod
+      - start-task-production
+  - name: stop-task
+    jobs:
+      - stop-task-development
+      - stop-task-qa
+      - stop-task-integration
+      - stop-task-preprod
+      - stop-task-production

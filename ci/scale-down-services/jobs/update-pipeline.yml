@@ -1,8 +1,8 @@
 jobs:
   - name: update-pipeline
     plan:
-      - get: dataworks-admin-utils
-        resource: dataworks-admin-utils-scale-down-services
+      - get: dataworks-admin_emr-utils
+        resource: dataworks-admin_emr-utils-scale-down-services
         trigger: true
       - task: aviator
         config:
@@ -21,9 +21,9 @@ jobs:
                 /usr/bin/aviator -f aviator-scale-down-services.yml
                 mv aviator_pipeline_scale_down_services.yml ../pipeline
                 mv ci/vars.yml ../pipeline
-            dir: dataworks-admin-utils
+            dir: dataworks-admin_emr-utils
           inputs:
-            - name: dataworks-admin-utils
+            - name: dataworks-admin_emr-utils
           outputs:
             - name: pipeline
       - set_pipeline: scale-down-services

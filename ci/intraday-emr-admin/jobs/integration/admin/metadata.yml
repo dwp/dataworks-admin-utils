@@ -1,7 +1,7 @@
 jobs:
   - name: integration-remove-metadata
     plan:
-      - .: (( inject meta-intraday-emr-admin.plan.remove-metadata ))
+      - .: (( inject meta-intraday-emr-admin_emr.plan.remove-metadata ))
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
