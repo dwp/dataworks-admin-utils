@@ -46,7 +46,7 @@ meta-ch-admin:
               aws emr terminate-clusters --cluster-ids $CLUSTER_ID
               done
 
-    start-data-ingress:
+    start-task:
       task: upscale-data-ingress
       config:
         platform: linux
@@ -73,7 +73,7 @@ meta-ch-admin:
               done
 
 
-    stop-data-ingress:
+    stop-task:
       task: upscale-data-ingress
       config:
         platform: linux

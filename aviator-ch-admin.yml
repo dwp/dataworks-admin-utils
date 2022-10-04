@@ -29,6 +29,6 @@ spruce:
 fly:
   name: ch-admin
   target: utility
-  config: aviator_ch_admin.yml
+  config: aviator-ch-admin.yml
   expose: false
   check_creds: true

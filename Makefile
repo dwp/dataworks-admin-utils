@@ -233,9 +233,9 @@ pause-terraform-taint-pipeline: ## Pause the terraform-taint pipeline
 pause-msk-kafka-appl-admin-pipeline: ## Pause the msk-kafka-appl-admin pipeline
 	fly --target utility pause-pipeline --pipeline msk-kafka-appl-admin
 
-.PHONY: pause-dataworks-aws-ch-emr-admin-pipeline
-pause-dataworks-aws-ch-emr-admin-pipeline: ## pause the dataworks-aws-ch-emr-admin pipeline
-	fly --target utility pause-pipeline --pipeline dataworks-aws-ch-emr-admin
+.PHONY: pause-ch-admin-pipeline
+pause-ch-admin-pipeline: ## pause the ch-admin pipeline
+	fly --target utility pause-pipeline --pipeline ch-admin
 
 .PHONY: pause-corporate-data-ingestion-emr-admin-pipeline
 pause-corporate-data-ingestion-emr-admin-pipeline: ## pause the pdm-emr-admin pipeline
@@ -321,9 +321,9 @@ unpause-terraform-taint-pipeline: ## Unpause the terraform-taint pipeline
 unpause-msk-kafka-appl-admin-pipeline: ## Unpause the msk-kafka-appl-admin pipeline
 	fly --target utility unpause-pipeline --pipeline msk-kafka-appl-admin
 
-.PHONY: unpause-dataworks-aws-ch-emr-admin-pipeline
-unpause-dataworks-aws-ch-emr-admin-pipeline: ## unpause the dataworks-aws-ch pipeline
-	fly --target utility unpause-pipeline --pipeline dataworks-aws-ch-emr-admin
+.PHONY: unpause-ch-admin-pipeline
+unpause-ch-admin-pipeline: ## unpause the ch pipeline
+	fly --target utility unpause-pipeline --pipeline ch-admin
 
 .PHONY: unpause-corporate-data-ingestion-emr-admin-pipeline
 unpause-corporate-data-ingestion-emr-admin-pipeline: ## pause the pdm-emr-admin pipeline
