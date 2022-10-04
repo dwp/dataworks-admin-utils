@@ -67,14 +67,15 @@ meta-ch-emr-admin:
               source /assume-role
               set +x
               aws autoscaling update-auto-scaling-group --auto-scaling-group-name data-ingress-ag --min-size 0 --max-size 1 --desired-capacity 1
-              echo "waiting a few minutes to allow autoscaling group to start instance before placing a task"
               sleep 120
+              echo "waiting a few minutes to allow autoscaling group to start instance before placing a task"
               for TASK_ID in $(aws ecs list-tasks --cluster data-ingress | jq -r '.taskArns[]');
               do
               echo terminating $TASK_ID
               aws ecs stop-task --task $TASK_ID --cluster data-ingress
               done
-              aws ecs run-task --cluster default --task-definition sft_agent_receiver
+              aws ecs run-task --cluster data-ingress --task-definition sft_agent_receiver
+
 
 
     stop-task:
