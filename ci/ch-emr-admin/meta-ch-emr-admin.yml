@@ -1,4 +1,4 @@
-meta-ch-admin:
+meta-ch-emr-admin:
   plan:
     start-emr-cluster:
       task: start-emr-cluster
@@ -66,11 +66,15 @@ meta-ch-admin:
               export AWS_DEFAULT_REGION
               source /assume-role
               set +x
-              aws autoscaling update-auto-scaling-group --auto-scaling-group-name my-asg --min-size 0 --max-size 1 --desired-capacity 1
-              for TASK_ID in $(aws ecs list-tasks --cluster data-ingress --profile dataworks-development | jq -r '.taskArns[]');
+              aws autoscaling update-auto-scaling-group --auto-scaling-group-name data-ingress-ag --min-size 0 --max-size 1 --desired-capacity 1
+              echo "waiting a few minutes to allow autoscaling group to start instance before placing a task"
+              sleep 120
+              for TASK_ID in $(aws ecs list-tasks --cluster data-ingress | jq -r '.taskArns[]');
               do
-              aws ecs stop-task --task $TASK_ID
+              echo terminating $TASK_ID
+              aws ecs stop-task --task $TASK_ID --cluster data-ingress
               done
+              aws ecs run-task --cluster default --task-definition sft_agent_receiver
 
 
     stop-task:
@@ -93,10 +97,9 @@ meta-ch-admin:
               export AWS_DEFAULT_REGION
               source /assume-role
               set +x
-              aws autoscaling update-auto-scaling-group --auto-scaling-group-name my-asg --min-size 0 --max-size 1 --desired-capacity 1
-              for TASK_ID in $(aws ecs list-tasks --cluster data-ingress --profile dataworks-development | jq -r '.taskArns[]');
+              aws autoscaling update-auto-scaling-group --auto-scaling-group-name data-ingress-ag --min-size 0 --max-size 0 --desired-capacity 0
+              for TASK_ID in $(aws ecs list-tasks --cluster data-ingress | jq -r '.taskArns[]');
               do
-              aws ecs stop-task --task $TASK_ID
-              echo abcd
+              echo $TASK_ID
+              aws ecs stop-task --task $TASK_ID --cluster data-ingress
               done
-
