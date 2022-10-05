@@ -1,14 +1,14 @@
 jobs:
-  - name: stop-emr-cluster-production
+  - name: start-emr-cluster-production
     plan:
-      - .: (( inject meta-ch-emr-admin.plan.stop-emr-cluster ))
+      - .: (( inject meta-ch-admin.plan.start-emr-cluster))
         config:
           params:
             AWS_ACC: ((aws_account.production))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
-  - name: stop-task-production
+  - name: start-task-production
     plan:
-      - .: (( inject meta-ch-emr-admin.plan.stop-task ))
+      - .: (( inject meta-ch-admin.plan.start-task))
         config:
           params:
             AWS_ACC: ((aws_account.production))
