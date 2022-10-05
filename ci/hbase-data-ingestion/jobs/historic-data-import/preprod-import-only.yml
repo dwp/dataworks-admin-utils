@@ -15,5 +15,5 @@ jobs:
           params:
             AWS_ACC: ((aws_account.preprod))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
-            ACTION_TAG: "@admin_emr-historic-data-import-import-only"
+            ACTION_TAG: "@admin-historic-data-import-import-only"
             HISTORIC_IMPORTER_USE_ONE_MESSAGE_PER_PATH: "false"

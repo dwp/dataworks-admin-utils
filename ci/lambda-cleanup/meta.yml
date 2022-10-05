@@ -15,7 +15,7 @@ meta:
           AWS_REGION: ((dataworks.aws_region))
           AWS_DEFAULT_REGION: ((dataworks.aws_region))
         run:
-          dir: dataworks-admin_emr-utils
+          dir: dataworks-admin-utils
           path: sh
           args:
             - -exc
@@ -24,4 +24,4 @@ meta:
               set +x
               ./utils/lambda-cleanup/lambda_prune.py $AWS_ACCOUNT_ID
         inputs:
-          - name: dataworks-admin_emr-utils
+          - name: dataworks-admin-utils

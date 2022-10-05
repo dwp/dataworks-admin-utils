@@ -1,7 +1,7 @@
 jobs:
   - name: prod-stop-cluster
     plan:
-      - .: (( inject meta-uc-feature-emr-admin_emr.plan.stop-cluster ))
+      - .: (( inject meta-uc-feature-emr-admin.plan.stop-cluster ))
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci

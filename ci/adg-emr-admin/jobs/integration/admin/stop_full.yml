@@ -1,7 +1,7 @@
 jobs:
   - name: int-stop-full-clusters
     plan:
-      - .: (( inject meta-adg-emr-admin_emr.plan.stop-cluster ))
+      - .: (( inject meta-adg-emr-admin.plan.stop-cluster ))
         task: stop-full-clusters
         config:
           params:

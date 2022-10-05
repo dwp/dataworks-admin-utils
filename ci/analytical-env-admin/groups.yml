@@ -7,7 +7,7 @@ groups:
       - taint-preprod
       - taint-prod
 
-  - name: admin_emr-rbac
+  - name: admin-rbac
     jobs:
       - rotate-mysql-master-credentials-development
       - rotate-mysql-client-credentials-development
@@ -29,7 +29,7 @@ groups:
       - rotate-mysql-client-credentials-production
       - initialise-rbac-db-production
 
-  - name: admin_emr-sync-and-munge
+  - name: admin-sync-and-munge
     jobs:
       - sync-cognito-users-to-rds-development
       - create-roles-and-munged-policies-development
@@ -46,7 +46,7 @@ groups:
       - sync-cognito-users-to-rds-production
       - create-roles-and-munged-policies-production
 
-  - name: admin_emr-batch-clusters
+  - name: admin-batch-clusters
     jobs:
       - dev-stop-batch-cluster
       - qa-stop-batch-cluster
@@ -54,7 +54,7 @@ groups:
       - preprod-stop-batch-cluster
       - prod-stop-batch-cluster
 
-  - name: admin_emr-uc-labs-batch-clusters
+  - name: admin-uc-labs-batch-clusters
     jobs:
       - dev-stop-uc-lab-batch-cluster
       - qa-stop-uc-lab-batch-cluster
@@ -62,7 +62,7 @@ groups:
       - preprod-stop-uc-lab-batch-cluster
       - prod-stop-uc-lab-batch-cluster
 
-  - name: admin_emr-external-batch-clusters
+  - name: admin-external-batch-clusters
     jobs:
       - dev-stop-external-batch-cluster
       - qa-stop-external-batch-cluster
@@ -70,7 +70,7 @@ groups:
       - preprod-stop-external-batch-cluster
       - prod-stop-external-batch-cluster
 
-  - name: admin_emr-user-batch-clusters
+  - name: admin-user-batch-clusters
     jobs:
       - dev-stop-user-batch-cluster
       - qa-stop-user-batch-cluster
@@ -78,7 +78,7 @@ groups:
       - preprod-stop-user-batch-cluster
       - prod-stop-user-batch-cluster
 
-  - name: admin_emr-all-batch-clusters
+  - name: admin-all-batch-clusters
     jobs:
       - dev-security-config-cleanup
       - qa-security-config-cleanup
@@ -98,7 +98,7 @@ groups:
       - preprod-stop-waiting
       - prod-stop-waiting
 
-  - name: admin_emr-analytical-cluster
+  - name: admin-analytical-cluster
     jobs:
       - dev-stop-cluster
       - qa-stop-cluster

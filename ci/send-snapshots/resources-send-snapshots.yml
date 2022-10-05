@@ -1,9 +1,9 @@
 resources:
-- name: dataworks-admin_emr-utils-send-snapshots
+- name: dataworks-admin-utils-send-snapshots
   type: git
   source:
     branch: master
-    uri: https://github.com/dwp/dataworks-admin_emr-utils.git
+    uri: https://github.com/dwp/dataworks-admin-utils.git
     paths:
       - ci/send-snapshots/*
       - ci/shared/*

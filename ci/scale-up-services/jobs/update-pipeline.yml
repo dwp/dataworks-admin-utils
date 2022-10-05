@@ -1,8 +1,8 @@
 jobs:
   - name: update-pipeline
     plan:
-      - get: dataworks-admin_emr-utils
-        resource: dataworks-admin_emr-utils-scale-up-services
+      - get: dataworks-admin-utils
+        resource: dataworks-admin-utils-scale-up-services
         trigger: true
       - task: aviator
         config:
@@ -21,9 +21,9 @@ jobs:
                 /usr/bin/aviator -f aviator-scale-up-services.yml
                 mv aviator_pipeline_scale_up_services.yml ../pipeline
                 mv ci/vars.yml ../pipeline
-            dir: dataworks-admin_emr-utils
+            dir: dataworks-admin-utils
           inputs:
-            - name: dataworks-admin_emr-utils
+            - name: dataworks-admin-utils
           outputs:
             - name: pipeline
       - set_pipeline: scale-up-services

@@ -39,4 +39,4 @@ jobs:
             SEND_SNAPSHOTS_TOPICS_OVERRIDE: "db.nifi-heartbeat.production"
             SEND_SNAPSHOTS_REPROCESS_FILES_OVERRIDE: "true"
             SNAPSHOT_SENDER_SCALE_UP_OVERRIDE: 1
-            E2E_FEATURE_TAG_FILTER: "@admin_emr-send-full-snapshots-to-crown"
+            E2E_FEATURE_TAG_FILTER: "@admin-send-full-snapshots-to-crown"

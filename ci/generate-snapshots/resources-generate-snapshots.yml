@@ -2,11 +2,11 @@ resources:
 - name: meta-integration
   type: meta
 
-- name: dataworks-admin_emr-utils-generate-snapshots
+- name: dataworks-admin-utils-generate-snapshots
   type: git
   source:
     branch: master
-    uri: https://github.com/dwp/dataworks-admin_emr-utils.git
+    uri: https://github.com/dwp/dataworks-admin-utils.git
     paths:
       - ci/generate-snapshots/*
       - ci/shared/*

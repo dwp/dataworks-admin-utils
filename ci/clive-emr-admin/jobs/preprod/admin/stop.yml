@@ -1,7 +1,7 @@
 jobs:
   - name: preprod-stop-cluster
     plan:
-      - .: (( inject meta-clive-emr-admin_emr.plan.stop-cluster ))
+      - .: (( inject meta-clive-emr-admin.plan.stop-cluster ))
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci

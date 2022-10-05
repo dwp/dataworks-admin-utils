@@ -13,16 +13,16 @@ jobs:
         trigger: false
       - get: hive-custom-auth-release
         trigger: true
-      - .: (( inject meta-analytical-env-admin_emr.plan.terraform-bootstrap ))
+      - .: (( inject meta-analytical-env-admin.plan.terraform-bootstrap ))
         params:
           DEPLOY_PATH: app
 
-      - .: (( inject meta-analytical-env-admin_emr.plan.aws-destroy-emr-cluster ))
+      - .: (( inject meta-analytical-env-admin.plan.aws-destroy-emr-cluster ))
         params:
           CLUSTER_NAME: aws-analytical-env
           AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
 
-      - .: (( inject meta-analytical-env-admin_emr.plan.terraform-apply ))
+      - .: (( inject meta-analytical-env-admin.plan.terraform-apply ))
         config:
           run:
             dir: 'aws-analytical-env/terraform/deploy/app'
@@ -35,7 +35,7 @@ jobs:
           DEPLOY_PATH: app
 
 
-      - .: (( inject meta-analytical-env-admin_emr.plan.terraform-plan ))
+      - .: (( inject meta-analytical-env-admin.plan.terraform-plan ))
         config:
           run:
             dir: 'aws-analytical-env/terraform/deploy/app'

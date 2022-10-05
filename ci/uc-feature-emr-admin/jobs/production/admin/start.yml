@@ -1,7 +1,7 @@
 jobs:
   - name: prod-start-cluster
     plan:
-      - .: (( inject meta-uc-feature-emr-admin_emr.plan.start-cluster ))
+      - .: (( inject meta-uc-feature-emr-admin.plan.start-cluster ))
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci

@@ -11,4 +11,4 @@ jobs:
           params:
             AWS_ACC: ((aws_account.preprod))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
-            E2E_FEATURE_TAG_FILTER: "@admin_emr-send-full-snapshots-to-crown"
+            E2E_FEATURE_TAG_FILTER: "@admin-send-full-snapshots-to-crown"

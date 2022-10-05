@@ -1,7 +1,7 @@
 jobs:
   - name: qa-stop-cluster
     plan:
-      - .: (( inject meta-mongo-latest-emr-admin_emr.plan.stop-cluster ))
+      - .: (( inject meta-mongo-latest-emr-admin.plan.stop-cluster ))
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci

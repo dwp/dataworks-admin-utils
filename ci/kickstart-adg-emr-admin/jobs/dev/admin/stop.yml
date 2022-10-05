@@ -1,7 +1,7 @@
 jobs:
   - name: stop-cluster-development
     plan:
-      - .: (( inject meta-kickstart-adg-emr-admin_emr.plan.stop-cluster ))
+      - .: (( inject meta-kickstart-adg-emr-admin.plan.stop-cluster ))
         config:
           params:
             AWS_ACC: ((aws_account.development))

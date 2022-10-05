@@ -11,7 +11,7 @@ jobs:
           params:
             AWS_ACC: ((aws_account.production))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
-            E2E_FEATURE_TAG_FILTER: admin_emr-generate-drift-testing-incremental-snapshots
+            E2E_FEATURE_TAG_FILTER: admin-generate-drift-testing-incremental-snapshots
             GENERATE_SNAPSHOTS_TOPICS_OVERRIDE: "data.businessAudit"
             GENERATE_SNAPSHOTS_TRIGGER_SNAPSHOT_SENDER_OVERRIDE: false
             GENERATE_SNAPSHOTS_TRIGGER_ADG_OVERRIDE: false

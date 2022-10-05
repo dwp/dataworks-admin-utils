@@ -5,7 +5,7 @@ jobs:
       - in_parallel:
           - get: dataworks-ml-streams-producer
             trigger: false
-      - .: (( inject meta-msk-kafka-appl-admin_emr.plan.start-kafka-producer-app ))
+      - .: (( inject meta-msk-kafka-appl-admin.plan.start-kafka-producer-app ))
         config:
           params:
             AWS_ACC: ((aws_account.qa))

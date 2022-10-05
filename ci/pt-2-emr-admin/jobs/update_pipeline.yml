@@ -1,11 +1,11 @@
 jobs:
   - name: update-pipeline
     plan:
-      - get: dataworks-admin_emr-utils
-        resource: dataworks-admin_emr-utils-update-pipeline
+      - get: dataworks-admin-utils
+        resource: dataworks-admin-utils-update-pipeline
         trigger: true
       - .: (( inject meta.plan.update-pipeline ))
         config:
           params:
-            aviator_filename: aviator-pt-2-emr-admin_emr.yml
+            aviator_filename: aviator-pt-2-emr-admin.yml
 

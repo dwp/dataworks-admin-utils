@@ -1,12 +1,12 @@
 jobs:
   - name: lambda-cleanup-development-job
     plan:
-      - get: dataworks-admin_emr-utils
+      - get: dataworks-admin-utils
       - .: (( inject meta.plan.lambda-cleanup ))
 
   - name: lambda-cleanup-qa-job
     plan:
-      - get: dataworks-admin_emr-utils
+      - get: dataworks-admin-utils
       - .: (( inject meta.plan.lambda-cleanup ))
         config:
           params:
@@ -15,7 +15,7 @@ jobs:
 
   - name: lambda-cleanup-integration-job
     plan:
-      - get: dataworks-admin_emr-utils
+      - get: dataworks-admin-utils
       - .: (( inject meta.plan.lambda-cleanup ))
         config:
           params:
@@ -24,7 +24,7 @@ jobs:
 
   - name: lambda-cleanup-preprod-job
     plan:
-      - get: dataworks-admin_emr-utils
+      - get: dataworks-admin-utils
       - .: (( inject meta.plan.lambda-cleanup ))
         config:
           params:
@@ -33,7 +33,7 @@ jobs:
 
   - name: lambda-cleanup-production-job
     plan:
-      - get: dataworks-admin_emr-utils
+      - get: dataworks-admin-utils
       - .: (( inject meta.plan.lambda-cleanup ))
         config:
           params:
@@ -42,7 +42,7 @@ jobs:
 
   - name: lambda-cleanup-management-job
     plan:
-      - get: dataworks-admin_emr-utils
+      - get: dataworks-admin-utils
       - .: (( inject meta.plan.lambda-cleanup ))
         config:
           params:
@@ -51,7 +51,7 @@ jobs:
 
   - name: lambda-cleanup-management-dev-job
     plan:
-      - get: dataworks-admin_emr-utils
+      - get: dataworks-admin-utils
       - .: (( inject meta.plan.lambda-cleanup ))
         config:
           params:

@@ -5,7 +5,7 @@ jobs:
       - in_parallel:
           - get: dataworks-ml-streams-consumer
             trigger: false
-      - .: (( inject meta-msk-kafka-appl-admin_emr.plan.deploy-kafka-consumer-app ))
+      - .: (( inject meta-msk-kafka-appl-admin.plan.deploy-kafka-consumer-app ))
         config:
           params:
             AWS_ACC: ((aws_account.preprod))

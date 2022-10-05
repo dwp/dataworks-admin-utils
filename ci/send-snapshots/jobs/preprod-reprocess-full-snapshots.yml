@@ -14,4 +14,4 @@ jobs:
             SEND_SNAPSHOTS_DATE_OVERRIDE: "2021-04-01"
             SEND_SNAPSHOTS_TOPICS_OVERRIDE: "ALL"
             SEND_SNAPSHOTS_REPROCESS_FILES_OVERRIDE: "true"
-            E2E_FEATURE_TAG_FILTER: "@admin_emr-send-full-snapshots-to-crown"
+            E2E_FEATURE_TAG_FILTER: "@admin-send-full-snapshots-to-crown"

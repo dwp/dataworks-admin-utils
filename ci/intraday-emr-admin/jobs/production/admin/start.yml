@@ -1,7 +1,7 @@
 jobs:
   - name: production-start-cluster
     plan:
-      - .: (( inject meta-intraday-emr-admin_emr.plan.start-cluster ))
+      - .: (( inject meta-intraday-emr-admin.plan.start-cluster ))
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci

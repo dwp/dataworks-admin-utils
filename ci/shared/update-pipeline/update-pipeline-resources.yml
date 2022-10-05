@@ -1,9 +1,9 @@
 resources:
-  - name: dataworks-admin_emr-utils-update-pipeline
+  - name: dataworks-admin-utils-update-pipeline
     type: git
     source:
       branch: master
-      uri: https://github.com/dwp/dataworks-admin_emr-utils.git
+      uri: https://github.com/dwp/dataworks-admin-utils.git
       paths:
         - ci/*
         - aviator*.yml

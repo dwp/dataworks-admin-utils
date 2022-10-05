@@ -1,9 +1,9 @@
 resources:
-  - name: dataworks-admin_emr-utils-manage-ecs-services
+  - name: dataworks-admin-utils-manage-ecs-services
     type: git
     source:
       branch: master
-      uri: https://github.com/dwp/dataworks-admin_emr-utils.git
+      uri: https://github.com/dwp/dataworks-admin-utils.git
       paths:
         - ci/manage-ecs-services/*
         - ci/shared/*

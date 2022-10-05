@@ -9,7 +9,7 @@ jobs:
             trigger: false
           - get: dataworks-ml-streams-producer
             trigger: false
-      - .: (( inject meta-msk-kafka-appl-admin_emr.plan.perf-test-peak-kafka-producer-app ))
+      - .: (( inject meta-msk-kafka-appl-admin.plan.perf-test-peak-kafka-producer-app ))
         config:
           params:
             TF_WORKSPACE: default
@@ -25,7 +25,7 @@ jobs:
             trigger: false
           - get: dataworks-ml-streams-producer
             trigger: false
-      - .: (( inject meta-msk-kafka-appl-admin_emr.plan.perf-test-soak-kafka-producer-app ))
+      - .: (( inject meta-msk-kafka-appl-admin.plan.perf-test-soak-kafka-producer-app ))
         config:
           params:
             TF_WORKSPACE: default

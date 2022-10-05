@@ -1,8 +1,8 @@
 jobs:
   - name: update-pipeline
     plan:
-      - get: dataworks-admin_emr-utils
-        resource: dataworks-admin_emr-utils-hbase-data-ingestion
+      - get: dataworks-admin-utils
+        resource: dataworks-admin-utils-hbase-data-ingestion
         trigger: true
       - task: aviator
         config:
@@ -21,9 +21,9 @@ jobs:
                 /usr/bin/aviator -f aviator-hbase-data-ingestion.yml
                 mv aviator_pipeline_hbase_data_ingestion.yml ../pipeline
                 mv ci/vars.yml ../pipeline
-            dir: dataworks-admin_emr-utils
+            dir: dataworks-admin-utils
           inputs:
-            - name: dataworks-admin_emr-utils
+            - name: dataworks-admin-utils
           outputs:
             - name: pipeline
       - set_pipeline: hbase-data-ingestion

@@ -1,35 +1,35 @@
 groups:
-  - name: admin_emr-deploy-consumer-app
+  - name: admin-deploy-consumer-app
     jobs:
       - dev-deploy-msk-kafka-consumer-app
       - qa-deploy-msk-kafka-consumer-app
       - integration-deploy-msk-kafka-consumer-app
       - pre-prod-deploy-msk-kafka-consumer-app
-  - name: admin_emr-deploy-producer-app
+  - name: admin-deploy-producer-app
     jobs:
       - dev-deploy-msk-kafka-producer-app
       - qa-deploy-msk-kafka-producer-app
       - integration-deploy-msk-kafka-producer-app
       - pre-prod-deploy-msk-kafka-producer-app
-  - name: admin_emr-start-consumer-app
+  - name: admin-start-consumer-app
     jobs:
       - dev-start-msk-kafka-consumer-app
       - qa-start-msk-kafka-consumer-app
       - integration-start-msk-kafka-consumer-app
       - pre-prod-start-msk-kafka-consumer-app
-  - name: admin_emr-start-producer-app
+  - name: admin-start-producer-app
     jobs:
       - dev-start-msk-kafka-producer-app
       - qa-start-msk-kafka-producer-app
       - integration-start-msk-kafka-producer-app
       - pre-prod-start-msk-kafka-producer-app
-  - name: admin_emr-stop-consumer-app
+  - name: admin-stop-consumer-app
     jobs:
       - dev-stop-msk-kafka-consumer-app
       - qa-stop-msk-kafka-consumer-app
       - integration-stop-msk-kafka-consumer-app
       - pre-prod-stop-msk-kafka-consumer-app
-  - name: admin_emr-stop-producer-app
+  - name: admin-stop-producer-app
     jobs:
       - dev-stop-msk-kafka-producer-app
       - qa-stop-msk-kafka-producer-app

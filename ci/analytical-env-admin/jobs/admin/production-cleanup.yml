@@ -3,7 +3,7 @@ jobs:
     plan:
       - get: utc-midnight-trigger
         trigger: true
-      - .: (( inject meta-analytical-env-admin_emr.plan.clean-security-configs ))
+      - .: (( inject meta-analytical-env-admin.plan.clean-security-configs ))
         task: clean-security-configs
         config:
           params:
