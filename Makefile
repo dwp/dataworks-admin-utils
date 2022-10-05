@@ -55,7 +55,7 @@ update-all-pipelines: ## Update all the pipelines
 	aviator -f aviator-pt-2-emr-admin.yml
 	aviator -f aviator-analytical-env-admin.yml
 	aviator -f aviator-msk-kafka-appl-admin.yml
-	aviator -f aviator-dataworks-aws-ch-emr-admin.yml
+	aviator -f aviator-ch-admin.yml
 
 .PHONY: update-ml-dev-emr-admin-pipeline
 update-ml-dev-emr-admin-pipeline: ## Update the ml-dev-emr-admin pipeline
