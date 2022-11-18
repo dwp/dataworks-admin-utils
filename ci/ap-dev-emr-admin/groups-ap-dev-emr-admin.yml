@@ -14,3 +14,11 @@ groups:
       - int-stop-cluster
       - preprod-stop-cluster
       - prod-stop-cluster
+
+  - name: admin-download-pkgs
+    jobs:
+      - dev-download-packages
+      - qa-download-packages
+      - int-download-packages
+      - preprod-download-packages
+      - prod-download-packages

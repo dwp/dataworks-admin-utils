@@ -1,6 +1,8 @@
 jobs:
   - name: prod-stop-cluster
     plan:
+#      - get: trigger-daily-between-8pm-and-805pm
+#          trigger: true
       - .: (( inject meta-ap-dev-emr-admin.plan.stop-cluster ))
         config:
           params:
