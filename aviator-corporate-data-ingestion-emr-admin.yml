@@ -1,0 +1,23 @@
+spruce:
+  - base: ci/corporate-data-ingestion-emr-admin/meta-corporate-data-ingestion-emr-admin.yml
+    prune:
+      - meta
+    merge:
+      - with_in: ci/corporate-data-ingestion-emr-admin/
+      - with_in: ci/corporate-data-ingestion-emr-admin/jobs/
+      - with_in: ci/corporate-data-ingestion-emr-admin/jobs/dev/admin/
+      - with_in: ci/corporate-data-ingestion-emr-admin/jobs/qa/admin/
+      - with_in: ci/corporate-data-ingestion-emr-admin/jobs/integration/admin/
+      - with_in: ci/shared/
+        regexp: "meta.yml"
+      - with_in: ci/shared/update-pipeline/
+        regexp: "update-pipeline-resources.yml"
+      - with_in: ci/shared/update-pipeline/
+        regexp: "update-pipeline-groups.yml"
+    to: aviator_pipeline_corporate_data_ingestion_emr_admin.yml
+fly:
+  name: corporate-data-ingestion-emr-admin
+  target: utility
+  config: aviator_pipeline_corporate_data_ingestion_emr_admin.yml
+  expose: true
+  check_creds: true

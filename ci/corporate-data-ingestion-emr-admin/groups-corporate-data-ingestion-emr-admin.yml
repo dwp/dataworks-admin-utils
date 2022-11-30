@@ -1,0 +1,12 @@
+groups:
+  - name: admin-start-cluster
+    jobs:
+      - dev-start-cluster
+      - qa-start-cluster
+      - integration-start-cluster
+
+  - name: admin-stop-cluster
+    jobs:
+      - dev-stop-cluster
+      - qa-stop-cluster
+      - integration-stop-cluster
