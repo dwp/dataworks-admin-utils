@@ -141,8 +141,12 @@ update-terraform-taint-pipeline: ## Update the terraform-taint pipeline
 	aviator -f aviator-terraform-taint.yml
 
 .PHONY: update-msk-kafka-appl-admin-pipeline
-update-terraform-taint-pipeline: ## Update the msk-kafka-appl-admin pipeline
+update-msk-kafka-appl-admin-pipeline: ## Update the msk-kafka-appl-admin pipeline
 	aviator -f aviator-msk-kafka-appl-admin.yml
+
+.PHONY: update-corporate-data-ingestion-emr-admin-pipeline
+update-corporate-data-ingestion-emr-admin-pipeline: ## Update the msk-kafka-appl-admin pipeline
+	aviator -f aviator-corporate-data-ingestion-emr-admin.yml
 
 .PHONY: pause-ml-dev-emr-admin-pipeline
 pause-ml-dev-emr-admin-pipeline: ## pause the ml-dev-emr-admin pipeline
@@ -221,8 +225,12 @@ pause-terraform-taint-pipeline: ## Pause the terraform-taint pipeline
 	fly --target utility pause-pipeline --pipeline terraform-taint
 
 .PHONY: pause-msk-kafka-appl-admin-pipeline
-pause-terraform-taint-pipeline: ## Pause the msk-kafka-appl-admin pipeline
+pause-msk-kafka-appl-admin-pipeline: ## Pause the msk-kafka-appl-admin pipeline
 	fly --target utility pause-pipeline --pipeline msk-kafka-appl-admin
+
+.PHONY: pause-corporate-data-ingestion-emr-admin-pipeline
+pause-corporate-data-ingestion-emr-admin-pipeline: ## pause the pdm-emr-admin pipeline
+	fly --target utility pause-pipeline --pipeline corporate-data-ingestion-emr-admin
 
 .PHONY: unpause-ml-dev-emr-admin-pipeline
 unpause-ml-dev-emr-admin-pipeline: ## unpause the ml-dev-emr-admin pipeline
@@ -301,5 +309,9 @@ unpause-terraform-taint-pipeline: ## Unpause the terraform-taint pipeline
 	fly --target utility unpause-pipeline --pipeline terraform-taint
 
 .PHONY: unpause-msk-kafka-appl-admin-pipeline
-pause-terraform-taint-pipeline: ## Unpause the msk-kafka-appl-admin pipeline
+unpause-msk-kafka-appl-admin-pipeline: ## Unpause the msk-kafka-appl-admin pipeline
 	fly --target utility unpause-pipeline --pipeline msk-kafka-appl-admin
+
+.PHONY: unpause-corporate-data-ingestion-emr-admin-pipeline
+unpause-corporate-data-ingestion-emr-admin-pipeline: ## pause the pdm-emr-admin pipeline
+	fly --target utility unpause-pipeline --pipeline corporate-data-ingestion-emr-admin
