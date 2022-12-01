@@ -1,0 +1,108 @@
+meta-ch-admin:
+  plan:
+    start-emr-cluster:
+      task: start-emr-cluster
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              export AWS_DEFAULT_REGION
+              source /assume-role
+              set +x
+              aws lambda invoke --function-name ch_emr_launcher output.json
+    stop-emr-cluster:
+      task: stop-emr-cluster
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              export AWS_DEFAULT_REGION
+              source /assume-role
+              set +x
+              for CLUSTER_ID in $(aws emr list-clusters --active | jq -r '.Clusters[] | select(.Name | startswith("dataworks-aws-ch")) | .Id');
+              do
+              aws emr terminate-clusters --cluster-ids $CLUSTER_ID
+              done
+
+    start-task:
+      task: upscale-data-ingress-and-start-task
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              export AWS_DEFAULT_REGION
+              source /assume-role
+              set +x
+              aws autoscaling update-auto-scaling-group --auto-scaling-group-name data-ingress-ag --min-size 0 --max-size 1 --desired-capacity 1
+              echo "waiting a few minutes to allow autoscaling group to start instance"
+              sleep 240
+              echo "stopping any task that might already be running"
+              for TASK_ID in $(aws ecs list-tasks --cluster data-ingress | jq -r '.taskArns[]');
+              do
+              echo terminating $TASK_ID
+              aws ecs stop-task --task $TASK_ID --cluster data-ingress
+              done
+              echo "running sft_agent_receiver task"
+              aws ecs run-task --cluster data-ingress --task-definition sft_agent_receiver
+
+
+
+    stop-task:
+      task: downscale-data-ingress-and-stop-task
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              export AWS_DEFAULT_REGION
+              source /assume-role
+              set +x
+              aws autoscaling update-auto-scaling-group --auto-scaling-group-name data-ingress-ag --min-size 0 --max-size 0 --desired-capacity 0
+              for TASK_ID in $(aws ecs list-tasks --cluster data-ingress | jq -r '.taskArns[]');
+              do
+              echo $TASK_ID
+              aws ecs stop-task --task $TASK_ID --cluster data-ingress
+              done

@@ -7,4 +7,4 @@ jobs:
       - .: (( inject meta.plan.update-pipeline ))
         config:
           params:
-            aviator_filename: aviator-kickstart-adg-emr-admin.yml
+            aviator_filename: aviator-ch-admin.yml
