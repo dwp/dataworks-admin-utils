@@ -41,7 +41,7 @@ meta-ch-admin:
               export AWS_DEFAULT_REGION
               source /assume-role
               set +x
-              for CLUSTER_ID in $(aws emr list-clusters --active | jq -r '.Clusters[] | select(.Name | test("dataworks-aws-ch")) | .Id');
+              for CLUSTER_ID in $(aws emr list-clusters --active | jq -r '.Clusters[] | select(.Name | startswith("dataworks-aws-ch")) | .Id');
               do
               aws emr terminate-clusters --cluster-ids $CLUSTER_ID
               done
