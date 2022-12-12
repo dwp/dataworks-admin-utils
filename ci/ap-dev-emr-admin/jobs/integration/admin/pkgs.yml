@@ -1,0 +1,11 @@
+jobs:
+  - name: int-download-packages
+    plan:
+      - get: aws-common-infrastructure
+        trigger: false
+      - .: (( inject meta-ap-dev-emr-admin.plan.terraform-output-common-infrastructure ))
+      - .: (( inject meta-ap-dev-emr-admin.plan.download-packages ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
+            AWS_ACC: ((aws_account.integration))

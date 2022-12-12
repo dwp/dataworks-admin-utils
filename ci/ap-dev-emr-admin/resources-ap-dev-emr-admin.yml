@@ -1,0 +1,28 @@
+resources:
+#  - name: trigger-daily-between-8pm-and-805pm
+#    type: time
+#    icon: clock-outline
+#    source:
+#      start: 8:00 PM
+#      stop: 8:05 PM
+#      location: Europe/London
+#
+#  - name: trigger-daily-between-6am-and-605am
+#    type: time
+#    icon: clock-outline
+#    source:
+#      start: 6:00 AM
+#      stop: 6:05 AM
+#      location: Europe/London
+
+  - name: aws-common-infrastructure
+    type: git
+    source:
+      branch: master
+      api_endpoint: https://((dataworks.enterprise_github_url))/api/v3/
+      username: ((dataworks.enterprise_github_username))
+      password: ((dataworks-secrets.enterprise_github_pat))
+      uri: https://((dataworks.enterprise_github_url))/dip/aws-common-infrastructure.git
+    check_every: 5m
+    webhook_token: ((dataworks.concourse_github_webhook_token))
+    

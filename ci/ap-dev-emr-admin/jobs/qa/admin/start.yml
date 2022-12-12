@@ -1,6 +1,8 @@
 jobs:
   - name: qa-start-cluster
     plan:
+#      - get: trigger-daily-between-6am-and-605am
+#          trigger: true
       - .: (( inject meta-ap-dev-emr-admin.plan.start-cluster ))
         config:
           params:
