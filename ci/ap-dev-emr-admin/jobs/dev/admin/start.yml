@@ -2,7 +2,7 @@ jobs:
   - name: dev-start-cluster
     plan:
       - get: trigger-daily-between-6am-and-605am
-          trigger: true
+        trigger: true
       - .: (( inject meta-ap-dev-emr-admin.plan.start-cluster ))
         config:
           params:
