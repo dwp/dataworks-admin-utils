@@ -4,6 +4,7 @@ jobs:
       - get: trigger-daily-between-8pm-and-805pm
         trigger: true
       - .: (( inject meta-ap-dev-emr-admin.plan.stop-cluster ))
+        task: stop-cluster
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci

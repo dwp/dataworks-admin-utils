@@ -4,6 +4,7 @@ jobs:
       - get: trigger-daily-between-6am-and-605am
         trigger: true
       - .: (( inject meta-ap-dev-emr-admin.plan.start-cluster ))
+        task: start-cluster
         config:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
