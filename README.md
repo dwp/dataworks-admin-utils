@@ -17,7 +17,6 @@ There are multiple admin style pipelines which are released to the CI system:
 0. `adg-emr-admin`
 0. `clive-emr-admin`
 0. `uc-feature-emr-admin`
-0. `kickstart-adg-emr-admin`
 0. `mongo-latest-emr-admin`
 0. `pdm-emr-admin`
 0. `intraday-emr-admin`

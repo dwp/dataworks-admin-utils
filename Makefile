@@ -48,7 +48,6 @@ update-all-pipelines: ## Update all the pipelines
 	aviator -f aviator-clive-emr-admin.yml
 	aviator -f aviator-uc-feature-emr-admin.yml
 	aviator -f aviator-pdm-emr-admin.yml
-	aviator -f aviator-kickstart-adg-emr-admin.yml
 	aviator -f aviator-intraday-emr-admin.yml
 	aviator -f aviator-ml-dev-emr-admin.yml
 	aviator -f aviator-cyi-emr-admin.yml
@@ -60,10 +59,6 @@ update-all-pipelines: ## Update all the pipelines
 .PHONY: update-ml-dev-emr-admin-pipeline
 update-ml-dev-emr-admin-pipeline: ## Update the ml-dev-emr-admin pipeline
 	aviator -f aviator-ml-dev-emr-admin.yml
-
-.PHONY: update-kickstart-adg-emr-admin-pipeline
-update-kickstart-adg-emr-admin-pipeline: ## Update the kickstart-adg-emr-admin pipeline
-	aviator -f aviator-kickstart-adg-emr-admin.yml
 
 .PHONY: update-mongo-latest-emr-admin-pipeline
 update-mongo-latest-emr-admin-pipeline: ## Update the mongo-latest-emr-admin pipeline
@@ -157,10 +152,6 @@ update-corporate-data-ingestion-emr-admin-pipeline: ## Update the msk-kafka-appl
 pause-ml-dev-emr-admin-pipeline: ## pause the ml-dev-emr-admin pipeline
 	fly --target utility pause-pipeline --pipeline ml-dev-emr-admin
 
-.PHONY: pause-kickstart-adg-emr-admin-pipeline
-pause-kickstart-adg-emr-admin-pipeline: ## pause the kickstart-adg-emr-admin pipeline
-	fly --target utility pause-pipeline --pipeline kickstart-adg-emr-admin
-
 .PHONY: pause-mongo-latest-emr-admin-pipeline
 pause-mongo-latest-emr-admin-pipeline: ## pause the mongo-latest-emr-admin pipeline
 	fly --target utility pause-pipeline --pipeline mongo-latest-emr-admin
@@ -244,10 +235,6 @@ pause-corporate-data-ingestion-emr-admin-pipeline: ## pause the pdm-emr-admin pi
 .PHONY: unpause-ml-dev-emr-admin-pipeline
 unpause-ml-dev-emr-admin-pipeline: ## unpause the ml-dev-emr-admin pipeline
 	fly --target utility unpause-pipeline --pipeline ml-dev-emr-admin
-
-.PHONY: unpause-kickstart-adg-emr-admin-pipeline
-unpause-kickstart-adg-emr-admin-pipeline: ## unpause the kickstart-adg-emr-admin pipeline
-	fly --target utility unpause-pipeline --pipeline kickstart-adg-emr-admin
 
 .PHONY: unpause-mongo-latest-emr-admin-pipeline
 unpause-mongo-latest-emr-admin-pipeline: ## unpause the mongo-latest-emr-admin pipeline
