@@ -67,18 +67,6 @@ meta-ch-admin:
               source /assume-role
               set +x
               aws autoscaling update-auto-scaling-group --auto-scaling-group-name data-ingress-ag --min-size 0 --max-size 1 --desired-capacity 1
-              echo "waiting a few minutes to allow autoscaling group to start instance"
-              sleep 240
-              echo "stopping any task that might already be running"
-              for TASK_ID in $(aws ecs list-tasks --cluster data-ingress | jq -r '.taskArns[]');
-              do
-              echo terminating $TASK_ID
-              aws ecs stop-task --task $TASK_ID --cluster data-ingress
-              done
-              echo "running sft_agent_receiver task"
-              aws ecs run-task --cluster data-ingress --task-definition sft_agent_receiver
-
-
 
     stop-task:
       task: downscale-data-ingress-and-stop-task
