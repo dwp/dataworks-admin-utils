@@ -5,6 +5,7 @@ groups:
       - qa-start-cluster
       - integration-start-cluster
       - preprod-start-cluster
+      - production-start-cluster
 
   - name: admin-stop-cluster
     jobs:
@@ -12,3 +13,4 @@ groups:
       - qa-stop-cluster
       - integration-stop-cluster
       - preprod-stop-cluster
+      - production-stop-cluster
