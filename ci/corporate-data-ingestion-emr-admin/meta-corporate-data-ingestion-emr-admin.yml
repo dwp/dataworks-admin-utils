@@ -53,7 +53,7 @@ meta-corporate-data-ingestion-emr-admin:
               set +x
               if [ -z "$CLUSTER_ID" ]; then
                 echo "Terminating all clusters"
-                for CLUSTER_ID in $(aws emr list-clusters --active | jq -r '.Clusters[] | select(.Name | startswith("dataworks-aws-corporate-data-ingestion")).Id');
+                for CLUSTER_ID in $(aws emr list-clusters --active | jq -r '.Clusters[] | select(.Name | startswith("corporate-data-ingestion")).Id');
                 do
                   echo "Terminating cluster $CLUSTER_ID"
                   aws emr terminate-clusters --cluster-ids "$CLUSTER_ID"
