@@ -201,7 +201,6 @@ def delete_ami(aws_region, ami_id, dry_run):
 
 
 def main():
-
     args = get_arguments()
 
     candidate_list = get_deletion_list(args.aws_region, args.ami_prefix, args.keep_min)
