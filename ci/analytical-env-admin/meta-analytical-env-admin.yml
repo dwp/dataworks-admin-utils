@@ -495,8 +495,6 @@ meta-analytical-env-admin:
 
                   if [[ ${NAME_TAG:-""} == "batch-analytical-env" ]]
                   then
-                      echo $CLUSTER_ID is an batch env cluster
-
                       echo $CLUSTER_ID is a batch cluster
                       END_DATE=`aws emr list-steps --cluster-id $CLUSTER_ID | jq '.Steps[0].Status.Timeline.EndDateTime | floor'`
                       let DELTA="`date +%s` - $END_DATE"
