@@ -491,7 +491,6 @@ meta-analytical-env-admin:
               do
                   echo "Checking cluster $CLUSTER_ID"
 
-                  NAME_TAG=`aws emr describe-cluster --cluster-id $CLUSTER_ID | jq -r ".Cluster.Tags[] | if .Key == \"Name\" then .Value else empty end"`
                   NAME=`aws emr describe-cluster --cluster-id $CLUSTER_ID | jq -r '.Cluster.Name'`
 
                   if echo ${NAME} | grep -qE '^batch-analytical-env|^user-batch-analytical-env|^external-batch-analytical-env'; then
