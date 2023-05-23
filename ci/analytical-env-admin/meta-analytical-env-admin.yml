@@ -494,7 +494,7 @@ meta-analytical-env-admin:
                   NAME_TAG=`aws emr describe-cluster --cluster-id $CLUSTER_ID | jq -r ".Cluster.Tags[] | if .Key == \"Name\" then .Value else empty end"`
                   NAME=`aws emr describe-cluster --cluster-id $CLUSTER_ID | jq -r '.Cluster.Name'`
 
-                  if echo ${NAME_TAG} | grep -q "batch"; then
+                  if echo ${NAME} | grep -qE '^batch-analytical-env|^user-batch-analytical-env|^external-batch-analytical-env'; then
                       echo "${NAME} ($CLUSTER_ID) is a batch cluster"
                       END_DATE=`aws emr list-steps --cluster-id $CLUSTER_ID | jq '.Steps[0].Status.Timeline.EndDateTime | floor'`
                       let DELTA="`date +%s` - $END_DATE"
@@ -502,7 +502,7 @@ meta-analytical-env-admin:
                       if [[ $DELTA -gt 3600 ]]
                       then
                           echo "Stopping cluster ${NAME} ($CLUSTER_ID) with a delta of $DELTA"
-                          aws emr terminate-clusters --cluster-ids $CLUSTER_ID
+                          # aws emr terminate-clusters --cluster-ids $CLUSTER_ID
                       fi
                   fi
               done
