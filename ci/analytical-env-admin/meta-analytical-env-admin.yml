@@ -492,16 +492,16 @@ meta-analytical-env-admin:
                   echo "Checking cluster $CLUSTER_ID"
 
                   NAME_TAG=`aws emr describe-cluster --cluster-id $CLUSTER_ID | jq -r ".Cluster.Tags[] | if .Key == \"Name\" then .Value else empty end"`
+                  NAME=`aws emr describe-cluster --cluster-id $CLUSTER_ID | jq -r '.Cluster.Name'`
 
-                  if [[ ${NAME:-""} == "batch-analytical-env" ]] || [[ ${NAME:-""} == "user-batch-analytical-env" ]]
-                  
-                      echo $CLUSTER_ID is a batch cluster
+                  if echo ${NAME_TAG} | grep -q "batch"; then
+                      echo "${NAME} ($CLUSTER_ID) is a batch cluster"
                       END_DATE=`aws emr list-steps --cluster-id $CLUSTER_ID | jq '.Steps[0].Status.Timeline.EndDateTime | floor'`
                       let DELTA="`date +%s` - $END_DATE"
 
                       if [[ $DELTA -gt 3600 ]]
                       then
-                          echo Stopping cluster $CLUSTER_ID with a delta of $DELTA
+                          echo "Stopping cluster ${NAME} ($CLUSTER_ID) with a delta of $DELTA"
                           aws emr terminate-clusters --cluster-ids $CLUSTER_ID
                       fi
                   fi
