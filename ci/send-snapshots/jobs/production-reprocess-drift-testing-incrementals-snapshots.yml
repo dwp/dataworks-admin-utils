@@ -11,6 +11,7 @@ jobs:
           params:
             AWS_ACC: ((aws_account.production))
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.production)):role/ci
+            SEND_SNAPSHOTS_CORRELATION_ID_OVERRIDE: "secret-id"
             SEND_SNAPSHOTS_DATE_OVERRIDE: "2021-10-27"
             SEND_SNAPSHOTS_TOPICS_OVERRIDE: "ALL"
             SEND_SNAPSHOTS_REPROCESS_FILES_OVERRIDE: "true"
