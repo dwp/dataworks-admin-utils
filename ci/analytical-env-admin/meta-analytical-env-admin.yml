@@ -493,7 +493,7 @@ meta-analytical-env-admin:
 
                   NAME=`aws emr describe-cluster --cluster-id $CLUSTER_ID | jq -r '.Cluster.Name'`
 
-                  if echo ${NAME} | grep -qE '^batch-analytical-env|^user-batch-analytical-env|^external-batch-analytical-env'; then
+                  if echo ${NAME} | grep -qE '^user-batch-analytical-env'; then
                       echo "${NAME} ($CLUSTER_ID) is a batch cluster"
                       END_DATE=`aws emr list-steps --cluster-id $CLUSTER_ID | jq '.Steps[0].Status.Timeline.EndDateTime | floor'`
                       let DELTA="`date +%s` - $END_DATE"
