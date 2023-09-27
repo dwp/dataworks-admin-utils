@@ -48,12 +48,12 @@ resources:
       start: 00:00
       stop: 01:00
 
-  - name: utc-3am-trigger
-    type: time
-    source:
-      location: UTC
-      start: 03:00
-      stop: 04:05
+  # - name: utc-3am-trigger
+  #   type: time
+  #   source:
+  #     location: UTC
+  #     start: 03:00
+  #     stop: 04:05
 
   - name: utc-9am-trigger
     type: time
